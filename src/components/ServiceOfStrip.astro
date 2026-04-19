@@ -1,25 +1,28 @@
 ---
-import Image from '~/components/common/Image.astro';
-import lichenWordmark from '~/assets/images/lichen/wordmark-black.svg';
+import lichenWordmarkRaw from '~/assets/images/lichen/wordmark-black.svg?raw';
+
+const lichenWordmarkSvg = lichenWordmarkRaw
+  .replace(/^<\?xml[^>]*\?>/, '')
+  .replace(/<!DOCTYPE[^>]*>/, '')
+  .replace(/<svg([^>]*?)\s+width="[^"]*"/, '<svg$1')
+  .replace(/<svg([^>]*?)\s+height="[^"]*"/, '<svg$1')
+  .replace(
+    /<svg ([^>]*)>/,
+    '<svg $1 preserveAspectRatio="xMidYMid meet" class="h-6 md:h-7 w-auto block" aria-hidden="true">'
+  );
 ---
 
 <div class="w-full bg-[#fafaf7] border-b border-gray-200">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2 flex items-center justify-end gap-3 text-xs text-gray-600">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-end gap-3 text-xs text-gray-600">
     <span class="tracking-wide">A service of</span>
     <a
       href="https://lichen.com.au"
       target="_blank"
       rel="noopener noreferrer"
-      class="flex items-center hover:opacity-80 transition-opacity"
+      class="hover:opacity-80 transition-opacity inline-flex items-center"
       aria-label="Lichen Commodities"
     >
-      <Image
-        src={lichenWordmark}
-        alt="Lichen Commodities"
-        width={140}
-        height={24}
-        class="h-5 w-auto"
-      />
+      <Fragment set:html={lichenWordmarkSvg} />
     </a>
   </div>
 </div>

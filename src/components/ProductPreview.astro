@@ -1,0 +1,66 @@
+---
+import Image from '~/components/common/Image.astro';
+
+export interface Props {
+  title: string;
+  caption: string;
+  image: ImageMetadata;
+  badge?: string;
+  reverse?: boolean;
+}
+
+const { title, caption, image, badge, reverse = false } = Astro.props;
+---
+
+<section class="py-16 md:py-20 bg-[#fafaf7]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class={`grid md:grid-cols-2 gap-10 md:gap-16 items-center ${reverse ? 'md:[direction:rtl]' : ''}`}>
+      <div class={reverse ? '[direction:ltr]' : ''}>
+        {badge && (
+          <span class="inline-block text-[11px] font-semibold uppercase tracking-widest text-primary mb-3">
+            {badge}
+          </span>
+        )}
+        <h3 class="font-heading font-bold text-3xl md:text-4xl text-default mb-4 leading-tight">
+          {title}
+        </h3>
+        <p class="text-muted text-lg mb-6 leading-relaxed">{caption}</p>
+        <button
+          type="button"
+          data-open-request-access
+          class="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-medium px-5 py-2.5 rounded-md transition text-sm"
+        >
+          Request access
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class={`relative ${reverse ? '[direction:ltr]' : ''}`}>
+        <div class="relative overflow-hidden rounded-lg shadow-2xl ring-1 ring-black/5">
+          <Image
+            src={image}
+            alt={title}
+            class="w-full h-auto"
+            widths={[400, 768, 1024]}
+            sizes="(max-width: 767px) 400px, 1024px"
+          />
+          <!-- paywall blur overlay -->
+          <div class="absolute inset-0 backdrop-blur-[3px] bg-white/30"></div>
+          <div class="absolute inset-0 flex items-end justify-center pb-8">
+            <div class="bg-white/95 backdrop-blur-md rounded-md px-5 py-3 shadow-lg border border-gray-200 flex items-center gap-3">
+              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+              </svg>
+              <div>
+                <div class="text-sm font-semibold text-default">Sign in to preview</div>
+                <div class="text-xs text-muted">Invitation-only while we onboard users</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,7 +1,6 @@
 ---
 import Logo from '~/components/Logo.astro';
 import ToggleMenu from '~/components/common/ToggleMenu.astro';
-import Button from '~/components/ui/Button.astro';
 
 import { getHomePermalink } from '~/utils/permalinks';
 
@@ -13,6 +12,7 @@ interface Link {
 
 interface ActionLink extends Link {
   variant?: string;
+  openRequestAccess?: boolean;
 }
 
 export interface Props {
@@ -30,14 +30,13 @@ const {
   actions = [],
   isSticky = false,
   isFullWidth = false,
-  position = 'right',
 } = Astro.props;
 ---
 
 <header
   class:list={[
     { sticky: isSticky, relative: !isSticky },
-    'top-0 z-40 flex-none mx-auto w-full border-b border-gray-100 bg-white/90 backdrop-blur-md transition-[opacity] ease-in-out',
+    'top-0 z-40 flex-none mx-auto w-full border-b border-gray-100 bg-white/95 backdrop-blur-md transition-[opacity] ease-in-out',
   ]}
   {...isSticky ? { 'data-aw-sticky-header': true } : {}}
   {...id ? { id } : {}}
@@ -50,7 +49,7 @@ const {
   >
     <div class="flex justify-between items-center">
       <a class="flex items-center" href={getHomePermalink()} aria-label="UnderlandEX home">
-        <Logo />
+        <Logo withTagline={true} />
       </a>
       <div class="flex items-center md:hidden">
         <ToggleMenu />
@@ -60,12 +59,12 @@ const {
       class="items-center w-full md:w-auto hidden md:flex md:mx-5 text-default overflow-y-auto overflow-x-hidden md:overflow-visible md:justify-self-center"
       aria-label="Main navigation"
     >
-      <ul class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-sm md:text-[15px] tracking-tight">
+      <ul class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-sm tracking-tight">
         {
           links.map(({ text, href, ariaLabel }) => (
             <li>
               <a
-                class="hover:text-primary px-4 py-3 flex items-center font-medium transition"
+                class="hover:text-primary px-3 py-3 flex items-center font-medium transition"
                 href={href}
                 aria-label={ariaLabel}
               >
@@ -78,11 +77,25 @@ const {
     </nav>
     <div class="hidden md:flex items-center gap-2">
       {
-        actions.map(({ variant, text, href }) => (
-          <Button variant={variant as any} href={href} class="text-sm px-4 py-2">
-            {text}
-          </Button>
-        ))
+        actions.map(({ variant, text, href, openRequestAccess }) => {
+          const baseCls =
+            variant === 'primary'
+              ? 'bg-primary hover:bg-primary/90 text-white'
+              : 'text-default hover:text-primary';
+          const cls = `inline-flex items-center font-medium text-sm px-4 py-2 rounded-md transition ${baseCls}`;
+          if (openRequestAccess) {
+            return (
+              <button type="button" data-open-request-access class={cls}>
+                {text}
+              </button>
+            );
+          }
+          return (
+            <a href={href} class={cls}>
+              {text}
+            </a>
+          );
+        })
       }
     </div>
   </div>

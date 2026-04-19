@@ -1,16 +1,22 @@
 ---
 export interface Props {
   class?: string;
+  withTagline?: boolean;
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '', withTagline = false } = Astro.props;
 ---
 
-<span
-  class:list={[
-    'font-heading font-bold text-xl md:text-2xl tracking-tight text-primary select-none',
-    className,
-  ]}
->
-  Underland<span class="text-default">EX</span>
-</span>
+<div class:list={['flex flex-col leading-tight select-none', className]}>
+  <span class="font-heading font-bold text-xl md:text-2xl tracking-tight text-default">
+    Underland<span style="color: #b09763">EX</span>
+  </span>
+  {
+    withTagline && (
+      <span class="text-[11px] md:text-xs text-muted font-medium tracking-wide">
+        Making Mining <span style="color: #89b09f">Visible</span> &amp;{' '}
+        <span style="color: #b09763">Investable</span>
+      </span>
+    )
+  }
+</div>

@@ -1,15 +1,15 @@
 export const headerData = {
   links: [
-    { text: 'Explorer', href: 'https://app.underlandex.com', ariaLabel: 'UnderlandEX Explorer' },
-    { text: 'M&A', href: 'https://mna.underlandex.com', ariaLabel: 'UnderlandEX M&A' },
-    { text: 'Portal3D', href: 'https://portal3d.underlandex.com', ariaLabel: 'Portal3D' },
+    { text: 'Explorer', href: '#products' },
+    { text: 'M&A', href: '#products' },
+    { text: 'Portal3D', href: '#products' },
     { text: 'Data', href: '#data' },
     { text: 'Insights', href: '/insights' },
     { text: 'About', href: '#about' },
   ],
   actions: [
-    { variant: 'secondary', text: 'Talk to Sales', href: '#request-access' },
-    { variant: 'primary', text: 'Sign In', href: 'https://app.underlandex.com' },
+    { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:sales@underlandex.com' },
+    { variant: 'primary', text: 'Request Access', href: '#request-access', openRequestAccess: true },
   ],
 };
 
@@ -18,9 +18,9 @@ export const footerData = {
     {
       title: 'Products',
       links: [
-        { text: 'UnderlandEX Explorer', href: 'https://app.underlandex.com' },
-        { text: 'UnderlandEX M&A', href: 'https://mna.underlandex.com' },
-        { text: 'Portal3D', href: 'https://portal3d.underlandex.com' },
+        { text: 'UnderlandEX Explorer', href: '#products' },
+        { text: 'UnderlandEX M&A', href: '#products' },
+        { text: 'Portal3D', href: '#products' },
       ],
     },
     {
@@ -28,15 +28,15 @@ export const footerData = {
       links: [
         { text: 'About', href: '#about' },
         { text: 'Insights', href: '/insights' },
-        { text: 'Contact', href: '#request-access' },
+        { text: 'Contact', href: 'mailto:sales@underlandex.com' },
         { text: 'Lichen Commodities', href: 'https://lichen.com.au' },
       ],
     },
     {
       title: 'Legal',
       links: [
-        { text: 'Terms', href: 'https://app.underlandex.com/terms' },
-        { text: 'Privacy', href: 'https://app.underlandex.com/privacy' },
+        { text: 'Terms', href: '/terms' },
+        { text: 'Privacy', href: '/privacy' },
       ],
     },
   ],

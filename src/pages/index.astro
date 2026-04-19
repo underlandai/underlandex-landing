@@ -9,12 +9,15 @@ import Features3 from '~/components/widgets/Features3.astro';
 import Content from '~/components/widgets/Content.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import Pricing from '~/components/widgets/Pricing.astro';
-import Brands from '~/components/widgets/Brands.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+import ProductPreview from '~/components/ProductPreview.astro';
+import RequestAccessModal from '~/components/RequestAccessModal.astro';
 
 import { headerData, footerData } from '~/navigation';
 
 import heroGeo from '~/assets/images/underlandex/hero-geo.avif';
+import previewExplorer from '~/assets/images/underlandex/preview-explorer.png';
+import previewMna from '~/assets/images/underlandex/preview-mna.png';
 
 const metadata = {
   title: 'UnderlandEX — The world-leading mining intelligence platform',
@@ -28,7 +31,6 @@ let liveStats = {
   totalTenements: 85537,
   totalProjects: 5968,
   totalResourceEstimates: 70515,
-  operatingSites: 4462,
 };
 try {
   const res = await fetch('https://underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
@@ -46,7 +48,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
 <Layout metadata={metadata}>
   <Fragment slot="announcement">
     <ServiceOfStrip />
-    <Header {...headerData} isSticky position="right" />
+    <Header {...headerData} isSticky />
   </Fragment>
 
   <!-- HERO -->
@@ -66,6 +68,15 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
       Explore <strong>{fmt(liveStats.totalSites)}+</strong> mining assets, track every deal, and be first to know.
       Always live. Continuously updated.
     </Fragment>
+    <Fragment slot="content">
+      <div class="flex justify-center mt-8">
+        <a href="#data" class="text-muted hover:text-primary transition animate-bounce" aria-label="Scroll to data">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
+        </a>
+      </div>
+    </Fragment>
   </Hero>
 
   <!-- LIVE STATS TICKER -->
@@ -73,7 +84,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
     id="data"
     tagline="The database, in numbers"
     title="Live from the world's most comprehensive mining dataset"
-    subtitle="Powered by our merged S&P Capital IQ and Deep Optica ingest pipeline. Continuously refreshed, always live."
+    subtitle="Always live. Continuously updated from the world's major stock exchanges and regulatory registries."
     stats={[
       { amount: `${fmt(liveStats.totalSites)}+`, title: 'Mining assets tracked', icon: 'tabler:map-pin' },
       { amount: `${fmt(liveStats.totalOwners)}+`, title: 'Mining companies', icon: 'tabler:building-factory-2' },
@@ -95,23 +106,37 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
         description:
           'Discover. Search thousands of live projects across every commodity, jurisdiction, stage and ownership. Familiar search patterns built for how property investors think.',
         icon: 'tabler:search',
-        callToAction: { text: 'Open Explorer →', href: 'https://app.underlandex.com' },
       },
       {
         title: 'UnderlandEX M&A',
         description:
-          'Be first to know. Real-time deal radar across ASX, TSX, LSE and EDGAR. Morning brief, weekly report, transaction league tables, live commodity prices.',
+          'Be first to know. Real-time deal radar ingesting every listed-company announcement from the ASX, TSX, LSE and EDGAR. Morning brief, weekly report, league tables.',
         icon: 'tabler:trending-up',
-        callToAction: { text: 'Open M&A →', href: 'https://mna.underlandex.com' },
       },
       {
         title: 'Portal3D',
         description:
           'See beneath the surface. Browser-based 3D visualisation of subsurface geology. Bring mining assets to life for buyers, partners and investors.',
         icon: 'tabler:3d-cube-sphere',
-        callToAction: { text: 'Open Portal3D →', href: 'https://portal3d.underlandex.com' },
       },
     ]}
+  />
+
+  <!-- GATED PREVIEW: EXPLORER -->
+  <ProductPreview
+    badge="UnderlandEX Explorer"
+    title="Every deposit. Every tenement. Every owner."
+    caption="Search the database the way property investors search homes. Filter by commodity, jurisdiction, stage and ownership. Open any asset to see the full technical picture — resource estimates, production history, partnership structure."
+    image={previewExplorer}
+  />
+
+  <!-- GATED PREVIEW: M&A -->
+  <ProductPreview
+    badge="UnderlandEX M&A"
+    title="Be first to every deal."
+    caption="A live feed of every listed-company announcement that moves the market. M&A, capital raises, resource upgrades, exploration results — pulled from stock exchange disclosures the moment they hit the wire, enriched with UnderlandEX project context."
+    image={previewMna}
+    reverse={true}
   />
 
   <!-- WHO IT'S FOR -->
@@ -138,17 +163,20 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
     items={[
       {
         title: 'Every listed mining asset',
-        description: 'S&P Capital IQ, Deep Optica, DMIRS MINEDEX, SLIP, WAMEX — merged, deduplicated, enriched.',
+        description:
+          'Continuously ingested from stock exchange announcements, regulatory filings and jurisdictional registries across Australia, Canada, the UK and the USA.',
         icon: 'tabler:database',
       },
       {
         title: 'Every deal, as it happens',
-        description: 'ASX, TSX, LSE, EDGAR announcement feeds. M&A, capital raises, JORC updates, exploration results.',
+        description:
+          'ASX, TSX, LSE and EDGAR announcement feeds. M&A, capital raises, JORC updates, exploration results — in one place.',
         icon: 'tabler:rss',
       },
       {
         title: 'Every tenement boundary',
-        description: 'Spatial data across Australian jurisdictions, with expansion into Canada, USA and Africa underway.',
+        description:
+          'Spatial data across Australian jurisdictions, with expansion into Canada, the USA and Africa underway.',
         icon: 'tabler:map',
       },
     ]}
@@ -156,9 +184,9 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
   >
     <Fragment slot="content">
       <p class="text-muted">
-        UnderlandEX is the world-leading mining intelligence database. Our backend ingests and cross-references public
-        registries, exchange filings, company announcements and proprietary scrapes — surfacing the deposits, deals and
-        data points that no other platform has assembled in one place.
+        UnderlandEX is the world-leading mining intelligence database. Our backend continuously ingests every listed
+        mining company announcement across the world's major stock exchanges — surfacing the deposits, deals and data
+        points that no other platform has assembled in one place.
       </p>
     </Fragment>
   </Content>
@@ -173,13 +201,13 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
         title: 'Explorer',
         subtitle: 'Discover and evaluate',
         price: 'Free',
-        period: 'No credit card required',
+        period: 'Invitation on approval',
         items: [
-          { description: 'Search all listed projects' },
+          { description: 'Search listed projects' },
           { description: 'Basic commodity & jurisdiction filters' },
           { description: 'Public ownership data' },
         ],
-        callToAction: { text: 'Get started', href: 'https://app.underlandex.com' },
+        callToAction: { text: 'Request access', href: '#request-access' },
       },
       {
         title: 'Professional',
@@ -223,9 +251,9 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
 
   <!-- FINAL CTA -->
   <CallToAction
-    id="request-access"
+    id="request-access-cta"
     actions={[
-      { variant: 'primary', text: 'Request Access', href: 'https://app.underlandex.com' },
+      { variant: 'primary', text: 'Request Access', href: '#request-access' },
       { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:sales@underlandex.com' },
     ]}
   >
@@ -236,4 +264,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
   </CallToAction>
 
   <Footer {...footerData} />
+
+  <!-- GLOBAL MODAL -->
+  <RequestAccessModal />
 </Layout>
