@@ -1,12 +1,16 @@
 ---
-import Image from '~/components/common/Image.astro';
-import logo from '~/assets/images/underlandex/logo.svg';
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
 ---
 
-<Image
-  src={logo}
-  alt="UnderlandEX"
-  width={400}
-  height={80}
-  class="w-auto h-auto max-w-full"
-/>
+<span
+  class:list={[
+    'font-heading font-bold text-xl md:text-2xl tracking-tight text-primary select-none',
+    className,
+  ]}
+>
+  Underland<span class="text-default">EX</span>
+</span>
