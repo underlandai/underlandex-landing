@@ -1,0 +1,209 @@
+---
+import WidgetWrapper from '../ui/WidgetWrapper.astro';
+import type { Widget } from '~/types';
+import Headline from '~/components/ui/Headline.astro';
+
+interface Props extends Widget {
+  title?: string;
+  subtitle?: string;
+  tagline?: string;
+  description?: string;
+  disclaimer?: string;
+}
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  description = await Astro.slots.render('description'),
+  disclaimer = await Astro.slots.render('disclaimer'),
+
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props;
+---
+
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-6xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  <div
+    class="max-w-3xl mx-auto text-center p-6 rounded-md shadow-xl bg-white dark:bg-slate-900 dark:shadow-none dark:border dark:border-slate-600"
+  >
+    <Headline
+      title={title}
+      subtitle={subtitle}
+      tagline={tagline}
+      classes={{
+        container: 'mb-0 md:mb-0',
+        title: 'text-3xl md:text-4xl font-bold tracking-tighter mb-4 font-heading',
+        subtitle: 'text-xl text-muted dark:text-slate-400',
+      }}
+    />
+    
+    {description && (
+      <p class="text-gray-600 dark:text-gray-400 mb-6">{description}</p>
+    )}
+
+    <form 
+      class="max-w-md mx-auto"
+      id="newsletter-form"
+    >
+      <div class="flex flex-col sm:flex-row gap-3">
+        <div class="flex-1">
+          <label for="email" class="sr-only">Email address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="Enter your email address"
+            class="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <button
+          type="submit"
+          class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Subscribe
+        </button>
+      </div>
+    </form>
+
+    {disclaimer && (
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">{disclaimer}</p>
+    )}
+
+    <div id="newsletter-message" class="mt-4 hidden">
+      <p class="text-green-600 dark:text-green-400 font-medium">
+        Thank you for subscribing! We'll keep you updated on new blog posts.
+      </p>
+    </div>
+  </div>
+</WidgetWrapper>
+
+<script>
+  // Newsletter script with debug info
+  console.log('✅ Newsletter script loaded at:', new Date().toISOString());
+  
+  // Test immediate access
+  const immediateNewsletterForm = document.getElementById('newsletter-form');
+  console.log('🔍 Newsletter form immediately available:', !!immediateNewsletterForm);
+  
+  if (!window.newsletterFormInitialized) {
+    window.newsletterFormInitialized = false;
+    
+    function initializeNewsletterForm() {
+      if (window.newsletterFormInitialized) {
+        console.log('⚠️ Newsletter form already initialized, skipping');
+        return;
+      }
+      
+      console.log('🚀 Starting newsletter form initialization');
+      
+      const form = document.getElementById('newsletter-form');
+      const message = document.getElementById('newsletter-message');
+      const submitButton = form?.querySelector('button[type="submit"]');
+      
+      console.log('🔍 Newsletter form elements check:', { 
+        form: !!form, 
+        message: !!message, 
+        submitButton: !!submitButton,
+        formHTML: form ? form.outerHTML.substring(0, 100) + '...' : 'null'
+      });
+      
+      if (form && message && submitButton) {
+        console.log('✅ All newsletter form elements found, setting up handlers');
+        window.newsletterFormInitialized = true;
+        
+        // Clone form to remove existing listeners
+        const newForm = form.cloneNode(true);
+        form.parentNode.replaceChild(newForm, form);
+        const cleanForm = document.getElementById('newsletter-form');
+        const cleanSubmitButton = cleanForm.querySelector('button[type="submit"]');
+        
+        function handleSubmit(e) {
+          console.log('🎯 Newsletter form submit triggered!');
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          
+          console.log('📋 Gathering newsletter form data');
+          const formData = new FormData(cleanForm);
+          
+          // Show form data
+          console.log('📊 Newsletter form data:');
+          for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}: ${value}`);
+          }
+          
+          // Update button state
+          const originalText = cleanSubmitButton.textContent;
+          cleanSubmitButton.disabled = true;
+          cleanSubmitButton.textContent = 'Subscribing...';
+          
+          // Submit to API
+          fetch('/api/subscribe', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => {
+            console.log('📡 Newsletter API response status:', response.status);
+            return response.json();
+          })
+          .then(result => {
+            console.log('📊 Newsletter API result:', result);
+            
+            if (result.success) {
+              console.log('🎉 Newsletter success! Showing confirmation');
+              cleanForm.style.display = 'none';
+              message.classList.remove('hidden');
+            } else {
+              console.error('❌ Newsletter server error:', result.error);
+              alert('Error subscribing: ' + (result.error || 'Unknown error'));
+              cleanSubmitButton.disabled = false;
+              cleanSubmitButton.textContent = originalText;
+            }
+          })
+          .catch(error => {
+            console.error('💥 Newsletter network error:', error);
+            alert('Network error. Please try again.');
+            cleanSubmitButton.disabled = false;
+            cleanSubmitButton.textContent = originalText;
+          });
+          
+          return false;
+        }
+        
+        // Attach event listeners
+        cleanForm.addEventListener('submit', handleSubmit, true);
+        cleanForm.onsubmit = handleSubmit;
+        
+        // Secondary prevention
+        cleanForm.addEventListener('submit', (e) => {
+          console.log('🛑 Newsletter secondary prevention handler');
+          e.preventDefault();
+          return false;
+        }, false);
+        
+        console.log('✅ Newsletter form event listeners attached');
+        
+      } else {
+        console.log('⏳ Newsletter form elements not ready, retrying in 100ms');
+        setTimeout(initializeNewsletterForm, 100);
+      }
+    }
+    
+    // Multiple initialization approaches
+    if (document.readyState === 'loading') {
+      console.log('📄 Document loading, waiting for DOMContentLoaded (Newsletter)');
+      document.addEventListener('DOMContentLoaded', initializeNewsletterForm);
+    } else {
+      console.log('📄 Document loaded, initializing newsletter immediately');
+      initializeNewsletterForm();
+    }
+    
+    // Backup initialization
+    setTimeout(initializeNewsletterForm, 1000);
+    window.addEventListener('load', initializeNewsletterForm);
+  }
+</script>

@@ -1,0 +1,92 @@
+---
+import '@fontsource-variable/inter';
+import '../assets/styles/fonts.css';
+
+// 'DM Sans'
+// Nunito
+// Dosis
+// Outfit
+// Roboto
+// Literata
+// 'IBM Plex Sans'
+// Karla
+// Poppins
+// 'Fira Sans'
+// 'Libre Franklin'
+// Inconsolata
+// Raleway
+// Oswald
+// 'Space Grotesk'
+// Urbanist
+---
+
+<style is:inline>
+  :root {
+    --aw-font-sans: 'Inter Variable';
+    --aw-font-serif: 'Inter Variable';
+    --aw-font-heading: 'Inter Variable';
+
+    /* Primary brand colors from style guide */
+    --aw-color-primary: #668a84; /* Deep Teal - primary dark color */
+    --aw-color-secondary: #89b09f; /* Sage Green - primary light color */
+    --aw-color-accent: #b09763; /* Muted Gold - accent color for CTAs */
+    
+    /* Brand colors from style guide */
+    --aw-color-deep-teal: #668a84;
+    --aw-color-sage-green: #89b09f;
+    --aw-color-muted-gold: #b09763;
+    --aw-color-sandstone: #dfd7c6;
+    
+    /* Legacy colors (keeping for compatibility) */
+    --aw-color-gold: #b09763;
+    --aw-color-beige: #dfd7c6;
+    --aw-color-gray: #7d7875;
+    --aw-color-teal: #668a84;
+    --aw-color-sage: #89b09f;
+
+    --aw-color-text-heading: #668a84; /* Deep Teal for headings */
+    --aw-color-text-default: rgb(16 16 16);
+    --aw-color-text-muted: rgb(16 16 16 / 66%);
+    --aw-color-bg-page: rgb(255 255 255); /* White background - test change */
+
+    --aw-color-bg-page-dark: rgb(3 6 32);
+
+    ::selection {
+      background-color: lavender;
+    }
+  }
+
+  .dark {
+    --aw-font-sans: 'Inter Variable';
+    --aw-font-serif: 'Inter Variable';
+    --aw-font-heading: 'Inter Variable';
+
+    /* Primary brand colors from style guide - dark mode */
+    --aw-color-primary: #89b09f; /* Sage Green - lighter for dark mode */
+    --aw-color-secondary: #668a84; /* Deep Teal - for dark mode */
+    --aw-color-accent: #b09763; /* Muted Gold - accent color for CTAs */
+    
+    /* Brand colors from style guide - dark mode */
+    --aw-color-deep-teal: #668a84;
+    --aw-color-sage-green: #89b09f;
+    --aw-color-muted-gold: #b09763;
+    --aw-color-sandstone: #dfd7c6;
+    
+    /* Legacy colors (keeping for compatibility) */
+    --aw-color-gold: #b09763;
+    --aw-color-beige: #dfd7c6;
+    --aw-color-gray: #7d7875;
+    --aw-color-teal: #668a84;
+    --aw-color-sage: #89b09f;
+
+    --aw-color-text-heading: rgb(247, 248, 248);
+    --aw-color-text-default: rgb(229 236 246);
+    --aw-color-text-muted: rgb(229 236 246 / 66%);
+    --aw-color-bg-page: rgb(3 6 32);
+
+    ::selection {
+      background-color: black;
+      color: snow;
+    }
+  }
+</style>

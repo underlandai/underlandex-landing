@@ -1,0 +1,145 @@
+---
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import type { Faqs as Props } from '~/types';
+import { Icon } from 'astro-icon/components';
+
+const {
+  title = '',
+  subtitle = '',
+  tagline = '',
+  items = [],
+  columns = 2,
+
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props;
+
+// Check if items have nested structure (categories)
+const hasCategories = items.length > 0 && items[0].items !== undefined;
+---
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::marker {
+    display: none;
+  }
+  summary {
+    cursor: pointer;
+  }
+  
+  /* Base state - dark green chevron */
+  .chevron-icon {
+    color: var(--aw-color-primary, #0a5640);
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+  
+  /* Hover state - yellow chevron */
+  summary:hover .chevron-icon {
+    color: #efde7c;
+  }
+  
+  /* Open state - rotate chevron */
+  details[open] summary .chevron-icon {
+    transform: rotate(90deg);
+  }
+  
+  /* Open state + hover - yellow chevron */
+  details[open] summary:hover .chevron-icon {
+    color: #efde7c;
+  }
+  
+  /* Dark mode adjustments */
+  :global(.dark) .chevron-icon {
+    color: var(--aw-color-primary-light, #0f8c69);
+  }
+  
+  :global(.dark) summary:hover .chevron-icon {
+    color: #efde7c;
+  }
+</style>
+
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-7xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  <Headline title={title} subtitle={subtitle} tagline={tagline} />
+  
+  {hasCategories ? (
+    <div class="grid gap-8 md:gap-y-12 lg:grid-cols-2">
+      {items.map((category) => (
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-md shadow-md">
+          <h3 class="text-xl font-bold mb-4">{category.title}</h3>
+          <div class="space-y-6">
+            {category.items && category.items.map((item) => (
+              <details class="group">
+                <summary class="flex items-start">
+                  <span class="chevron-icon">
+                    <Icon name="tabler:chevron-right" class="flex-shrink-0 mt-1 w-6 h-6" />
+                  </span>
+                  <div class="mt-0.5 ml-2">
+                    <h4 class="text-lg font-medium">{item.title}</h4>
+                  </div>
+                </summary>
+                <div class="mt-2 ml-8 text-muted prose prose-base max-w-none dark:prose-invert" set:html={item.description} />
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div class={`grid mx-auto gap-8 md:gap-y-12 ${
+      columns === 4
+        ? 'lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2'
+        : columns === 3
+          ? 'lg:grid-cols-3 sm:grid-cols-2'
+          : columns === 2
+            ? 'sm:grid-cols-2 '
+            : ''
+    } ${columns === 1 ? 'max-w-4xl' : ''} gap-y-8 md:gap-y-12`}>
+      {items.map((item) => (
+        <div class="intersect-once motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
+          <details class="group">
+            <summary class="flex items-start cursor-pointer">
+              <span class="chevron-icon">
+                <Icon name="tabler:chevron-right" class="flex-shrink-0 mt-1 w-6 h-6" />
+              </span>
+              <div class="mt-0.5 ml-2">
+                <h4 class="text-lg font-medium">{item.title}</h4>
+              </div>
+            </summary>
+            <div class="mt-2 ml-8 text-muted prose prose-base max-w-none dark:prose-invert" set:html={item.description} />
+          </details>
+        </div>
+      ))}
+    </div>
+  )}
+</WidgetWrapper>
+
+<script>
+  // Animation is handled by CSS transitions
+  document.addEventListener('DOMContentLoaded', () => {
+    const details = document.querySelectorAll('details');
+    
+    // Initialize all detail elements
+    details.forEach(detail => {
+      // For accessibility, add proper ARIA attributes
+      const summary = detail.querySelector('summary');
+      const content = detail.querySelector('div[set\\:html]');
+      
+      if (summary && content) {
+        // Set proper ARIA roles and states
+        summary.setAttribute('aria-expanded', detail.open ? 'true' : 'false');
+        content.id = `faq-content-${Math.random().toString(36).substring(2, 9)}`;
+        summary.setAttribute('aria-controls', content.id);
+        
+        // Set up event listener for toggle
+        detail.addEventListener('toggle', () => {
+          summary.setAttribute('aria-expanded', detail.open ? 'true' : 'false');
+        });
+      }
+    });
+  });
+</script>

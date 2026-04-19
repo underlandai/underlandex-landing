@@ -1,0 +1,677 @@
+---
+// SpectreBackground.astro - Animated Spectre monotile background
+---
+
+<div id="spectre-background" class="fixed inset-0 -z-10 w-full h-full pointer-events-none opacity-20 transition-opacity duration-500"></div>
+
+<script>
+  // The SVG path data for the Spectre monotile
+  const spectrePath = "M 130.7 130.7 L 170.2 130.7 L 189.9 96.5 L 155.7 76.8 L 155.7 37.3 L 116.3 37.3 L 96.5 3.1 L 62.3 22.8 L 62.3 62.3 L 22.8 62.3 L 3.1 96.5 L 37.3 116.3 L 71.5 96.5 L 91.2 130.7 z";
+  
+  // Original width and height of the SVG
+  const originalWidth = 193.03;
+  const originalHeight = 133.81;
+
+  // Colors for the tiles
+  const tileColors = [
+    { fill: 'var(--aw-color-gold)' },       // lichen-gold
+    { fill: 'var(--aw-color-beige)' },      // lichen-beige
+    { fill: 'var(--aw-color-gray)' },       // lichen-gray
+    { fill: 'var(--aw-color-teal)' },       // lichen-teal
+    { fill: 'var(--aw-color-sage)' },       // lichen-sage
+    { fill: '#8fbc8f' },                   // lichen-light-green (hex code)
+    { fill: 'var(--aw-color-accent)'},      // --aw-color-accent: #efde7c; /* lichen-yellow */
+    { fill: '#487f59'} ,                    // #487f59; /* lichen-dark-green */
+  ];
+  
+  // Tile class to manage individual tiles
+  class Tile {
+    x: number;
+    y: number;
+    scale: number;
+    rotation: number;
+    targetRotation: number;
+    colorIndex: number;
+    opacity: number;
+    targetOpacity: number;
+    lifetime: number;
+    age: number;
+    growthPhase: boolean;
+    fadeOutThreshold: number;
+    rotationSpeed: number;
+    boundingBox: any;
+    growthRate: number;
+    decayRate: number;
+    
+    constructor(x: number, y: number, scale: number, rotation = 0, _colorIndex = 0) {
+      this.x = x;
+      this.y = y;
+      this.scale = scale;
+      this.rotation = rotation;
+      this.targetRotation = rotation;
+      this.colorIndex = Math.floor(Math.random() * tileColors.length); // Ensure random color selection
+      this.opacity = 0;
+      this.targetOpacity = Math.random() * 0.3 + 0.15; // Random opacity between 0.15 and 0.45
+      
+      // Lifecycle properties with exponential fading - shortened lifetime for more turnover
+      this.lifetime = Math.random() * 300 + 200; // Random lifetime between 200-500 frames (10-25 seconds at 20fps)
+      this.age = 0;
+      this.growthPhase = true; // Start in growth phase
+      this.fadeOutThreshold = this.lifetime * 0.6; // Start fading out earlier
+      
+      // Animation properties
+      this.rotationSpeed = (Math.random() - 0.5) * 0.01; // Very slow rotation
+      this.boundingBox = null; // Will be calculated once the tile is placed
+      
+      // Exponential factors - increased for faster transitions
+      this.growthRate = 0.15; // Controls how quickly the tile appears (faster)
+      this.decayRate = 0.08; // Controls how quickly the tile disappears (faster)
+    }
+    
+    // Calculate and store the bounding box of this tile
+    calculateBoundingBox() {
+      const radius = Math.max(originalWidth, originalHeight) * 0.5 * this.scale;
+      this.boundingBox = {
+        left: this.x - radius,
+        right: this.x + radius,
+        top: this.y - radius,
+        bottom: this.y + radius,
+        radius: radius
+      };
+    }
+    
+    update() {
+      // Update age counter
+      this.age++;
+      
+      // Exponential growth/decay for opacity
+      if (this.growthPhase) {
+        // Exponential growth phase
+        if (this.age < 30) {
+          // Fast initial appearance
+          this.opacity = Math.min(this.targetOpacity, this.opacity + this.growthRate);
+        } else {
+          // Then slow down to target
+          this.opacity = this.targetOpacity - (this.targetOpacity - this.opacity) * 0.9;
+          
+          // Once we're close enough to target, phase is complete
+          if (Math.abs(this.opacity - this.targetOpacity) < 0.01) {
+            this.growthPhase = false;
+          }
+        }
+      } else if (this.age > this.fadeOutThreshold) {
+        // Exponential decay phase
+        const fadeProgress = (this.age - this.fadeOutThreshold) / (this.lifetime - this.fadeOutThreshold);
+        // Use exponential decay function: opacity = targetOpacity * e^(-decay * progress)
+        this.opacity = this.targetOpacity * Math.exp(-6 * fadeProgress);
+      }
+      
+      // Gradually rotate towards target rotation
+      const rotDiff = this.targetRotation - this.rotation;
+      if (Math.abs(rotDiff) > 0.001) {
+        this.rotation += rotDiff * 0.02;
+      } else {
+        // Set a new target rotation occasionally
+        if (Math.random() < 0.005) { // Increased probability for more dynamic rotation
+          this.targetRotation = this.rotation + (Math.random() - 0.5) * 0.3;
+        }
+      }
+      
+      // Very subtle continuous rotation
+      this.rotation += this.rotationSpeed;
+      
+      // Update bounding box with new position (for collision detection)
+      this.calculateBoundingBox();
+      
+      // Return true if the tile should be kept, false if it should be removed
+      return this.age <= this.lifetime && !(this.age > this.fadeOutThreshold && this.opacity < 0.01);
+    }
+    
+    draw(ctx: any) {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation);
+      ctx.scale(this.scale, this.scale);
+      
+      // Center the tile at origin
+      ctx.translate(-originalWidth / 2, -originalHeight / 2);
+      
+      const color = tileColors[this.colorIndex];
+      
+      // Draw the path
+      ctx.beginPath();
+      const path = new Path2D(spectrePath);
+      ctx.fillStyle = color.fill;
+      ctx.globalAlpha = this.opacity;
+      ctx.fill(path);
+      
+      // Removed outline/stroke for cleaner appearance
+      
+      ctx.restore();
+    }
+  }
+  
+  // Helper function to calculate the bounding box of a tile
+  function getTileBoundingBox(tile: any) {
+    // Calculate the bounding box corners considering the rotation
+    // For simplicity, we'll use a circular approximation first
+    const radius = Math.max(originalWidth, originalHeight) * 0.5 * tile.scale;
+    
+    return {
+      left: tile.x - radius,
+      right: tile.x + radius,
+      top: tile.y - radius,
+      bottom: tile.y + radius,
+      radius: radius
+    };
+  }
+  
+  // Helper function to check for tile collisions using bounding boxes
+  function isTileColliding(tile: any, existingTiles: any[], safeDistance: number) {
+    // Calculate a bounding box for the new tile
+    const bbox1 = getTileBoundingBox(tile);
+    
+    // Add extra margin to the safe distance
+    const margin = safeDistance * 0.3;
+    
+    for (const existingTile of existingTiles) {
+      // Skip tiles that are nearly invisible (fading out)
+      if (existingTile.opacity < 0.05) continue;
+      
+      // Calculate bounding box for existing tile
+      const bbox2 = getTileBoundingBox(existingTile);
+      
+      // First do a quick bounding box check (much faster than detailed collision)
+      if (!(bbox1.right + margin < bbox2.left - margin || 
+            bbox1.left - margin > bbox2.right + margin || 
+            bbox1.bottom + margin < bbox2.top - margin || 
+            bbox1.top - margin > bbox2.bottom + margin)) {
+        
+        // If bounding boxes intersect, do a more accurate circle-based collision check
+        const dx = tile.x - existingTile.x;
+        const dy = tile.y - existingTile.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // If the circles are too close, we have a collision
+        if (distance < bbox1.radius + bbox2.radius + margin) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  
+  // Helper function to find a tessellation point
+  function findNearestTessellationPoint(x: number, y: number, existingTiles: any[], tileSize: number) {
+    // Look for nearby tiles to tessellate with
+    const nearbyTiles = existingTiles.filter(tile => {
+      const dx = tile.x - x;
+      const dy = tile.y - y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      return distance < tileSize * 2; // Only consider tiles within 2x tileSize
+    });
+    
+    if (nearbyTiles.length === 0) {
+      // No nearby tiles to tessellate with
+      return { x, y, rotation: Math.random() * Math.PI * 2 };
+    }
+    
+    // Choose a random nearby tile to tessellate with
+    const referenceTile = nearbyTiles[Math.floor(Math.random() * nearbyTiles.length)];
+    
+    // Calculate a position that would tessellate with the reference tile
+    // For spectre tiles, we'll use a simplified approach of positioning at a fixed distance
+    // in one of six directions (hexagonal-like arrangement)
+    const angle = Math.random() * Math.PI * 2;
+    const tessX = referenceTile.x + Math.cos(angle) * tileSize * 0.75;
+    const tessY = referenceTile.y + Math.sin(angle) * tileSize * 0.75;
+    
+    // Use the same rotation as the reference tile for better visual tessellation
+    // with a slight random variation
+    const tessRotation = referenceTile.rotation + (Math.random() - 0.5) * 0.1;
+    
+    return { x: tessX, y: tessY, rotation: tessRotation };
+  }
+
+  // Background animation controller
+  class SpectreBackground {
+    canvas: any;
+    ctx: any;
+    tiles: any[];
+    lastFrameTime: number;
+    frameCount: number;
+    isInitializing: boolean;
+
+    constructor(canvas: any) {
+      this.canvas = canvas;
+      this.ctx = canvas.getContext('2d');
+      this.tiles = [];
+      this.lastFrameTime = 0;
+      this.frameCount = 0;
+      this.isInitializing = true; // Flag for the initialization phase
+      
+      this.resizeCanvas();
+      this.initializeTiles();
+      
+      // Set up event listeners
+      window.addEventListener('resize', this.resizeCanvas.bind(this));
+      
+      // Start animation
+      this.animate(0);
+    }
+    
+    resizeCanvas() {
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+      
+      // If we already have tiles, regenerate them for the new size
+      if (this.tiles.length > 0) {
+        this.initializeTiles();
+      }
+    }
+    
+    initializeTiles() {
+      this.tiles = [];
+      
+      // Calculate the size and grid for tiles
+      const tileSize = Math.max(window.innerWidth, window.innerHeight) * 0.15;
+      const scale = tileSize / Math.max(originalWidth, originalHeight);
+      const safeDistance = tileSize * 1.0; // Even larger safe distance to prevent overlap
+      
+      // Create a much sparser grid with more spacing
+      const spacing = tileSize * 1.5; // Much larger spacing between tiles in the grid
+      const xCount = Math.ceil(window.innerWidth / spacing) + 1;
+      const yCount = Math.ceil(window.innerHeight / spacing) + 1;
+      
+      // Create initial pool of potential tile positions
+      const potentialPositions: Array<{x: number, y: number, rotation: number, scale: number, priority: number}> = [];
+      
+      // Generate potential positions in a grid pattern first
+      for (let x = -1; x < xCount; x++) {
+        for (let y = -1; y < yCount; y++) {
+          // Base position with larger grid spacing
+          const baseX = x * spacing;
+          const baseY = y * spacing;
+          
+          // Add randomness but within a controlled range
+          const randomOffsetX = (Math.random() - 0.5) * spacing * 0.3;
+          const randomOffsetY = (Math.random() - 0.5) * spacing * 0.3;
+          
+          const posX = baseX + randomOffsetX;
+          const posY = baseY + randomOffsetY;
+          
+          // Random rotation in radians (0 to 2π)
+          const rotation = Math.random() * Math.PI * 2;
+          
+          potentialPositions.push({
+            x: posX,
+            y: posY,
+            rotation: rotation,
+            scale: scale,
+            priority: Math.random()
+          });
+        }
+      }
+      
+      // Randomly shuffle the potential positions
+      for (let i = potentialPositions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [potentialPositions[i], potentialPositions[j]] = [potentialPositions[j], potentialPositions[i]];
+      }
+      
+      // Now try to place tiles using the shuffled positions
+      for (const pos of potentialPositions) {
+        // Check if this position collides with existing tiles
+        if (!isTileColliding(pos, this.tiles, safeDistance)) {
+          // Create the new tile with a random draw order to stagger appearance
+          const tile = new Tile(pos.x, pos.y, pos.scale, pos.rotation);
+          
+          // Calculate and store the initial bounding box for collision detection
+          tile.calculateBoundingBox();
+          
+          // Add to the tiles array
+          this.tiles.push(tile);
+          
+          // Limit the initial number of tiles to avoid overcrowding
+          if (this.tiles.length >= 25) break;
+        }
+      }
+      
+      // Reset initialization flag and frame counter
+      this.isInitializing = true;
+      this.frameCount = 0;
+    }
+    
+    drawFrame() {
+      // Clear the canvas with white background
+      this.ctx.fillStyle = 'white';
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      
+      // Update and draw all tiles, keeping only active ones
+      this.tiles = this.tiles.filter(tile => {
+        const keepTile = tile.update();
+        if (keepTile) {
+          tile.draw(this.ctx);
+        }
+        return keepTile;
+      });
+      
+      // Rollout strategy with exponential increase then decrease
+      if (this.isInitializing) {
+        if (this.frameCount < 60) {
+          // Phase 1: Exponential increase (first 3 seconds at 20fps)
+          // Add more tiles as frameCount increases using exponential growth
+          const baseAddRate = 1; // Start with adding 1 tile
+          const growthFactor = 1.1; // Grow by 10% each frame
+          const tilesToAdd = Math.ceil(baseAddRate * Math.pow(growthFactor, this.frameCount / 10));
+          
+          // Cap at a reasonable maximum
+          const cappedTilesToAdd = Math.min(tilesToAdd, 8);
+          
+          for (let i = 0; i < cappedTilesToAdd; i++) {
+            this.addRandomTile();
+          }
+        } else if (this.frameCount < 120) {
+          // Phase 2: Plateau - add a consistent number of tiles
+          const tilesToAdd = 4; // Add 4 tiles every frame during plateau
+          for (let i = 0; i < tilesToAdd; i++) {
+            this.addRandomTile();
+          }
+        } else if (this.frameCount < 180) {
+          // Phase 3: Exponential decrease
+          const maxAddRate = 4; // Start from 4 tiles
+          const decayFactor = 0.92; // Decay by 8% each frame
+          const frameInPhase = this.frameCount - 120;
+          const tilesToAdd = Math.ceil(maxAddRate * Math.pow(decayFactor, frameInPhase / 5));
+          
+          for (let i = 0; i < tilesToAdd; i++) {
+            this.addRandomTile();
+          }
+        } else {
+          // Transition to normal operation after the rollout phases
+          this.isInitializing = false;
+        }
+      } else {
+        // After initialization, regularly add new tiles to replace those that fade out
+        // Significantly increased rate for more dynamic appearance
+        if (this.frameCount % 5 === 0) { // More frequent additions (every 5 frames instead of 15)
+          const tilesToAdd = Math.floor(Math.random() * 3) + 2; // 2-4 tiles every cycle
+          for (let i = 0; i < tilesToAdd; i++) {
+            this.addRandomTile();
+          }
+        }
+        
+        // Periodically add a small burst of tiles to maintain coverage
+        if (this.frameCount % 60 === 0) { // Every 3 seconds at 20fps
+          const burstTiles = Math.floor(Math.random() * 4) + 3; // 3-6 tile burst
+          for (let i = 0; i < burstTiles; i++) {
+            this.addRandomTile();
+          }
+        }
+      }
+      
+      // Debug visualization for collision detection (uncomment to enable)
+      // this.drawCollisionBoundaries();
+      
+      this.frameCount++;
+    }
+    
+    // Debug function to visualize collision boundaries
+    drawCollisionBoundaries() {
+      this.ctx.save();
+      
+      for (const tile of this.tiles) {
+        if (tile.boundingBox) {
+          this.ctx.strokeStyle = 'rgba(255, 0, 0, 0.3)';
+          this.ctx.lineWidth = 1;
+          
+          // Draw the bounding circle
+          this.ctx.beginPath();
+          this.ctx.arc(tile.x, tile.y, tile.boundingBox.radius, 0, Math.PI * 2);
+          this.ctx.stroke();
+        }
+      }
+      
+      this.ctx.restore();
+    }
+    
+    addRandomTile() {
+      const tileSize = Math.max(window.innerWidth, window.innerHeight) * 0.15;
+      const scale = tileSize / Math.max(originalWidth, originalHeight);
+      const safeDistance = tileSize * 1.0; // Match the larger safe distance
+      
+      // Generate a list of potential positions to try
+      const potentialPositions: Array<{x: number, y: number, rotation: number, scale: number, priority: number}> = [];
+      
+      // Try various locations based on current phase
+      if (this.isInitializing && this.frameCount < 100) {
+        // During early initialization, focus on filling the visible area
+        for (let i = 0; i < 20; i++) {
+          // Generate positions throughout the visible area
+          const posX = Math.random() * (window.innerWidth + tileSize) - tileSize/2;
+          const posY = Math.random() * (window.innerHeight + tileSize) - tileSize/2;
+          const rotation = Math.random() * Math.PI * 2;
+          
+          potentialPositions.push({
+            x: posX,
+            y: posY,
+            rotation: rotation,
+            scale: scale,
+            priority: Math.random() // Random priority for shuffling
+          });
+        }
+      } else {
+        // After initialization, introduce tiles from the edges
+        
+        // Create a few positions from each edge of the screen
+        for (let i = 0; i < 4; i++) {
+          const side = i; // Try all sides: 0: top, 1: right, 2: bottom, 3: left
+          let posX: number = 0, posY: number = 0;
+          
+          // Position the tile just outside the visible area
+          switch(side) {
+            case 0: // top
+              posX = Math.random() * window.innerWidth;
+              posY = -tileSize;
+              break;
+            case 1: // right
+              posX = window.innerWidth + tileSize;
+              posY = Math.random() * window.innerHeight;
+              break;
+            case 2: // bottom
+              posX = Math.random() * window.innerWidth;
+              posY = window.innerHeight + tileSize;
+              break;
+            case 3: // left
+              posX = -tileSize;
+              posY = Math.random() * window.innerHeight;
+              break;
+          }
+          
+          // Create multiple test positions around this edge position
+          for (let j = 0; j < 5; j++) {
+            const testX = posX + (Math.random() - 0.5) * tileSize * 0.7;
+            const testY = posY + (Math.random() - 0.5) * tileSize * 0.7;
+            const rotation = Math.random() * Math.PI * 2;
+            
+            potentialPositions.push({
+              x: testX,
+              y: testY,
+              rotation: rotation,
+              scale: scale,
+              priority: Math.random() // Random priority for shuffling
+            });
+          }
+        }
+        
+        // Also add some potential tessellation points
+        if (this.tiles.length > 0) {
+          // Find some existing tiles that might be good for tessellation
+          const tessSources: any[] = [];
+          
+          // Prioritize tiles near the edges of the current layout for organic growth
+          for (const tile of this.tiles) {
+            // Skip nearly invisible tiles
+            if (tile.opacity < 0.05) continue;
+            
+            // Calculate how close this tile is to the edge of the current pattern
+            let edgeScore = 0;
+            for (const other of this.tiles) {
+              if (other === tile || other.opacity < 0.05) continue;
+              
+              const dx = tile.x - other.x;
+              const dy = tile.y - other.y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              
+              // Count nearby tiles
+              if (distance < tileSize * 2) {
+                edgeScore++;
+              }
+            }
+            
+            // Tiles with fewer neighbors are closer to the edge
+            if (edgeScore < 4) {
+              tessSources.push(tile);
+              // Limit to a reasonable number
+              if (tessSources.length >= 5) break;
+            }
+          }
+          
+          // Generate tessellation points for each source
+          for (const source of tessSources) {
+            const tessPoint = findNearestTessellationPoint(source.x, source.y, this.tiles, tileSize);
+            potentialPositions.push({
+              x: tessPoint.x,
+              y: tessPoint.y,
+              rotation: tessPoint.rotation,
+              scale: scale,
+              priority: 0.9 // High priority for tessellation
+            });
+          }
+        }
+      }
+      
+      // Sort positions by priority
+      potentialPositions.sort((a, b) => b.priority - a.priority);
+      
+      // Try positions until we find a valid one
+      for (const pos of potentialPositions) {
+        // Check for collisions
+        if (!isTileColliding(pos, this.tiles, safeDistance)) {
+          // Create the new tile
+          const tile = new Tile(pos.x, pos.y, pos.scale, pos.rotation);
+          
+          // Calculate and store the bounding box for collision detection
+          tile.calculateBoundingBox();
+          
+          // Add to the tiles array
+          this.tiles.push(tile);
+          
+          // If we have too many tiles, remove some old ones to maintain performance
+          // but keep enough to ensure good coverage
+          if (this.tiles.length > 120) { // Increased max tiles for better coverage
+            // First try to remove tiles that are fading out
+            const fadingTiles = this.tiles.filter(t => t.age > t.fadeOutThreshold);
+            if (fadingTiles.length > 0) {
+              // Remove multiple fading tiles
+              const removeCount = Math.min(3, fadingTiles.length);
+              for (let i = 0; i < removeCount; i++) {
+                const oldestIndex = this.tiles.indexOf(fadingTiles[i]);
+                if (oldestIndex >= 0) {
+                  this.tiles.splice(oldestIndex, 1);
+                }
+              }
+            } else {
+              // If no fading tiles, remove some of the oldest tiles
+              const removeCount = Math.min(2, this.tiles.length - 100);
+              this.tiles.splice(0, removeCount);
+            }
+          }
+          
+          // We successfully added a tile, so stop trying positions
+          break;
+        }
+      }
+    }
+    
+    animate(currentTime: number) {
+      // Use requestAnimationFrame for smooth animation
+      requestAnimationFrame(this.animate.bind(this));
+      
+      // Throttle to about 20 fps for efficiency since this is a subtle background
+      if (currentTime - this.lastFrameTime < 50) {
+        return;
+      }
+      
+      this.lastFrameTime = currentTime;
+      this.drawFrame();
+    }
+  }
+  
+  // Initialize as soon as possible, but ensure container exists
+  function initBackground() {
+    const container = document.getElementById('spectre-background');
+    
+    if (!container) {
+      // If container doesn't exist yet, try again after a short delay
+      console.log("Spectre background container not found, retrying...");
+      setTimeout(initBackground, 100);
+      return;
+    }
+    
+    // Force a new canvas creation on each initialization
+    // for better compatibility with Astro view transitions
+    const existingCanvas = container.querySelector('canvas');
+    if (existingCanvas) {
+      console.log("Removing existing Spectre background canvas");
+      existingCanvas.remove();
+    }
+    
+    // Clear any existing content
+    container.innerHTML = '';
+    
+    // Create canvas element
+    const canvas = document.createElement('canvas');
+    canvas.id = 'spectre-background-canvas';
+    canvas.setAttribute('data-astro-transition-persist', '');
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    container.appendChild(canvas);
+    
+    // Store the current theme 
+    const isDarkMode = document.documentElement.classList.contains('dark');
+    
+    // Initialize the background
+    console.log(`Initializing Spectre background (theme: ${isDarkMode ? 'dark' : 'light'})`);
+    new SpectreBackground(canvas);
+  }
+  
+  // Try to initialize right away
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBackground);
+  } else {
+    initBackground();
+  }
+  
+  // Handle Astro View Transitions and page navigation
+  document.addEventListener('astro:page-load', initBackground);
+  document.addEventListener('astro:after-swap', initBackground);
+  
+  // Force re-initialization when theme changes
+  document.addEventListener('astro:after-swap', () => {
+    // Try a delayed initialization to ensure it happens after theme changes
+    setTimeout(initBackground, 50);
+    setTimeout(initBackground, 200);
+  });
+  
+  // Listen for theme changes from the toggle button
+  document.addEventListener('lichen-theme-changed', () => {
+    console.log("Theme changed, reinitializing background");
+    setTimeout(initBackground, 50);
+  });
+  
+  // Backup in case transitions or other factors affect loading
+  window.addEventListener('load', () => {
+    setTimeout(initBackground, 100);
+  });
+</script>

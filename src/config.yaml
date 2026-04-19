@@ -1,0 +1,68 @@
+site:
+  name: UnderlandEX
+  site: 'https://underlandex.com'
+  base: '/'
+  trailingSlash: false
+
+  googleSiteVerificationId: ''
+
+# Default SEO metadata
+metadata:
+  title:
+    default: UnderlandEX — The world-leading mining intelligence platform
+    template: '%s — UnderlandEX'
+  description: "UnderlandEX is the world-leading mining intelligence platform. Explore 255,000+ mining assets, track 3,400+ mining companies, and be first to know on every deal. Always live. Continuously updated. A service of Lichen Commodities."
+  robots:
+    index: true
+    follow: true
+  openGraph:
+    site_name: UnderlandEX
+    images:
+      - url: '~/assets/images/underlandex-og.png'
+        width: 1200
+        height: 628
+    type: website
+
+i18n:
+  language: en-AU
+  textDirection: ltr
+
+apps:
+  blog:
+    isEnabled: true
+    postsPerPage: 6
+
+    post:
+      isEnabled: true
+      permalink: '/insights/%slug%'
+      robots:
+        index: true
+
+    list:
+      isEnabled: true
+      pathname: 'insights'
+      robots:
+        index: true
+
+    category:
+      isEnabled: true
+      pathname: 'insights/category'
+      robots:
+        index: true
+
+    tag:
+      isEnabled: true
+      pathname: 'insights/tag'
+      robots:
+        index: true
+
+    isRelatedPostsEnabled: true
+    relatedPostsCount: 4
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null
+
+ui:
+  theme: 'light:only'

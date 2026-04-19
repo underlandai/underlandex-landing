@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="193.0318728743677"
+   height="133.80854229150555"
+   id="svg14"
+   sodipodi:docname="spectre_diagram.svg"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs14" />
+  <sodipodi:namedview
+     id="namedview14"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.1824457"
+     inkscape:cx="140.89698"
+     inkscape:cy="42.841845"
+     inkscape:window-width="1712"
+     inkscape:window-height="1040"
+     inkscape:window-x="0"
+     inkscape:window-y="48"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg14" />
+  <style
+     type="text/css"
+     id="style1">
+path { fill: none; stroke: rgb(160,160,160); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+.outline { stroke: rgba(0, 0, 0, 0.15); stroke-width: 1.5; fill: none; }
+.arrow { stroke: rgba(0, 0, 0, 0.4); stroke-width: 1.5; fill: none; }
+.tile { stroke: black; stroke-width: 1.5; fill: none; }
+.angle { stroke: black; stroke-width: 1.5; fill: none; }
+.blob { stroke: none; fill: black; }
+</style>
+  <path
+     class="tile"
+     d="M 130.70854229150552 130.7085422915055 L 170.19076268008033 130.7085422915055 L 189.93187287436768 96.51593643718383 L 155.73926702004601 76.77482624289644 L 155.739267020046 37.29260585432167 L 116.25704663147121 37.292605854321685 L 96.51593643718381 3.1000000000000085 L 62.323330582862134 22.841110194287428 L 62.323330582862155 62.323330582862226 L 22.841110194287374 62.32333058286224 L 3.1000000000000085 96.51593643718392 L 37.2926058543217 116.25704663147131 L 71.48521170864336 96.51593643718388 L 91.22632190293078 130.70854229150552 z"
+     id="path1" />
+</svg>

@@ -1,0 +1,21 @@
+---
+import Layout from '~/layouts/Layout.astro';
+
+import type { MetaData } from '~/types';
+
+export interface Props {
+  metadata?: MetaData;
+}
+
+const { metadata } = Astro.props;
+---
+
+<Layout metadata={metadata}>
+  <!-- Announcement removed as requested -->
+  <slot name="announcement"></slot>
+  <!-- Removed header for minimalist design -->
+  <main>
+    <slot />
+  </main>
+  <!-- Removed footer for minimalist design -->
+</Layout>
