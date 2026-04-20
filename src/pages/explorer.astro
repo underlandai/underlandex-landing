@@ -1,0 +1,94 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import ServiceOfStrip from '~/components/ServiceOfStrip.astro';
+import Header from '~/components/widgets/Header.astro';
+import Footer from '~/components/widgets/Footer.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import ProductPreview from '~/components/ProductPreview.astro';
+import RequestAccessModal from '~/components/RequestAccessModal.astro';
+
+import { headerData, footerData } from '~/navigation';
+import previewExplorer from '~/assets/images/underlandex/preview-explorer.png';
+
+const metadata = {
+  title: 'UnderlandEX Explorer — Discover every mining asset',
+};
+
+let liveStats = { totalSites: 255344, totalOwners: 3449, totalTenements: 85537, totalResourceEstimates: 70515 };
+try {
+  const res = await fetch('https://underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
+  if (res.ok) liveStats = { ...liveStats, ...(await res.json()) };
+} catch {}
+
+const fmt = (n: number) => n.toLocaleString('en-AU');
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="announcement">
+    <ServiceOfStrip />
+    <Header {...headerData} isSticky />
+  </Fragment>
+
+  <Hero
+    tagline="UnderlandEX Explorer"
+    actions={[
+      { variant: 'primary', text: 'Request Access', href: '#request-access' },
+      { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+    ]}
+  >
+    <Fragment slot="title">
+      Every deposit.<br /><span class="text-primary">One search.</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      {fmt(liveStats.totalSites)}+ mining assets across every commodity, jurisdiction and stage — searchable
+      the way property investors search homes.
+    </Fragment>
+  </Hero>
+
+  <Stats
+    stats={[
+      { amount: `${fmt(liveStats.totalSites)}+`, title: 'Mining assets', icon: 'tabler:map-pin' },
+      { amount: `${fmt(liveStats.totalOwners)}+`, title: 'Mining companies', icon: 'tabler:building-factory-2' },
+      { amount: `${fmt(liveStats.totalTenements)}+`, title: 'Tenements', icon: 'tabler:file-certificate' },
+      { amount: `${fmt(liveStats.totalResourceEstimates)}+`, title: 'JORC estimates', icon: 'tabler:chart-bar' },
+    ]}
+  />
+
+  <ProductPreview
+    badge="What you see inside"
+    title="Search, filter, compare — instantly."
+    caption="Commodity, jurisdiction, stage, ownership. Open any project to see the full technical picture: JORC resource estimates, production history, ownership chain, tenement boundaries and the most recent market announcements."
+    image={previewExplorer}
+  />
+
+  <Features3
+    tagline="Built for the workflow"
+    title="Designed for the way investors actually evaluate assets."
+    columns={3}
+    defaultIcon="tabler:arrow-right"
+    items={[
+      { title: 'Real-estate-style search', description: 'Familiar card layouts, filter sidebars and detail pages. Zero learning curve.', icon: 'tabler:layout-grid' },
+      { title: 'Complete ownership chains', description: 'Parent companies, joint-venture partners, royalty holders — every relationship visible.', icon: 'tabler:network' },
+      { title: 'JORC + NI 43-101 resource data', description: '70,000+ resource estimates cross-referenced against their original technical reports.', icon: 'tabler:chart-bar' },
+      { title: 'Spatial context', description: 'Tenement boundaries, adjacency, regional clustering — all rendered on the map view.', icon: 'tabler:map' },
+      { title: 'Always live', description: 'Data continuously refreshed from regulatory registries and exchange disclosures.', icon: 'tabler:refresh' },
+      { title: 'Australian-English throughout', description: 'Built by Australians for the global resources sector, with local terminology.', icon: 'tabler:flag' },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      { variant: 'primary', text: 'Request Access', href: '#request-access' },
+      { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+    ]}
+  >
+    <Fragment slot="title">See every deposit.</Fragment>
+    <Fragment slot="subtitle">Invitation-only while we onboard institutional users.</Fragment>
+  </CallToAction>
+
+  <Footer {...footerData} />
+  <RequestAccessModal />
+</Layout>

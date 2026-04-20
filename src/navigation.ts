@@ -1,14 +1,14 @@
 export const headerData = {
   links: [
-    { text: 'Explorer', href: '#products' },
-    { text: 'M&A', href: '#products' },
-    { text: 'Portal3D', href: '#products' },
-    { text: 'Data', href: '#data' },
+    { text: 'Explorer', href: '/explorer' },
+    { text: 'M&A', href: '/mna' },
+    { text: 'Portal3D', href: 'https://portal3d.underlandex.com' },
+    { text: 'Data', href: '/#data' },
     { text: 'Insights', href: '/insights' },
-    { text: 'About', href: '#about' },
+    { text: 'About', href: '/#about' },
   ],
   actions: [
-    { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:sales@underlandex.com' },
+    { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
     { variant: 'primary', text: 'Request Access', href: '#request-access', openRequestAccess: true },
   ],
 };
@@ -18,17 +18,17 @@ export const footerData = {
     {
       title: 'Products',
       links: [
-        { text: 'UnderlandEX Explorer', href: '#products' },
-        { text: 'UnderlandEX M&A', href: '#products' },
-        { text: 'Portal3D', href: '#products' },
+        { text: 'UnderlandEX Explorer', href: '/explorer' },
+        { text: 'UnderlandEX M&A', href: '/mna' },
+        { text: 'Portal3D', href: 'https://portal3d.underlandex.com' },
       ],
     },
     {
       title: 'Company',
       links: [
-        { text: 'About', href: '#about' },
+        { text: 'About', href: '/#about' },
         { text: 'Insights', href: '/insights' },
-        { text: 'Contact', href: 'mailto:sales@underlandex.com' },
+        { text: 'Contact', href: 'mailto:oliver@underlandex.com' },
         { text: 'Lichen Commodities', href: 'https://lichen.com.au' },
       ],
     },

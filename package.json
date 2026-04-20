@@ -34,6 +34,7 @@
     "limax": "4.1.0",
     "lodash.merge": "^4.6.2",
     "nodemailer": "^6.10.0",
+    "puppeteer": "^24.41.0",
     "unpic": "^3.22.0"
   },
   "devDependencies": {

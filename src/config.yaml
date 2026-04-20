@@ -34,7 +34,7 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/insights/%slug%'
+      permalink: '%slug%'
       robots:
         index: true
 

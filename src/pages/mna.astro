@@ -1,0 +1,76 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import ServiceOfStrip from '~/components/ServiceOfStrip.astro';
+import Header from '~/components/widgets/Header.astro';
+import Footer from '~/components/widgets/Footer.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import ProductPreview from '~/components/ProductPreview.astro';
+import RequestAccessModal from '~/components/RequestAccessModal.astro';
+
+import { headerData, footerData } from '~/navigation';
+import previewMna from '~/assets/images/underlandex/preview-mna.png';
+
+const metadata = {
+  title: 'UnderlandEX M&A — Be first to every mining deal',
+};
+---
+
+<Layout metadata={metadata}>
+  <Fragment slot="announcement">
+    <ServiceOfStrip />
+    <Header {...headerData} isSticky />
+  </Fragment>
+
+  <Hero
+    tagline="UnderlandEX M&A"
+    actions={[
+      { variant: 'primary', text: 'Request Access', href: '#request-access' },
+      { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+    ]}
+  >
+    <Fragment slot="title">
+      Be first<br /><span class="text-primary">to every deal.</span>
+    </Fragment>
+    <Fragment slot="subtitle">
+      A live feed of every listed-company mining announcement across the ASX, TSX, LSE and EDGAR — enriched with
+      UnderlandEX project context, the moment it hits the wire.
+    </Fragment>
+  </Hero>
+
+  <ProductPreview
+    badge="What you see inside"
+    title="Deal radar, morning brief, league tables."
+    caption="Every M&A transaction, capital raise, JORC resource update and exploration result — pulled from exchange disclosures in real time, cross-referenced against our 255,000-asset database. Daily morning brief. Weekly deep-dive report. Live transaction league tables."
+    image={previewMna}
+  />
+
+  <Features3
+    tagline="What's tracked"
+    title="The complete deal picture — live."
+    columns={3}
+    defaultIcon="tabler:arrow-right"
+    items={[
+      { title: 'M&A transactions', description: 'Every mining acquisition, merger, divestment and joint venture, across the four major exchanges.', icon: 'tabler:arrows-exchange' },
+      { title: 'Capital raises', description: 'Placements, rights issues, SPPs and private raises — with size, pricing and use-of-funds context.', icon: 'tabler:coin' },
+      { title: 'JORC resource updates', description: 'Every resource estimate upgrade or downgrade, tonnage and grade, with historical comparison.', icon: 'tabler:chart-bar' },
+      { title: 'Exploration results', description: 'Drilling intercepts, significant assay results and geophysical surveys — flagged by materiality.', icon: 'tabler:drone' },
+      { title: 'Live commodity prices', description: 'Gold, silver, copper, nickel, platinum, palladium, uranium — all in one watchlist.', icon: 'tabler:trending-up' },
+      { title: 'League tables', description: 'Who is buying, who is selling, who is raising — ranked by volume, value and frequency.', icon: 'tabler:list-numbers' },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      { variant: 'primary', text: 'Request Access', href: '#request-access' },
+      { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+    ]}
+  >
+    <Fragment slot="title">Never miss a deal again.</Fragment>
+    <Fragment slot="subtitle">Invitation-only while we onboard institutional users.</Fragment>
+  </CallToAction>
+
+  <Footer {...footerData} />
+  <RequestAccessModal />
+</Layout>
