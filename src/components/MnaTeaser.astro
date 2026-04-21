@@ -1,0 +1,119 @@
+---
+type Deal = {
+  id: number;
+  exchange: string;
+  ticker: string;
+  company_name: string;
+  title: string;
+  published_at: string;
+  source_url: string;
+  dealType?: string | null;
+  sector?: string | null;
+  country?: string | null;
+};
+
+let deals: Deal[] = [];
+try {
+  const res = await fetch('https://mna.underlandex.com/api/deals?limit=3', {
+    signal: AbortSignal.timeout(6000),
+  });
+  if (res.ok) {
+    const data = (await res.json()) as { deals?: Deal[] };
+    deals = (data.deals || []).slice(0, 3);
+  }
+} catch {
+  // silently fall through to empty array
+}
+
+const relativeTime = (iso: string) => {
+  const d = new Date(iso);
+  const diffMs = Date.now() - d.getTime();
+  const hours = Math.floor(diffMs / (1000 * 60 * 60));
+  if (hours < 1) return 'just now';
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+};
+
+const titleCase = (s: string) =>
+  s
+    .toLowerCase()
+    .split(/\s+/)
+    .map((w) => (w.length > 2 ? w[0].toUpperCase() + w.slice(1) : w))
+    .join(' ');
+---
+
+<section id="wire" class="py-16 md:py-24 bg-white border-y border-gray-100">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-4">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-primary mb-2 flex items-center gap-2">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+          Live from the wire
+        </p>
+        <h2 class="font-heading font-bold text-3xl md:text-4xl text-default leading-tight">
+          The latest mining deals,<br />
+          ingested as they hit the exchange.
+        </h2>
+      </div>
+      <p class="text-sm text-muted md:max-w-xs md:text-right">
+        Pulled directly from UnderlandEX M&amp;A. Sign in to see the complete feed, filter by commodity and build
+        custom watchlists.
+      </p>
+    </div>
+
+    {
+      deals.length === 0 ? (
+        <div class="text-center py-12 text-muted text-sm">Live feed unavailable — refresh on next build.</div>
+      ) : (
+        <div class="grid md:grid-cols-3 gap-4 relative">
+          {deals.map((d) => (
+            <article class="relative border border-gray-200 rounded-lg p-5 bg-white hover:border-primary/50 hover:shadow-md transition group">
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-bold tracking-wider bg-gray-100 text-gray-700 px-2 py-0.5 rounded uppercase">
+                    {d.exchange}
+                  </span>
+                  <span class="text-[10px] font-mono text-gray-500">{d.ticker}</span>
+                </div>
+                <span class="text-[10px] text-gray-400">{relativeTime(d.published_at)}</span>
+              </div>
+              <div class="text-xs font-semibold text-default mb-1 uppercase tracking-wide truncate">
+                {titleCase(d.company_name)}
+              </div>
+              <h3 class="text-sm font-medium text-default leading-snug line-clamp-3 min-h-[3.6em]">
+                {d.title}
+              </h3>
+              <div class="flex items-center gap-2 mt-4 pt-3 border-t border-gray-100 text-[11px]">
+                {d.dealType && (
+                  <span class="px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">{d.dealType}</span>
+                )}
+                {d.sector && <span class="text-muted">{d.sector}</span>}
+                {d.country && <span class="text-muted">· {d.country}</span>}
+              </div>
+            </article>
+          ))}
+          <!-- blur-fade gradient overlay on last card -->
+          <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-r from-transparent to-white/80 hidden md:block"></div>
+        </div>
+      )
+    }
+
+    <div class="text-center mt-10">
+      <button
+        type="button"
+        data-open-request-access
+        class="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-md transition text-sm"
+      >
+        See the full feed
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>

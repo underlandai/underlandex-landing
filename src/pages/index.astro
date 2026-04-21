@@ -11,6 +11,7 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import Pricing from '~/components/widgets/Pricing.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import ProductPreview from '~/components/ProductPreview.astro';
+import MnaTeaser from '~/components/MnaTeaser.astro';
 import RequestAccessModal from '~/components/RequestAccessModal.astro';
 
 import { headerData, footerData } from '~/navigation';
@@ -138,6 +139,9 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
     image={previewMna}
     reverse={true}
   />
+
+  <!-- LIVE WIRE: recent M&A deals from mna.underlandex.com -->
+  <MnaTeaser />
 
   <!-- WHO IT'S FOR -->
   <Features3
