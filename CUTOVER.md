@@ -4,10 +4,18 @@ The Vercel landing at https://underlandex-landing.vercel.app is production-ready
 preview alias. To make it the canonical site at https://underlandex.com, the existing app needs to move to
 `app.underlandex.com` and the root DNS needs to flip to Vercel.
 
-This must be done by a human — automation was blocked by:
+## Status (updated 2026-04-28)
 
-1. Cloudflare API token in `/home/coder/projects/underlandex/scripts/setup-cloudflare-redirects.py` is rejected as expired.
-2. The domain `underlandex.com` is registered on a different Vercel team (`olivermowbray-4955`) — needs to be removed from that team or transferred to `lichen-commodities` before our project can serve it.
+- ✅ Vercel: `underlandex.com` + `www.underlandex.com` assigned to `underlandex-landing` project under `lichen-commodities` team
+- ✅ Vercel domain ownership confirmed (was never on a different team — "Third Party" just meant DNS not yet pointing at Vercel)
+- ✅ DNS cutover script: `scripts/cutover-dns.py` (requires Cloudflare API token, see below)
+- ✅ ECS rebuild script: `scripts/rebuild-ecs-app-subdomain.sh` (requires AWS CLI + `NEXT_PUBLIC_MAPBOX_TOKEN`)
+- ❌ Cloudflare API token needed — zone `a1b76685d672e651c69500c4af62cb64` is under `tech@lichen.com.au`
+  - Create one at: https://dash.cloudflare.com/profile/api-tokens → "Create Token" → "Edit zone DNS" for underlandex.com
+  - Then run: `python3 scripts/cutover-dns.py <TOKEN>`
+
+**ECS ALB DNS**: unknown (AWS account 647371007727, migrated Dec 2025; docs show old ALB from prior account).
+The script will auto-detect it from existing Cloudflare records once the CF token is provided.
 
 ## Pre-cutover (do these in any order)
 
