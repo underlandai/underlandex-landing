@@ -1,0 +1,49 @@
+---
+type Prices = {
+  Au?: number; Ag?: number; Cu?: number; Ni?: number; U?: number; Pt?: number; Pd?: number;
+  fetchedAt?: string;
+};
+
+let prices: Prices = {};
+try {
+  const res = await fetch('https://mna.underlandex.com/api/prices', { signal: AbortSignal.timeout(5000) });
+  if (res.ok) prices = (await res.json()) as Prices;
+} catch {}
+
+const fmt2 = (n?: number, dp = 2) => (typeof n === 'number' ? n.toFixed(dp) : '—');
+const items = [
+  { sym: 'GOLD',     val: prices.Au, dp: 2, unit: '/oz' },
+  { sym: 'SILVER',   val: prices.Ag, dp: 2, unit: '/oz' },
+  { sym: 'COPPER',   val: prices.Cu, dp: 3, unit: '/lb' },
+  { sym: 'NICKEL',   val: prices.Ni, dp: 2, unit: '/lb' },
+  { sym: 'PLATINUM', val: prices.Pt, dp: 2, unit: '/oz' },
+  { sym: 'PALLADIUM', val: prices.Pd, dp: 2, unit: '/oz' },
+  { sym: 'URANIUM',  val: prices.U,  dp: 2, unit: '/lb' },
+];
+---
+
+<div class="w-full bg-[#040810] text-gray-300 border-b border-[#111c28]">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-9 flex items-center gap-0 overflow-x-auto whitespace-nowrap scrollbar-thin">
+    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 border-r border-[#1a2332] pr-3 mr-3">
+      Spot
+    </span>
+    {
+      items.map((it) => (
+        <div class="flex items-center gap-1.5 pr-4 mr-4 border-r border-[#0f1a26] last:border-r-0">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-gray-500">{it.sym}</span>
+          <span class="text-[11px] font-semibold font-mono text-gray-200">
+            ${fmt2(it.val, it.dp)}
+            <span class="text-[9px] text-gray-500 font-normal">{it.unit}</span>
+          </span>
+        </div>
+      ))
+    }
+    <div class="ml-auto flex items-center gap-1.5 pl-4 flex-shrink-0">
+      <span class="relative flex h-1.5 w-1.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-400"></span>
+      </span>
+      <span class="text-[9px] uppercase tracking-widest text-gray-500">Live</span>
+    </div>
+  </div>
+</div>

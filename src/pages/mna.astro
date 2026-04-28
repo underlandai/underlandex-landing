@@ -8,6 +8,7 @@ import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import ProductPreview from '~/components/ProductPreview.astro';
 import RequestAccessModal from '~/components/RequestAccessModal.astro';
+import CommodityTicker from '~/components/CommodityTicker.astro';
 
 import { headerData, footerData } from '~/navigation';
 import previewMna from '~/assets/images/underlandex/preview-mna.png';
@@ -20,6 +21,7 @@ const metadata = {
 <Layout metadata={metadata}>
   <Fragment slot="announcement">
     <ServiceOfStrip />
+    <CommodityTicker />
     <Header {...headerData} isSticky />
   </Fragment>
 

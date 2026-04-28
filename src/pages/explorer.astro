@@ -9,6 +9,7 @@ import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import ProductPreview from '~/components/ProductPreview.astro';
 import RequestAccessModal from '~/components/RequestAccessModal.astro';
+import CommodityTicker from '~/components/CommodityTicker.astro';
 
 import { headerData, footerData } from '~/navigation';
 import previewExplorer from '~/assets/images/underlandex/preview-explorer.png';
@@ -29,6 +30,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
 <Layout metadata={metadata}>
   <Fragment slot="announcement">
     <ServiceOfStrip />
+    <CommodityTicker />
     <Header {...headerData} isSticky />
   </Fragment>
 
