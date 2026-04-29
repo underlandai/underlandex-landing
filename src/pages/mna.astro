@@ -1,6 +1,5 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import ServiceOfStrip from '~/components/ServiceOfStrip.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Hero from '~/components/widgets/Hero.astro';
@@ -8,7 +7,6 @@ import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import ProductPreview from '~/components/ProductPreview.astro';
 import RequestAccessModal from '~/components/RequestAccessModal.astro';
-import CommodityTicker from '~/components/CommodityTicker.astro';
 
 import { headerData, footerData } from '~/navigation';
 import previewMna from '~/assets/images/underlandex/preview-mna.png';
@@ -20,8 +18,6 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <Fragment slot="announcement">
-    <ServiceOfStrip />
-    <CommodityTicker />
     <Header {...headerData} isSticky />
   </Fragment>
 
@@ -29,7 +25,7 @@ const metadata = {
     tagline="UnderlandEX M&A"
     actions={[
       { variant: 'primary', text: 'Request Access', href: '#request-access' },
-      { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+      { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
     ]}
   >
     <Fragment slot="title">
@@ -66,7 +62,7 @@ const metadata = {
   <CallToAction
     actions={[
       { variant: 'primary', text: 'Request Access', href: '#request-access' },
-      { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+      { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
     ]}
   >
     <Fragment slot="title">Never miss a deal again.</Fragment>

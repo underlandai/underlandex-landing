@@ -8,7 +8,7 @@ export const headerData = {
     { text: 'About', href: '/#about' },
   ],
   actions: [
-    { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+    { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
     { variant: 'primary', text: 'Request Access', href: '#request-access', openRequestAccess: true },
   ],
 };
@@ -44,7 +44,5 @@ export const footerData = {
   socialLinks: [
     { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/underlandex' },
   ],
-  footNote: `
-    © ${new Date().getFullYear()} Lichen Commodities Pty Ltd. All rights reserved. UnderlandEX is a service of Lichen Commodities.
-  `,
+  footNote: `© ${new Date().getFullYear()} UnderlandEX. All rights reserved.`,
 };

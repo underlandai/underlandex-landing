@@ -126,6 +126,11 @@
     document.addEventListener('click', function (e) {
       const target = e.target;
       if (!(target instanceof Element)) return;
+      if (target.closest('a[href="#request-access"]')) {
+        e.preventDefault();
+        open();
+        return;
+      }
       if (target.closest('[data-open-request-access]')) {
         e.preventDefault();
         open();

@@ -1,6 +1,5 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import ServiceOfStrip from '~/components/ServiceOfStrip.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import Hero from '~/components/widgets/Hero.astro';
@@ -9,7 +8,6 @@ import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import ProductPreview from '~/components/ProductPreview.astro';
 import RequestAccessModal from '~/components/RequestAccessModal.astro';
-import CommodityTicker from '~/components/CommodityTicker.astro';
 
 import { headerData, footerData } from '~/navigation';
 import previewExplorer from '~/assets/images/underlandex/preview-explorer.png';
@@ -20,7 +18,7 @@ const metadata = {
 
 let liveStats = { totalSites: 255344, totalOwners: 3449, totalTenements: 85537, totalResourceEstimates: 70515 };
 try {
-  const res = await fetch('https://underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
+  const res = await fetch('https://app.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
   if (res.ok) liveStats = { ...liveStats, ...(await res.json()) };
 } catch {}
 
@@ -29,8 +27,6 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
 
 <Layout metadata={metadata}>
   <Fragment slot="announcement">
-    <ServiceOfStrip />
-    <CommodityTicker />
     <Header {...headerData} isSticky />
   </Fragment>
 
@@ -38,7 +34,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
     tagline="UnderlandEX Explorer"
     actions={[
       { variant: 'primary', text: 'Request Access', href: '#request-access' },
-      { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+      { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
     ]}
   >
     <Fragment slot="title">
@@ -84,7 +80,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
   <CallToAction
     actions={[
       { variant: 'primary', text: 'Request Access', href: '#request-access' },
-      { variant: 'secondary', text: 'Talk to Sales', href: 'mailto:oliver@underlandex.com' },
+      { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
     ]}
   >
     <Fragment slot="title">See every deposit.</Fragment>
