@@ -11,7 +11,7 @@ metadata:
   title:
     default: UnderlandEX — The world-leading mining intelligence platform
     template: '%s — UnderlandEX'
-  description: "UnderlandEX is the world-leading mining intelligence platform. Explore 255,000+ mining assets, track 3,400+ mining companies, and be first to know on every deal. Always live. Continuously updated. A service of Lichen Commodities."
+  description: "UnderlandEX is the world-leading mining intelligence platform. Explore 255,000+ mining assets, track 3,400+ mining companies, and be first to know on every deal. Always live. Continuously updated."
   robots:
     index: true
     follow: true
@@ -34,7 +34,7 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '%slug%'
+      permalink: 'insights/%slug%'
       robots:
         index: true
 
