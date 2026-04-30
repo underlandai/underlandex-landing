@@ -42,7 +42,7 @@ export const footerData = {
   ],
   secondaryLinks: [],
   socialLinks: [
-    { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/underlandex' },
+    { ariaLabel: 'LinkedIn', icon: 'tabler:brand-linkedin', href: 'https://www.linkedin.com/company/underland' },
   ],
   footNote: `© ${new Date().getFullYear()} UnderlandEX. All rights reserved.`,
 };
