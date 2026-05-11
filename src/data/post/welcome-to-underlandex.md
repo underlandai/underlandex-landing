@@ -23,13 +23,11 @@ Our backend ingests and cross-references:
 
 Every asset, every tenement, every resource estimate, every deal — merged, deduplicated, enriched, and continuously updated.
 
-## Three products, one platform
+## Two products, one platform
 
 **UnderlandEX Explorer** is the discovery layer. Search patterns built the way property investors think — commodities as filters, tenements as boundaries, companies as owners. Familiar, because the workflow of evaluating a mining asset shouldn't be harder than evaluating a house.
 
 **UnderlandEX M&A** is the deal radar. Morning brief, weekly report, live transaction league tables, and a real-time feed of every capital raise, JORC update and takeover bid across the four major exchanges.
-
-**Portal3D** is the visualisation layer. Browser-based 3D subsurface models that bring mining assets to life for buyers, partners and investors.
 
 ## What's next
 

@@ -2,7 +2,6 @@ export const headerData = {
   links: [
     { text: 'Explorer', href: '/explorer' },
     { text: 'M&A', href: '/mna' },
-    { text: 'Portal3D', href: 'https://portal3d.underlandex.com' },
     { text: 'Data', href: '/#data' },
     { text: 'Insights', href: '/insights' },
     { text: 'About', href: '/#about' },
@@ -20,7 +19,6 @@ export const footerData = {
       links: [
         { text: 'UnderlandEX Explorer', href: '/explorer' },
         { text: 'UnderlandEX M&A', href: '/mna' },
-        { text: 'Portal3D', href: 'https://portal3d.underlandex.com' },
       ],
     },
     {
