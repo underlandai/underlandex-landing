@@ -1,7 +1,7 @@
 ---
 publishDate: 2026-04-19T00:00:00Z
 title: "Welcome to UnderlandEX"
-excerpt: "Why we're building the world-leading mining intelligence platform — and what it means for the people who move the market."
+excerpt: "Why we're building the open mining intelligence reference — and what it means for the people who move the market."
 category: Announcements
 tags:
   - platform

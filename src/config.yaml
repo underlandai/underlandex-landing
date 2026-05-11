@@ -9,9 +9,9 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: UnderlandEX — The world-leading mining intelligence platform
+    default: UnderlandEX — Mining intelligence reference
     template: '%s — UnderlandEX'
-  description: "UnderlandEX is the world-leading mining intelligence platform. Explore 255,000+ mining assets, track 3,400+ mining companies, and be first to know on every deal. Always live. Continuously updated."
+  description: "UnderlandEX is the open mining intelligence reference. 255,000+ mining assets and 3,400+ mining companies, with sources on every fact. Citation-backed; continuously updated."
   robots:
     index: true
     follow: true
