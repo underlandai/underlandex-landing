@@ -21,7 +21,7 @@ Our backend ingests and cross-references:
 - **ASX, TSX, LSE and EDGAR** — live announcement feeds
 - **Government registries** across Australia, with expansion into Canada, the USA and Africa underway
 
-Every asset, every tenement, every resource estimate, every deal — merged, deduplicated, enriched, and continuously updated.
+Every asset, every tenement, every resource estimate, every corporate action — merged, deduplicated, citation-backed, and continuously updated.
 
 ## Two products, one platform
 
