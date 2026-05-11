@@ -64,8 +64,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
       <span class="text-primary">mapped.</span>
     </Fragment>
     <Fragment slot="subtitle">
-      Explore <strong>{fmt(liveStats.totalSites)}+</strong> mining assets, track every deal, and be first to know.
-      Always live. Continuously updated.
+      The open reference for <strong>{fmt(liveStats.totalSites)}+</strong> mining assets, companies and corporate actions. Researched, sourced, kept current.
     </Fragment>
     <Fragment slot="content">
       <div class="flex justify-center mt-8">
@@ -109,7 +108,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
       {
         title: 'UnderlandEX M&A',
         description:
-          'Be first to know. Real-time deal radar ingesting every listed-company announcement from the ASX, TSX, LSE and EDGAR. Morning brief, weekly report, league tables.',
+          'Every listed-company announcement from ASX, TSX, LSE and EDGAR — cross-referenced against our project database. Morning brief, weekly report, quarterly league tables for advisors, brokers and lawyers.',
         icon: 'tabler:trending-up',
       },
     ]}
@@ -126,8 +125,8 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
   <!-- GATED PREVIEW: M&A -->
   <ProductPreview
     badge="UnderlandEX M&A"
-    title="Be first to every deal."
-    caption="A live feed of every listed-company announcement that moves the market. M&A, capital raises, resource upgrades, exploration results — pulled from stock exchange disclosures the moment they hit the wire, enriched with UnderlandEX project context."
+    title="Track every corporate action."
+    caption="A live feed of every listed-company announcement. M&A, capital raises, resource upgrades, exploration results — pulled from stock exchange disclosures the moment they hit the wire, resolved against the UnderlandEX project database."
     image={previewMna}
     reverse={true}
   />
@@ -144,7 +143,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
     items={[
       { title: 'Institutional investors', description: 'Screen 255,000+ assets, model comparable transactions, monitor portfolio-wide exposure.', icon: 'tabler:briefcase' },
       { title: 'Exploration companies', description: 'Benchmark projects against peers. Identify tenement adjacencies. Find partners.', icon: 'tabler:drone' },
-      { title: 'Commodity traders', description: 'Live price feeds, production tracking, and deal flow across all listed materials names.', icon: 'tabler:chart-candle' },
+      { title: 'Sector analysts', description: 'Live price feeds, production tracking, and continuously updated reference data across listed materials names.', icon: 'tabler:chart-candle' },
       { title: 'Royalty holders', description: 'Valuation comparables for every JORC-estimated deposit. NAV modelling and stream analysis.', icon: 'tabler:coin' },
       { title: 'Governments & regulators', description: 'Jurisdiction-wide tenement maps, ownership chains and production histories, all in one place.', icon: 'tabler:gavel' },
       { title: 'Family offices', description: 'Access to the resources sector once reserved for institutional desks. Simple, comprehensive, private.', icon: 'tabler:building-bank' },
@@ -180,9 +179,10 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
   >
     <Fragment slot="content">
       <p class="text-muted">
-        UnderlandEX is the world-leading mining intelligence database. Our backend continuously ingests every listed
-        mining company announcement across the world's major stock exchanges — surfacing the deposits, deals and data
-        points that no other platform has assembled in one place.
+        UnderlandEX is the open reference database for the mining sector. We continuously ingest every listed mining
+        company announcement across the major exchanges and resolve each one against our project, company and tenement
+        records — so every deposit, ownership change, resource update and corporate action lands on the right page,
+        with sources attached.
       </p>
     </Fragment>
   </Content>
