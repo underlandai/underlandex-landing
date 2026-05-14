@@ -23,6 +23,13 @@ jobs:
 
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
+        env:
+          PUPPETEER_CACHE_DIR: ${{ github.workspace }}/.cache/puppeteer
+
+      - name: Install Chrome for Puppeteer
+        run: npx --yes puppeteer browsers install chrome
+        env:
+          PUPPETEER_CACHE_DIR: ${{ github.workspace }}/.cache/puppeteer
 
       - name: Capture screenshots
         run: node scripts/capture-previews.mjs
