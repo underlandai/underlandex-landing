@@ -185,9 +185,17 @@ export const getStaticPathsBlogList = async ({ paginate }: { paginate: PaginateF
 /** */
 export const getStaticPathsBlogPost = async () => {
   if (!isBlogEnabled || !isBlogPostRouteEnabled) return [];
+  // The page file lives at src/pages/insights/[...blog]/index.astro, so Astro
+  // already prefixes the route with `/insights/`. The permalink template
+  // (`insights/%slug%`) includes that same prefix because link-generators
+  // (ListItem, GridItem, canonical URLs) consume the full path. Strip the
+  // prefix here so the `[...blog]` catch-all param doesn't end up doubled.
+  const ROUTE_PREFIX = 'insights/';
   return (await fetchPosts()).flatMap((post) => ({
     params: {
-      blog: post.permalink,
+      blog: post.permalink.startsWith(ROUTE_PREFIX)
+        ? post.permalink.slice(ROUTE_PREFIX.length)
+        : post.permalink,
     },
     props: { post },
   }));
