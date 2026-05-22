@@ -11,7 +11,7 @@ metadata:
   title:
     default: UnderlandEX — Mining intelligence reference
     template: '%s — UnderlandEX'
-  description: "UnderlandEX is the open mining intelligence reference. 255,000+ mining assets and 3,400+ mining companies, with sources on every fact. Citation-backed; continuously updated."
+  description: "UnderlandEX is a private mining data and service engine for origination, due diligence, valuation and transaction execution. Internal use only — not for redistribution."
   robots:
     index: true
     follow: true
