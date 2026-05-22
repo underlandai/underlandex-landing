@@ -3,7 +3,6 @@ import merge from 'lodash.merge';
 import type { ImageMetadata } from 'astro';
 
 import Layout from '~/layouts/PageLayout.astro';
-import ServiceOfStrip from '~/components/ServiceOfStrip.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import RequestAccessModal from '~/components/RequestAccessModal.astro';
@@ -48,7 +47,6 @@ const metadata = merge(
 
 <Layout metadata={metadata}>
   <Fragment slot="announcement">
-    <ServiceOfStrip />
     <Header {...headerData} isSticky />
   </Fragment>
 

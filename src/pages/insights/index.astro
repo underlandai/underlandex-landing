@@ -1,7 +1,6 @@
 ---
 import { SITE, METADATA, APP_BLOG } from 'astrowind:config';
 import Layout from '~/layouts/PageLayout.astro';
-import ServiceOfStrip from '~/components/ServiceOfStrip.astro';
 import Header from '~/components/widgets/Header.astro';
 import Footer from '~/components/widgets/Footer.astro';
 import RequestAccessModal from '~/components/RequestAccessModal.astro';
@@ -29,7 +28,6 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <Fragment slot="announcement">
-    <ServiceOfStrip />
     <Header {...headerData} isSticky />
   </Fragment>
 

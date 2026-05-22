@@ -27,7 +27,6 @@ export const footerData = {
         { text: 'About', href: '/#about' },
         { text: 'Insights', href: '/insights' },
         { text: 'Contact', href: 'mailto:oliver@underlandex.com' },
-        { text: 'Lichen Commodities', href: 'https://lichen.com.au' },
       ],
     },
     {

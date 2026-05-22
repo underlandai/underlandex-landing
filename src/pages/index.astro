@@ -52,7 +52,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
 
   <!-- HERO -->
   <Hero
-    tagline="The open mining intelligence reference"
+    tagline="Private mining data & service engine"
     actions={[
       { variant: 'primary', text: 'Request Access', href: '#request-access' },
       { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
@@ -64,7 +64,7 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
       <span class="text-primary">mapped.</span>
     </Fragment>
     <Fragment slot="subtitle">
-      The open reference for <strong>{fmt(liveStats.totalSites)}+</strong> mining assets, companies and corporate actions. Researched, sourced, kept current.
+      Private screening, due-diligence, valuation and transaction-execution engine across <strong>{fmt(liveStats.totalSites)}+</strong> mining assets, <strong>9,000+</strong> companies, <strong>85,000+</strong> tenements and <strong>70,000+</strong> JORC resource estimates. Not for redistribution.
     </Fragment>
     <Fragment slot="content">
       <div class="flex justify-center mt-8">
@@ -91,24 +91,59 @@ const fmt = (n: number) => n.toLocaleString('en-AU');
     ]}
   />
 
+  <!-- ACTIVITY PILLARS -->
+  <Features3
+    id="activities"
+    tagline="What we do"
+    title="A private engine for four mining-services activities."
+    columns={2}
+    defaultIcon="tabler:arrow-right"
+    items={[
+      {
+        title: 'Origination & Network',
+        description:
+          'Active network across Australian and Hong Kong mining communities for inbound deal flow. Proprietary screening across 250,000+ assets, 9,000+ companies, 85,000+ tenements and 70,000+ JORC resource estimates, augmented by machine-learning signal generation. Greenfields and brownfields exploration target generation, acquisition target identification and offtake counterparty origination.',
+        icon: 'tabler:radar-2',
+      },
+      {
+        title: 'Project Due Diligence',
+        description:
+          'Geological model review, drill database auditing, subsurface geophysical imaging, mining tenement and rights review, fatal flaw analysis, on-site technical assessment across multi-commodity targets.',
+        icon: 'tabler:zoom-check',
+      },
+      {
+        title: 'Valuation & Capital Structuring',
+        description:
+          'Financial modelling for valuation and debt/equity capital structuring (DCF, NAV, financing scenarios). Investment memoranda and project finance term sheets. Sourcing project finance.',
+        icon: 'tabler:calculator',
+      },
+      {
+        title: 'Transaction Execution & Investor Relations',
+        description:
+          'Data room compilation and management. Coordination of independent technical reports (geological, metallurgical, environmental). Investor relations, lead nurture and stakeholder management. Commercial contract negotiation.',
+        icon: 'tabler:briefcase',
+      },
+    ]}
+  />
+
   <!-- CAPABILITY CARDS -->
   <Features3
     id="products"
-    tagline="Three products. One platform."
-    title="Built for the way the mining market actually works."
-    columns={3}
+    tagline="Two products. One platform."
+    title="The internal tools powering the engine."
+    columns={2}
     defaultIcon="tabler:arrow-right"
     items={[
       {
         title: 'UnderlandEX Explorer',
         description:
-          'Discover. Search thousands of live projects across every commodity, jurisdiction, stage and ownership. Familiar search patterns built for how property investors think.',
+          'Internal discovery layer. Search thousands of live projects across every commodity, jurisdiction, stage and ownership. Search patterns built for how property investors think.',
         icon: 'tabler:search',
       },
       {
         title: 'UnderlandEX M&A',
         description:
-          'Every listed-company announcement from ASX, TSX, LSE and EDGAR — cross-referenced against our project database. Morning brief, weekly report, quarterly league tables for advisors, brokers and lawyers.',
+          'Every listed-company announcement from ASX, TSX, LSE, HKEX and EDGAR — cross-referenced against our internal project database. Morning brief, weekly report, quarterly league tables.',
         icon: 'tabler:trending-up',
       },
     ]}

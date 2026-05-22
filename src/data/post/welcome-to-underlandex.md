@@ -1,27 +1,19 @@
 ---
 publishDate: 2026-04-19T00:00:00Z
 title: "Welcome to UnderlandEX"
-excerpt: "Why we're building the open mining intelligence reference — and what it means for the people who move the market."
+excerpt: "Introducing the private data and service engine behind our origination, due-diligence, valuation and transaction-execution work."
 category: Announcements
 tags:
   - platform
   - launch
-author: Lichen Commodities
+author: UnderlandEX
 ---
 
-The global mining sector transacts on information that is fragmented, delayed, and priced for institutions. Deposits live in one registry, deals in another, ownership chains in a third, and the technical reports that matter most sit in thousand-page PDFs nobody reads. UnderlandEX brings all of it into one place.
+The global mining sector transacts on information that is fragmented, delayed, and priced for institutions. Deposits live in one registry, deals in another, ownership chains in a third, and the technical reports that matter most sit in thousand-page PDFs nobody reads. UnderlandEX brings all of it into one place — as a private data and service engine for our origination, due-diligence, valuation and transaction-execution work.
 
 ## The database
 
-Our backend ingests and cross-references:
-
-- **S&P Capital IQ** — the gold standard for listed mining data
-- **Deep Optica** — proprietary Chinese-sourced deposit intelligence
-- **DMIRS MINEDEX + SLIP + WAMEX** — the authoritative Western Australian dataset
-- **ASX, TSX, LSE and EDGAR** — live announcement feeds
-- **Government registries** across Australia, with expansion into Canada, the USA and Africa underway
-
-Every asset, every tenement, every resource estimate, every corporate action — merged, deduplicated, citation-backed, and continuously updated.
+Our backend ingests and cross-references stock exchange announcement feeds (ASX, TSX, LSE, EDGAR, HKEX), regulatory filings and jurisdictional registries — merged, deduplicated, citation-backed, and continuously updated. Every asset, every tenement, every resource estimate, every corporate action is held against a single canonical entity so cross-referencing is one-click rather than a research project.
 
 ## Two products, one platform
 
@@ -31,6 +23,4 @@ Every asset, every tenement, every resource estimate, every corporate action —
 
 ## What's next
 
-Weekly insights — on the deals we see moving, the data we've just loaded, and the corners of the market that most platforms miss. If that's useful to you, subscribe below.
-
-UnderlandEX is a service of [Lichen Commodities](https://lichen.com.au).
+Periodic insights — on the deals we see moving, the data we've just loaded, and the corners of the market that most platforms miss.
