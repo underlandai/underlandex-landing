@@ -11,7 +11,7 @@ metadata:
   title:
     default: 'UnderlandEX | Private-Market Mining Intelligence'
     template: '%s | UnderlandEX'
-  description: "UnderlandEX is a private mining data and service engine for origination, due diligence, valuation and transaction execution. Internal use only — not for redistribution."
+  description: "UnderlandEX is a private mining data and service engine for origination, due diligence, valuation and transaction execution."
   robots:
     index: true
     follow: true

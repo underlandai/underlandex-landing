@@ -9,15 +9,15 @@ async function sendEmail(data: Record<string, string>) {
   if (!resendKey) return { skipped: 'no_resend_key' };
 
   const { name, email, company, role, product } = data;
-  const subject = `New UnderlandEX access request — ${company || name}`;
+  const subject = `New UnderlandEX access request: ${company || name}`;
   const html = `
     <h2 style="font-family: sans-serif;">New UnderlandEX access request</h2>
     <table style="font-family: sans-serif; border-collapse: collapse;">
       <tr><td style="padding:6px 12px 6px 0;"><strong>Name</strong></td><td>${escape(name)}</td></tr>
       <tr><td style="padding:6px 12px 6px 0;"><strong>Email</strong></td><td><a href="mailto:${escape(email)}">${escape(email)}</a></td></tr>
       <tr><td style="padding:6px 12px 6px 0;"><strong>Company</strong></td><td>${escape(company)}</td></tr>
-      <tr><td style="padding:6px 12px 6px 0;"><strong>Role</strong></td><td>${escape(role || '—')}</td></tr>
-      <tr><td style="padding:6px 12px 6px 0;"><strong>Product</strong></td><td>${escape(product || '—')}</td></tr>
+      <tr><td style="padding:6px 12px 6px 0;"><strong>Role</strong></td><td>${escape(role || 'Not given')}</td></tr>
+      <tr><td style="padding:6px 12px 6px 0;"><strong>Product</strong></td><td>${escape(product || 'Not given')}</td></tr>
       <tr><td style="padding:6px 12px 6px 0;"><strong>Source</strong></td><td>underlandex.com landing</td></tr>
       <tr><td style="padding:6px 12px 6px 0;"><strong>Received</strong></td><td>${new Date().toISOString()}</td></tr>
     </table>
@@ -71,8 +71,8 @@ export const POST: APIRoute = async ({ request }) => {
         `• *Name:* ${name}\n` +
         `• *Email:* ${email}\n` +
         `• *Company:* ${company}\n` +
-        `• *Role:* ${data.role || '—'}\n` +
-        `• *Product:* ${data.product || '—'}`;
+        `• *Role:* ${data.role || 'Not given'}\n` +
+        `• *Product:* ${data.product || 'Not given'}`;
       tasks.push(
         fetch(slackUrl, {
           method: 'POST',

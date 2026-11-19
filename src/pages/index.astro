@@ -69,7 +69,7 @@ const activities = [
 const audiences = [
   {
     title: 'Institutional investors',
-    description: 'Screen 255,000+ assets, model comparable transactions, monitor portfolio-wide exposure.',
+    description: 'Screen 255,000+ assets, model comparable transactions and monitor portfolio-wide exposure.',
     icon: 'tabler:briefcase',
   },
   {
@@ -112,7 +112,7 @@ const depth = [
   {
     title: 'Every corporate action, as it happens',
     description:
-      'ASX, TSX, LSE and EDGAR announcement feeds. M&A, capital raises, JORC updates, exploration results — in one place.',
+      'ASX, TSX, LSE and EDGAR announcement feeds. M&A, capital raises, JORC updates and exploration results in one place.',
     icon: 'tabler:rss',
     band: 'bg-gold',
   },
@@ -140,10 +140,10 @@ const depth = [
       <span class="block text-gold">mapped.</span>
     </Fragment>
     <Fragment slot="subtitle">
-      Private screening, due-diligence, valuation and transaction-execution engine across <strong
+      A private engine for screening, due diligence, valuation and transaction execution across <strong
         >{fmt(liveStats.totalSites)}+</strong
       > mining assets, <strong>9,000+</strong> companies, <strong>85,000+</strong> tenements and <strong>70,000+</strong
-      > JORC resource estimates. Not for redistribution.
+      > JORC resource estimates.
     </Fragment>
   </HomeHero>
 
@@ -153,7 +153,7 @@ const depth = [
       <SectionHead
         eyebrow="The database, in numbers"
         title="Live counts from the UnderlandEX mining database"
-        sub="Always live. Continuously updated from the world's major stock exchanges and regulatory registries."
+        sub="Continuously updated from the world's major stock exchanges and regulatory registries."
         id="data-title"
         layout="split"
       />
@@ -223,8 +223,8 @@ const depth = [
         <ProductPreview
           badge="UnderlandEX Explorer"
           title="Every deposit. Every tenement. Every owner."
-          caption="Search the database the way property investors search homes. Filter by commodity, jurisdiction, stage and ownership. Open any asset to see the full technical picture — resource estimates, production history, partnership structure."
-          note="Internal discovery layer. Search thousands of live projects across every commodity, jurisdiction, stage and ownership. Search patterns built for how property investors think."
+          caption="Search the database the way property investors search homes. Filter by commodity, jurisdiction, stage and ownership. Open any asset to see the full technical picture: resource estimates, production history and partnership structure."
+          note="The internal discovery layer: thousands of live projects across every commodity, jurisdiction, stage and ownership structure."
           image={previewExplorer}
           address="app.underlandex.com"
           moreHref="/explorer"
@@ -233,8 +233,8 @@ const depth = [
         <ProductPreview
           badge="UnderlandEX M&A"
           title="Track every corporate action."
-          caption="A live feed of every listed-company announcement. M&A, capital raises, resource upgrades, exploration results — pulled from stock exchange disclosures the moment they hit the wire, resolved against the UnderlandEX project database."
-          note="Every listed-company announcement from ASX, TSX, LSE, HKEX and EDGAR — cross-referenced against our internal project database. Morning brief, weekly report, quarterly league tables."
+          caption="A live feed of every listed-company announcement: M&A, capital raises, resource upgrades and exploration results, pulled from stock exchange disclosures the moment they hit the wire and resolved against the UnderlandEX project database."
+          note="Sourced from ASX, TSX, LSE, HKEX and EDGAR. Delivered as a morning brief, a weekly report and quarterly league tables."
           image={previewMna}
           address="mna.underlandex.com"
           moreHref="/mna"
@@ -258,7 +258,7 @@ const depth = [
           <p class="lead mt-6 text-on-light-2">
             UnderlandEX is the internal reference database powering our mining-services work. We continuously ingest
             every listed mining company announcement across the major exchanges and resolve each one against our
-            project, company and tenement records — so every deposit, ownership change, resource update and corporate
+            project, company and tenement records, so every deposit, ownership change, resource update and corporate
             action lands on the right page, with sources attached. Not for redistribution.
           </p>
         </div>

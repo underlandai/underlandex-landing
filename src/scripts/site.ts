@@ -62,7 +62,7 @@ const submitRequest = async (form: HTMLFormElement) => {
       body: JSON.stringify(data),
     });
     if (!res.ok) throw new Error('request failed');
-    setStatus('Thanks — check your inbox.', 'ok');
+    setStatus('Thanks. Check your inbox.', 'ok');
     form.reset();
     setTimeout(closeModal, 1800);
   } catch {
