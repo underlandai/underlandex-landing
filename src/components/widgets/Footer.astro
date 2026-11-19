@@ -36,7 +36,7 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '' } = Ast
         secondaryLinks.length > 0 && (
           <p class="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-sm text-on-dark-2">
             {secondaryLinks.map(({ text, href }) => (
-              <a class="underline-offset-4 hover:text-on-dark hover:underline" href={href} set:html={text} />
+              <a class="inline-block py-2.5 underline-offset-4 hover:text-on-dark hover:underline sm:py-0" href={href} set:html={text} />
             ))}
           </p>
         )
@@ -50,7 +50,7 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '' } = Ast
             {links.map(({ text, href, ariaLabel }) => (
               <li>
                 <a
-                  class="text-on-dark-2 no-underline underline-offset-4 transition-colors hover:text-on-dark hover:underline"
+                  class="inline-block py-2.5 text-on-dark-2 no-underline underline-offset-4 transition-colors hover:text-on-dark hover:underline sm:py-0"
                   href={href}
                   aria-label={ariaLabel}
                 >

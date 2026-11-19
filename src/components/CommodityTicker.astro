@@ -38,7 +38,7 @@ const live = items.length > 0 && (basis ? items.some((it) => basis[it.key] === '
 {
   items.length > 0 && (
     <div
-      class="border-b border-line-dark bg-ink-950 text-[0.6875rem] text-on-dark-2"
+      class="border-b border-line-dark bg-ink-950 text-xs text-on-dark-2 sm:text-[0.6875rem]"
       role="region"
       aria-label="Spot commodity prices"
     >
@@ -52,13 +52,13 @@ const live = items.length > 0 && (basis ? items.some((it) => basis[it.key] === '
               <span class="font-heading font-bold uppercase tracking-[0.14em]">{it.sym}</span>
               <span class="font-mono text-xs text-on-dark">
                 {price(it.val, it.dp)}
-                <span class="ml-px text-[0.625rem] text-on-dark-2">{it.unit}</span>
+                <span class="ml-px text-xs text-on-dark-2 sm:text-[0.625rem]">{it.unit}</span>
               </span>
             </li>
           ))}
         </ul>
         {live && (
-          <span class="flex flex-none items-center gap-2 pl-3 font-heading text-[0.625rem] font-bold uppercase tracking-[0.14em]">
+          <span class="flex flex-none items-center gap-2 pl-3 font-heading text-xs font-bold uppercase tracking-[0.14em] sm:text-[0.625rem]">
             <span class="live-dot h-1.5 w-1.5" aria-hidden="true" />
             Live
           </span>

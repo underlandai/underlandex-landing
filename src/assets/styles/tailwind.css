@@ -183,7 +183,12 @@
 
   /* Text link with a rule */
   .link-rule {
-    @apply inline-flex items-center gap-1.5 border-b border-current pb-0.5 font-heading text-[0.9375rem] font-semibold no-underline transition-opacity hover:opacity-75;
+    @apply relative inline-flex items-center gap-1.5 border-b border-current pb-0.5 font-heading text-[0.9375rem] font-semibold no-underline transition-opacity hover:opacity-75;
+    /* 44 px touch target without changing the line box */
+    &::after {
+      content: '';
+      @apply absolute -inset-x-2 -inset-y-3;
+    }
   }
 
   /* Live indicator */
