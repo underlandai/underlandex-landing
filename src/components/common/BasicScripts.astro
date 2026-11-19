@@ -72,7 +72,7 @@ import { UI } from 'astrowind:config';
       localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
       
       // Dispatch a custom event for the SpectreBackground to detect
-      document.dispatchEvent(new CustomEvent('lichen-theme-changed', { 
+      document.dispatchEvent(new CustomEvent('uex-theme-changed', { 
         detail: { theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light' } 
       }));
     });

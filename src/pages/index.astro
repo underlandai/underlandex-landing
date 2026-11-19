@@ -145,8 +145,8 @@ const depth = [
     <Fragment slot="subtitle">
       Private screening, due-diligence, valuation and transaction-execution engine across <strong
         >{fmt(liveStats.totalSites)}+</strong
-      > mining assets, <strong>9,000+</strong> companies, <strong>85,000+</strong> tenements and <strong>70,000+</strong> JORC
-      resource estimates. Not for redistribution.
+      > mining assets, <strong>9,000+</strong> companies, <strong>85,000+</strong> tenements and <strong>70,000+</strong
+      > JORC resource estimates. Not for redistribution.
     </Fragment>
   </HomeHero>
 
@@ -208,11 +208,7 @@ const depth = [
   <!-- WHO IT'S FOR -->
   <section id="audiences" class="section surface-paper" aria-labelledby="audiences-title">
     <div class="wrap">
-      <SectionHead
-        eyebrow="Who it's for"
-        title="Tailored to the people who move the market."
-        id="audiences-title"
-      />
+      <SectionHead eyebrow="Who it's for" title="Tailored to the people who move the market." id="audiences-title" />
       <FeatureGrid items={audiences} numbered />
     </div>
   </section>
@@ -259,13 +255,14 @@ const depth = [
         <div>
           <p class="eyebrow">Beyond the surface</p>
           <h2 id="about-title" class="h-section text-on-light">
-            Most platforms show what's listed. We show what's there.
+            <span class="block">Most platforms show what's listed.</span>
+            <span class="block">We show what's there.</span>
           </h2>
           <p class="lead mt-6 text-on-light-2">
             UnderlandEX is the internal reference database powering our mining-services work. We continuously ingest
-            every listed mining company announcement across the major exchanges and resolve each one against our project,
-            company and tenement records — so every deposit, ownership change, resource update and corporate action
-            lands on the right page, with sources attached. Not for redistribution.
+            every listed mining company announcement across the major exchanges and resolve each one against our
+            project, company and tenement records — so every deposit, ownership change, resource update and corporate
+            action lands on the right page, with sources attached. Not for redistribution.
           </p>
         </div>
         <ol class="overflow-hidden rounded-2xl bg-sand-50 shadow-card ring-1 ring-teal-dark/10">
@@ -277,7 +274,10 @@ const depth = [
                   <Icon name={d.icon} class="h-[1.375rem] w-[1.375rem]" aria-hidden="true" />
                 </span>
                 <div>
-                  <span class="mb-1 block font-heading text-[0.6875rem] font-bold tracking-label text-on-light-2" aria-hidden="true">
+                  <span
+                    class="mb-1 block font-heading text-[0.6875rem] font-bold tracking-label text-on-light-2"
+                    aria-hidden="true"
+                  >
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <h3 class="text-lg leading-snug text-on-light">{d.title}</h3>

@@ -27,8 +27,8 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '' } = Ast
 
 <footer class="surface-deep border-t border-line-dark">
   <div class="strata-rule opacity-80" aria-hidden="true"></div>
-  <div class="wrap grid gap-10 py-14 md:grid-cols-12 md:py-16">
-    <div class="md:col-span-5">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-10 py-14 sm:grid-cols-3 md:grid-cols-[minmax(0,1fr)_auto_auto_auto] md:gap-x-14 md:py-16 lg:gap-x-20">
+    <div class="col-span-full md:col-span-1">
       <a class="inline-block py-2 pr-3" href={getHomePermalink()} aria-label="UnderlandEX home">
         <Logo class="h-12" decorative />
       </a>
@@ -44,7 +44,7 @@ const { socialLinks = [], secondaryLinks = [], links = [], footNote = '' } = Ast
     </div>
     {
       links.map(({ title, links }) => (
-        <nav class="md:col-span-2" aria-label={title}>
+        <nav aria-label={title}>
           <h2 class="mb-4 font-heading text-xs font-bold uppercase tracking-label text-gold-bright">{title}</h2>
           <ul class="space-y-2.5 text-[0.9375rem]">
             {links.map(({ text, href, ariaLabel }) => (

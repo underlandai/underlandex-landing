@@ -20,7 +20,7 @@ import { UI } from 'astrowind:config';
     }
     
     // Trigger a custom event that other scripts can listen for
-    document.dispatchEvent(new CustomEvent('lichen-theme-changed', { detail: { theme } }));
+    document.dispatchEvent(new CustomEvent('uex-theme-changed', { detail: { theme } }));
   }
 
   if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {

@@ -6,7 +6,7 @@ import { getHomePermalink } from '~/utils/permalinks';
 const title = `Error 404`;
 ---
 
-<Layout metadata={{ title }}>
+<Layout metadata={{ title, robots: { index: false, follow: false } }}>
   <section class="surface-dark relative overflow-hidden py-24 sm:py-32 lg:py-40">
     <TopoLines class="inset-0 h-full w-full text-sage opacity-[0.14]" seed={9} rings={15} />
     <div class="wrap relative text-center">

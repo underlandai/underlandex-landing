@@ -45,10 +45,13 @@ const dark = tone === 'dark';
               {String(i + 1).padStart(2, '0')}
             </span>
           )}
-          <h3 class:list={['text-xl leading-snug', dark ? 'text-on-dark' : 'text-on-light']}>{item.title}</h3>
-          <p class:list={['mt-2 leading-relaxed', dark ? 'text-on-dark-2' : 'text-on-light-2']}>
-            {item.description}
-          </p>
+          <h3 class:list={['text-xl leading-snug', dark ? 'text-on-dark' : 'text-on-light']}>
+            {/* hyphenated terms such as "NI 43-101" never split across lines */}
+            {item.title
+              .split(/(\S+-\S+)/)
+              .map((part, j) => (j % 2 ? <span class="whitespace-nowrap">{part}</span> : part))}
+          </h3>
+          <p class:list={['mt-2 leading-relaxed', dark ? 'text-on-dark-2' : 'text-on-light-2']}>{item.description}</p>
         </div>
       </li>
     ))
