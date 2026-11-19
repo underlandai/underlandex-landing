@@ -12,11 +12,9 @@ interface Action {
 export interface Props {
   tagline: string;
   actions: Action[];
-  feeds?: string[];
-  feedsLabel?: string;
 }
 
-const { tagline, actions, feeds = [], feedsLabel } = Astro.props;
+const { tagline, actions } = Astro.props;
 ---
 
 <section
@@ -50,18 +48,6 @@ const { tagline, actions, feeds = [], feedsLabel } = Astro.props;
           )
         }
       </div>
-      {
-        feeds.length > 0 && (
-          <p class="mt-9 flex flex-wrap items-center gap-2 text-[0.8125rem] text-on-dark-2">
-            <span class="mr-1">{feedsLabel}</span>
-            {feeds.map((f) => (
-              <span class="rounded border border-line-dark px-2 py-0.5 font-heading text-[0.6875rem] font-bold tracking-[0.12em] text-on-dark">
-                {f}
-              </span>
-            ))}
-          </p>
-        )
-      }
     </div>
 
     <StrataScene class="-mx-4 mt-2 sm:-mx-6 lg:-ml-8 lg:-mr-20 lg:mt-0" />

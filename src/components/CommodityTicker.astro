@@ -1,64 +1,69 @@
 ---
-// Spot commodity prices from UnderlandEX M&A. A missing price renders as a dash.
-type Prices = {
-  Au?: number;
-  Ag?: number;
-  Cu?: number;
-  Ni?: number;
-  U?: number;
-  Pt?: number;
-  Pd?: number;
+// Spot commodity prices from UnderlandEX M&A. The page is rendered on the server for every
+// request, so the fetch has a short timeout. A commodity without a price is left out, and the
+// "Live" label shows only when at least one shown price is live (when the API reports a basis).
+type Sym = 'Au' | 'Ag' | 'Cu' | 'Ni' | 'U' | 'Pt' | 'Pd';
+type Prices = Partial<Record<Sym, number | null>> & {
+  basis?: Partial<Record<Sym, string>>;
   fetchedAt?: string;
 };
 
 let prices: Prices = {};
 try {
-  const res = await fetch('https://mna.underlandex.com/api/prices', { signal: AbortSignal.timeout(5000) });
+  const res = await fetch('https://mna.underlandex.com/api/prices', { signal: AbortSignal.timeout(3000) });
   if (res.ok) prices = (await res.json()) as Prices;
 } catch {
-  // leave every price as a dash
+  // no prices: the ticker is not rendered
 }
 
-const price = (n?: number, dp = 2) =>
-  typeof n === 'number' && Number.isFinite(n)
-    ? `$${n.toLocaleString('en-AU', { minimumFractionDigits: dp, maximumFractionDigits: dp })}`
-    : '—';
-const items = [
-  { sym: 'Gold', val: prices.Au, dp: 2, unit: '/oz' },
-  { sym: 'Silver', val: prices.Ag, dp: 2, unit: '/oz' },
-  { sym: 'Copper', val: prices.Cu, dp: 3, unit: '/lb' },
-  { sym: 'Nickel', val: prices.Ni, dp: 2, unit: '/lb' },
-  { sym: 'Platinum', val: prices.Pt, dp: 2, unit: '/oz' },
-  { sym: 'Palladium', val: prices.Pd, dp: 2, unit: '/oz' },
-  { sym: 'Uranium', val: prices.U, dp: 2, unit: '/lb' },
+const price = (n: number, dp = 2) =>
+  `$${n.toLocaleString('en-AU', { minimumFractionDigits: dp, maximumFractionDigits: dp })}`;
+const all: { key: Sym; sym: string; dp: number; unit: string }[] = [
+  { key: 'Au', sym: 'Gold', dp: 2, unit: '/oz' },
+  { key: 'Ag', sym: 'Silver', dp: 2, unit: '/oz' },
+  { key: 'Cu', sym: 'Copper', dp: 3, unit: '/lb' },
+  { key: 'Ni', sym: 'Nickel', dp: 2, unit: '/lb' },
+  { key: 'Pt', sym: 'Platinum', dp: 2, unit: '/oz' },
+  { key: 'Pd', sym: 'Palladium', dp: 2, unit: '/oz' },
+  { key: 'U', sym: 'Uranium', dp: 2, unit: '/lb' },
 ];
+const items = all.flatMap((it) => {
+  const val = prices[it.key];
+  return typeof val === 'number' && Number.isFinite(val) ? [{ ...it, val }] : [];
+});
+const basis = prices.basis && typeof prices.basis === 'object' ? prices.basis : undefined;
+const live = items.length > 0 && (basis ? items.some((it) => basis[it.key] === 'live') : true);
 ---
 
-<div
-  class="border-b border-line-dark bg-ink-950 text-[0.6875rem] text-on-dark-2"
-  role="region"
-  aria-label="Spot commodity prices"
->
-  <div class="wrap flex h-9 items-center">
-    <span
-      class="mr-3.5 border-r border-line-dark pr-3.5 font-heading font-bold uppercase tracking-[0.14em] text-gold-bright"
+{
+  items.length > 0 && (
+    <div
+      class="border-b border-line-dark bg-ink-950 text-[0.6875rem] text-on-dark-2"
+      role="region"
+      aria-label="Spot commodity prices"
     >
-      Spot
-    </span>
-    <ul class="no-scrollbar fade-right flex min-w-0 flex-1 overflow-x-auto whitespace-nowrap" tabindex="0">
-      {
-        items.map((it) => (
-          <li class="mr-4 flex items-baseline gap-2 border-r border-sage/10 pr-4 last:mr-8 last:border-0">
-            <span class="font-heading font-bold uppercase tracking-[0.14em]">{it.sym}</span>
-            <span class="font-mono text-xs text-on-dark">
-              {price(it.val, it.dp)}<span class="ml-px text-[0.625rem] text-on-dark-2">{it.unit}</span>
-            </span>
-          </li>
-        ))
-      }
-    </ul>
-    <span class="flex flex-none items-center gap-2 pl-3 font-heading text-[0.625rem] font-bold uppercase tracking-[0.14em]">
-      <span class="live-dot h-1.5 w-1.5" aria-hidden="true"></span>Live
-    </span>
-  </div>
-</div>
+      <div class="wrap flex h-9 items-center">
+        <span class="mr-3.5 border-r border-line-dark pr-3.5 font-heading font-bold uppercase tracking-[0.14em] text-gold-bright">
+          Spot
+        </span>
+        <ul class="no-scrollbar fade-right flex min-w-0 flex-1 overflow-x-auto whitespace-nowrap" tabindex="0">
+          {items.map((it) => (
+            <li class="mr-4 flex items-baseline gap-2 border-r border-sage/10 pr-4 last:mr-8 last:border-0">
+              <span class="font-heading font-bold uppercase tracking-[0.14em]">{it.sym}</span>
+              <span class="font-mono text-xs text-on-dark">
+                {price(it.val, it.dp)}
+                <span class="ml-px text-[0.625rem] text-on-dark-2">{it.unit}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+        {live && (
+          <span class="flex flex-none items-center gap-2 pl-3 font-heading text-[0.625rem] font-bold uppercase tracking-[0.14em]">
+            <span class="live-dot h-1.5 w-1.5" aria-hidden="true" />
+            Live
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}

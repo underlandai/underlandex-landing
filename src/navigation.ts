@@ -3,7 +3,6 @@ export const headerData = {
     { text: 'Explorer', href: '/explorer' },
     { text: 'M&A', href: '/mna' },
     { text: 'Data', href: '/#data' },
-    { text: 'Insights', href: '/insights' },
     { text: 'About', href: '/#about' },
   ],
   actions: [
@@ -25,7 +24,6 @@ export const footerData = {
       title: 'Company',
       links: [
         { text: 'About', href: '/#about' },
-        { text: 'Insights', href: '/insights' },
         { text: 'Contact', href: 'mailto:oliver@underlandex.com' },
       ],
     },

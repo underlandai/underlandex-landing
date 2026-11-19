@@ -29,38 +29,6 @@ i18n:
   language: en-AU
   textDirection: ltr
 
-apps:
-  blog:
-    isEnabled: true
-    postsPerPage: 6
-
-    post:
-      isEnabled: true
-      permalink: 'insights/%slug%'
-      robots:
-        index: true
-
-    list:
-      isEnabled: true
-      pathname: 'insights'
-      robots:
-        index: true
-
-    category:
-      isEnabled: true
-      pathname: 'insights/category'
-      robots:
-        index: true
-
-    tag:
-      isEnabled: true
-      pathname: 'insights/tag'
-      robots:
-        index: true
-
-    isRelatedPostsEnabled: true
-    relatedPostsCount: 4
-
 analytics:
   vendors:
     googleAnalytics:
