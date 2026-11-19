@@ -2,6 +2,7 @@
 // Spot commodity prices from UnderlandEX M&A. The page is rendered on the server for every
 // request, so the fetch has a short timeout. A commodity without a price is left out, and the
 // "Live" label shows only when at least one shown price is live (when the API reports a basis).
+// Nickel is not shown: the API only has a monthly average for it, not a live quote.
 type Sym = 'Au' | 'Ag' | 'Cu' | 'Ni' | 'U' | 'Pt' | 'Pd';
 type Prices = Partial<Record<Sym, number | null>> & {
   basis?: Partial<Record<Sym, string>>;
@@ -22,7 +23,6 @@ const all: { key: Sym; sym: string; dp: number; unit: string }[] = [
   { key: 'Au', sym: 'Gold', dp: 2, unit: '/oz' },
   { key: 'Ag', sym: 'Silver', dp: 2, unit: '/oz' },
   { key: 'Cu', sym: 'Copper', dp: 3, unit: '/lb' },
-  { key: 'Ni', sym: 'Nickel', dp: 2, unit: '/lb' },
   { key: 'Pt', sym: 'Platinum', dp: 2, unit: '/oz' },
   { key: 'Pd', sym: 'Palladium', dp: 2, unit: '/oz' },
   { key: 'U', sym: 'Uranium', dp: 2, unit: '/lb' },
