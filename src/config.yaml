@@ -9,7 +9,7 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: 'UnderlandEX | Private-Market Mining Intelligence'
+    default: 'UnderlandEX | Private Placement Mining Intelligence'
     template: '%s | UnderlandEX'
   description: "UnderlandEX is a private mining data and service engine for origination, due diligence, valuation and transaction execution."
   robots:
