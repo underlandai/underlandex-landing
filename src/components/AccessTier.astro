@@ -1,0 +1,80 @@
+---
+// Access: a single UnderlandEX tier. By invitation, price on request, one call to action.
+import Logo from '~/components/Logo.astro';
+import SectionHead from '~/components/SectionHead.astro';
+
+export interface Group {
+  title: string;
+  items: string[];
+}
+
+export interface Props {
+  id?: string;
+  tagline?: string;
+  title: string;
+  name?: string;
+  subtitle?: string;
+  groups: Group[];
+}
+
+const { id = 'pricing', tagline, title, name = 'UnderlandEX', subtitle, groups } = Astro.props;
+---
+
+<section id={id} class="section surface-dark overflow-hidden" aria-labelledby={`${id}-title`}>
+  <div class="wrap">
+    <SectionHead eyebrow={tagline} title={title} id={`${id}-title`} tone="dark" layout="center" />
+
+    <div
+      class="mx-auto grid max-w-5xl overflow-hidden rounded-2xl border border-line-dark bg-ink-800 shadow-frame lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]"
+    >
+      <div
+        class="relative flex flex-col border-b border-line-dark bg-gradient-to-b from-ink-700 to-ink-800 p-7 sm:p-10 lg:border-b-0 lg:border-r"
+      >
+        <h3>
+          <span class="sr-only">{name}</span>
+          <Logo class="h-14 sm:h-16" decorative />
+        </h3>
+        {subtitle && <p class="mt-5 text-[0.9375rem] text-on-dark-2">{subtitle}</p>}
+
+        <p class="mt-9 font-heading text-[2rem] font-bold leading-none tracking-tight text-on-dark sm:text-4xl">
+          Price on request
+        </p>
+        <p class="mt-3 font-heading text-xs font-bold uppercase tracking-label text-gold-bright">Access by invitation</p>
+
+        <div class="mt-9 lg:mt-auto lg:pt-10">
+          <a href="#request-access" data-open-request-access class="btn-gold w-full">Request access</a>
+          <p class="mt-4 text-center text-xs text-on-dark-2">Invitation-only while we onboard institutional users.</p>
+        </div>
+      </div>
+
+      <div class="grid content-start gap-x-10 gap-y-9 p-7 sm:grid-cols-2 sm:p-10">
+        {
+          groups.map((g, gi) => (
+            <div class:list={[gi === 0 && 'sm:row-span-2']}>
+              <h4 class="mb-4 font-heading text-xs font-bold uppercase tracking-label text-gold-bright">{g.title}</h4>
+              <ul class="space-y-3.5">
+                {g.items.map((item) => (
+                  <li class="flex gap-3 text-[0.9375rem] leading-snug text-on-dark">
+                    <svg
+                      class="mt-0.5 h-[1.125rem] w-[1.125rem] flex-none text-sage"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="m5 12.5 4.5 4.5L19 7.5" />
+                    </svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

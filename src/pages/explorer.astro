@@ -1,15 +1,12 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import Header from '~/components/widgets/Header.astro';
-import Footer from '~/components/widgets/Footer.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Features3 from '~/components/widgets/Features3.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
+import PageHero from '~/components/PageHero.astro';
+import SectionHead from '~/components/SectionHead.astro';
+import StatBand from '~/components/StatBand.astro';
+import FeatureGrid from '~/components/FeatureGrid.astro';
 import ProductPreview from '~/components/ProductPreview.astro';
-import RequestAccessModal from '~/components/RequestAccessModal.astro';
+import ClosingCta from '~/components/ClosingCta.astro';
 
-import { headerData, footerData } from '~/navigation';
 import previewExplorer from '~/assets/images/underlandex/preview-explorer.png';
 
 const metadata = {
@@ -20,73 +17,102 @@ let liveStats = { totalSites: 255344, totalOwners: 3449, totalTenements: 85537, 
 try {
   const res = await fetch('https://app.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
   if (res.ok) liveStats = { ...liveStats, ...(await res.json()) };
-} catch {}
+} catch {
+  // fall back to the defaults above
+}
 
 const fmt = (n: number) => n.toLocaleString('en-AU');
+const actions = [
+  { variant: 'primary' as const, text: 'Request Access', href: '#request-access' },
+  { variant: 'secondary' as const, text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
+];
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="announcement">
-    <Header {...headerData} isSticky />
-  </Fragment>
-
-  <Hero
-    tagline="UnderlandEX Explorer"
-    actions={[
-      { variant: 'primary', text: 'Request Access', href: '#request-access' },
-      { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
-    ]}
-  >
+  <PageHero tagline="UnderlandEX Explorer" actions={actions} seed={2}>
     <Fragment slot="title">
-      Every deposit.<br /><span class="text-primary">One search.</span>
+      Every deposit.
+      <span class="block text-gold">One search.</span>
     </Fragment>
     <Fragment slot="subtitle">
-      {fmt(liveStats.totalSites)}+ mining assets across every commodity, jurisdiction and stage — searchable
-      the way property investors search homes.
+      {fmt(liveStats.totalSites)}+ mining assets across every commodity, jurisdiction and stage — searchable the way
+      property investors search homes.
     </Fragment>
-  </Hero>
+  </PageHero>
 
-  <Stats
-    stats={[
-      { amount: `${fmt(liveStats.totalSites)}+`, title: 'Mining assets', icon: 'tabler:map-pin' },
-      { amount: `${fmt(liveStats.totalOwners)}+`, title: 'Mining companies', icon: 'tabler:building-factory-2' },
-      { amount: `${fmt(liveStats.totalTenements)}+`, title: 'Tenements', icon: 'tabler:file-certificate' },
-      { amount: `${fmt(liveStats.totalResourceEstimates)}+`, title: 'JORC estimates', icon: 'tabler:chart-bar' },
-    ]}
+  <section class="surface-sand pb-16 pt-6 sm:pb-20 sm:pt-10" aria-label="Explorer coverage">
+    <div class="wrap">
+      <StatBand
+        stats={[
+          { value: liveStats.totalSites, label: 'Mining assets' },
+          { value: liveStats.totalOwners, label: 'Mining companies' },
+          { value: liveStats.totalTenements, label: 'Tenements' },
+          { value: liveStats.totalResourceEstimates, label: 'JORC estimates' },
+        ]}
+      />
+    </div>
+  </section>
+
+  <section class="section surface-dark" aria-label="What you see inside">
+    <div class="wrap">
+      <ProductPreview
+        badge="What you see inside"
+        title="Search, filter, compare — instantly."
+        caption="Commodity, jurisdiction, stage, ownership. Open any project to see the full technical picture: JORC resource estimates, production history, ownership chain, tenement boundaries and the most recent market announcements."
+        image={previewExplorer}
+        address="app.underlandex.com"
+        headingLevel="h2"
+      />
+    </div>
+  </section>
+
+  <section class="section surface-paper" aria-labelledby="workflow-title">
+    <div class="wrap">
+      <SectionHead
+        eyebrow="Built for the workflow"
+        title="Designed for the way investors actually evaluate assets."
+        id="workflow-title"
+      />
+      <FeatureGrid
+        items={[
+          {
+            title: 'Real-estate-style search',
+            description: 'Familiar card layouts, filter sidebars and detail pages. Zero learning curve.',
+            icon: 'tabler:layout-grid',
+          },
+          {
+            title: 'Complete ownership chains',
+            description: 'Parent companies, joint-venture partners, royalty holders — every relationship visible.',
+            icon: 'tabler:network',
+          },
+          {
+            title: 'JORC + NI 43-101 resource data',
+            description: '70,000+ resource estimates cross-referenced against their original technical reports.',
+            icon: 'tabler:chart-bar',
+          },
+          {
+            title: 'Spatial context',
+            description: 'Tenement boundaries, adjacency, regional clustering — all rendered on the map view.',
+            icon: 'tabler:map',
+          },
+          {
+            title: 'Always live',
+            description: 'Data continuously refreshed from regulatory registries and exchange disclosures.',
+            icon: 'tabler:refresh',
+          },
+          {
+            title: 'Australian-English throughout',
+            description: 'Built by Australians for the global resources sector, with local terminology.',
+            icon: 'tabler:flag',
+          },
+        ]}
+      />
+    </div>
+  </section>
+
+  <ClosingCta
+    title="See every deposit."
+    subtitle="Invitation-only while we onboard institutional users."
+    actions={actions}
   />
-
-  <ProductPreview
-    badge="What you see inside"
-    title="Search, filter, compare — instantly."
-    caption="Commodity, jurisdiction, stage, ownership. Open any project to see the full technical picture: JORC resource estimates, production history, ownership chain, tenement boundaries and the most recent market announcements."
-    image={previewExplorer}
-  />
-
-  <Features3
-    tagline="Built for the workflow"
-    title="Designed for the way investors actually evaluate assets."
-    columns={3}
-    defaultIcon="tabler:arrow-right"
-    items={[
-      { title: 'Real-estate-style search', description: 'Familiar card layouts, filter sidebars and detail pages. Zero learning curve.', icon: 'tabler:layout-grid' },
-      { title: 'Complete ownership chains', description: 'Parent companies, joint-venture partners, royalty holders — every relationship visible.', icon: 'tabler:network' },
-      { title: 'JORC + NI 43-101 resource data', description: '70,000+ resource estimates cross-referenced against their original technical reports.', icon: 'tabler:chart-bar' },
-      { title: 'Spatial context', description: 'Tenement boundaries, adjacency, regional clustering — all rendered on the map view.', icon: 'tabler:map' },
-      { title: 'Always live', description: 'Data continuously refreshed from regulatory registries and exchange disclosures.', icon: 'tabler:refresh' },
-      { title: 'Australian-English throughout', description: 'Built by Australians for the global resources sector, with local terminology.', icon: 'tabler:flag' },
-    ]}
-  />
-
-  <CallToAction
-    actions={[
-      { variant: 'primary', text: 'Request Access', href: '#request-access' },
-      { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
-    ]}
-  >
-    <Fragment slot="title">See every deposit.</Fragment>
-    <Fragment slot="subtitle">Invitation-only while we onboard institutional users.</Fragment>
-  </CallToAction>
-
-  <Footer {...footerData} />
-  <RequestAccessModal />
 </Layout>

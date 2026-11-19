@@ -1,0 +1,36 @@
+---
+// Section heading: eyebrow label, title and optional supporting line.
+export interface Props {
+  eyebrow?: string;
+  title: string;
+  sub?: string;
+  id?: string;
+  tone?: 'dark' | 'light';
+  layout?: 'stack' | 'split' | 'center';
+  as?: 'h1' | 'h2' | 'h3';
+  class?: string;
+}
+
+const { eyebrow, title, sub, id, tone = 'light', layout = 'stack', as: Tag = 'h2', class: className = '' } = Astro.props;
+const dark = tone === 'dark';
+---
+
+<header
+  class:list={[
+    'mb-10 lg:mb-14',
+    layout === 'split' && 'grid items-end gap-x-16 gap-y-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]',
+    layout === 'center' && 'mx-auto max-w-3xl text-center',
+    layout === 'stack' && 'max-w-3xl',
+    className,
+  ]}
+>
+  <div>
+    {
+      eyebrow && (
+        <p class:list={['eyebrow', dark && 'eyebrow-gold', layout === 'center' && 'eyebrow-center']}>{eyebrow}</p>
+      )
+    }
+    <Tag id={id} class:list={['h-section', dark ? 'text-on-dark' : 'text-on-light']} set:html={title} />
+  </div>
+  {sub && <p class:list={['lead', dark ? 'text-on-dark-2' : 'text-on-light-2', layout === 'stack' && 'mt-5']}>{sub}</p>}
+</header>

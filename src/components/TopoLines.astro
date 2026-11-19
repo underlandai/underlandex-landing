@@ -1,0 +1,62 @@
+---
+// Decorative contour lines, generated at build: closed rings around a high point, like a relief map.
+export interface Props {
+  class?: string;
+  seed?: number;
+  rings?: number;
+  marker?: boolean; // gold collar marker on the high point
+}
+
+const { class: className = '', seed = 1, rings = 13, marker = false } = Astro.props;
+
+const N = 12;
+const ring = (k: number) => {
+  const r = 26 + k * 25;
+  const pts: Array<[number, number]> = [];
+  for (let i = 0; i < N; i++) {
+    const t = (i / N) * Math.PI * 2;
+    const rr =
+      r *
+      (1 +
+        0.17 * Math.sin(2 * t + seed * 1.3) +
+        0.1 * Math.sin(3 * t + k * 0.33 + seed * 2.1) +
+        0.05 * Math.sin(5 * t - k * 0.47 + seed));
+    pts.push([400 + k * 5 + rr * Math.cos(t) * 1.3, 300 - k * 3 + rr * Math.sin(t)]);
+  }
+  // closed Catmull-Rom spline as cubic Béziers
+  const f = (n: number) => n.toFixed(1);
+  let d = `M${f(pts[0][0])} ${f(pts[0][1])}`;
+  for (let i = 0; i < N; i++) {
+    const p0 = pts[(i - 1 + N) % N];
+    const p1 = pts[i];
+    const p2 = pts[(i + 1) % N];
+    const p3 = pts[(i + 2) % N];
+    d += `C${f(p1[0] + (p2[0] - p0[0]) / 6)} ${f(p1[1] + (p2[1] - p0[1]) / 6)} ${f(p2[0] - (p3[0] - p1[0]) / 6)} ${f(
+      p2[1] - (p3[1] - p1[1]) / 6
+    )} ${f(p2[0])} ${f(p2[1])}`;
+  }
+  return d + 'Z';
+};
+const paths = Array.from({ length: rings }, (_, k) => ring(k));
+---
+
+<svg
+  class:list={['pointer-events-none absolute', className]}
+  viewBox="0 0 800 600"
+  preserveAspectRatio="xMidYMid slice"
+  fill="none"
+  stroke="currentColor"
+  aria-hidden="true"
+  focusable="false"
+>
+  {paths.map((d, k) => <path d={d} stroke-width={k % 4 === 0 ? 1.6 : 0.8} vector-effect="non-scaling-stroke" />)}
+  {
+    marker && (
+      <g stroke="#d6bd83">
+        <circle cx="400" cy="300" r="9" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+        <circle cx="400" cy="300" r="3" fill="#d6bd83" stroke="none" />
+        <path d="M400 282v-10M400 318v10M382 300h-10M418 300h10" stroke-width="1.5" vector-effect="non-scaling-stroke" />
+      </g>
+    )
+  }
+</svg>

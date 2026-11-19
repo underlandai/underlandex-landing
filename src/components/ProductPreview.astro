@@ -1,4 +1,6 @@
 ---
+// Product screenshot in a window frame with the sign-in gate, beside its description.
+// The images are refreshed nightly (scripts/capture-previews.mjs).
 import Image from '~/components/common/Image.astro';
 
 export interface Props {
@@ -6,61 +8,101 @@ export interface Props {
   caption: string;
   image: ImageMetadata;
   badge?: string;
+  note?: string;
+  address?: string;
   reverse?: boolean;
+  tone?: 'dark' | 'light';
+  moreHref?: string;
+  moreText?: string;
+  headingLevel?: 'h2' | 'h3';
 }
 
-const { title, caption, image, badge, reverse = false } = Astro.props;
+const {
+  title,
+  caption,
+  image,
+  badge,
+  note,
+  address,
+  reverse = false,
+  tone = 'dark',
+  moreHref,
+  moreText,
+  headingLevel: Heading = 'h3',
+} = Astro.props;
+const dark = tone === 'dark';
 ---
 
-<section class="py-16 md:py-20 bg-[#fafaf7]">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6">
-    <div class={`grid md:grid-cols-2 gap-10 md:gap-16 items-center ${reverse ? 'md:[direction:rtl]' : ''}`}>
-      <div class={reverse ? '[direction:ltr]' : ''}>
-        {badge && (
-          <span class="inline-block text-[11px] font-semibold uppercase tracking-widest text-primary mb-3">
-            {badge}
-          </span>
-        )}
-        <h3 class="font-heading font-bold text-3xl md:text-4xl text-default mb-4 leading-tight">
-          {title}
-        </h3>
-        <p class="text-muted text-lg mb-6 leading-relaxed">{caption}</p>
-        <button
-          type="button"
-          data-open-request-access
-          class="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-medium px-5 py-2.5 rounded-md transition text-sm"
-        >
-          Request access
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
-        </button>
-      </div>
-
-      <div class={`relative ${reverse ? '[direction:ltr]' : ''}`}>
-        <div class="relative overflow-hidden rounded-lg shadow-2xl ring-1 ring-black/5">
-          <Image
-            src={image}
-            alt={title}
-            class="w-full h-auto"
-            widths={[400, 768, 1024]}
-            sizes="(max-width: 767px) 400px, 1024px"
-          />
-          <!-- paywall blur overlay -->
-          <div class="absolute inset-0 backdrop-blur-[3px] bg-white/30"></div>
-          <div class="absolute inset-0 flex items-end justify-center pb-8">
-            <div class="bg-white/95 backdrop-blur-md rounded-md px-5 py-3 shadow-lg border border-gray-200 flex items-center gap-3">
-              <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-              </svg>
-              <div>
-                <div class="text-sm font-semibold text-default">Sign in to preview</div>
-                <div class="text-xs text-muted">Invitation-only while we onboard users</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
+  <div class:list={['lg:col-span-5', reverse && 'lg:order-2']}>
+    {badge && <p class:list={['eyebrow', dark && 'eyebrow-gold']}>{badge}</p>}
+    <Heading class:list={['h-sub', dark ? 'text-on-dark' : 'text-on-light']}>{title}</Heading>
+    <p class:list={['lead mt-5', dark ? 'text-on-dark' : 'text-on-light']}>{caption}</p>
+    {note && <p class:list={['mt-4 text-[0.9375rem]', dark ? 'text-on-dark-2' : 'text-on-light-2']}>{note}</p>}
+    <slot />
+    <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <button type="button" data-open-request-access class={dark ? 'btn-gold' : 'btn-teal'}>Request access</button>
+      {
+        moreHref && (
+          <a href={moreHref} class:list={['link-rule', dark ? 'text-gold-bright' : 'text-teal-deep']}>
+            {moreText} <span aria-hidden="true">→</span>
+          </a>
+        )
+      }
     </div>
   </div>
-</section>
+
+  <figure class:list={['relative lg:col-span-7', reverse && 'lg:order-1']}>
+    <div class="overflow-hidden rounded-xl bg-ink-800 shadow-frame">
+      <div class="flex h-9 items-center gap-1.5 border-b border-line-dark bg-ink-700 px-3.5" aria-hidden="true">
+        <span class="h-2.5 w-2.5 rounded-full bg-sand/25"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-sand/25"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-sand/25"></span>
+        {
+          address && (
+            <span class="ml-3 truncate rounded bg-ink-900/70 px-2.5 py-0.5 font-mono text-[0.6875rem] text-on-dark-2">
+              {address}
+            </span>
+          )
+        }
+      </div>
+      <div class="relative">
+        <Image
+          src={image}
+          alt={title}
+          class="block h-auto w-full"
+          widths={[480, 800, 1200, 1600]}
+          sizes="(max-width: 1023px) 100vw, 720px"
+        />
+        <!-- sign-in gate: the lower part of the screen is veiled -->
+        <div
+          class="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-transparent to-ink-950/90 backdrop-blur-[2px] [mask-image:linear-gradient(180deg,transparent,#000_55%)]"
+          aria-hidden="true"
+        >
+        </div>
+        <figcaption class="absolute inset-x-0 bottom-4 flex justify-center px-4 sm:bottom-7">
+          <div class="flex items-center gap-3 rounded-lg bg-sand-50 px-4 py-2.5 shadow-lg ring-1 ring-black/5 sm:px-5 sm:py-3">
+            <svg
+              class="h-5 w-5 flex-none text-teal-deep"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+              ></path>
+            </svg>
+            <div>
+              <div class="font-heading text-sm font-bold text-on-light">Sign in to preview</div>
+              <div class="text-xs text-on-light-2">Invitation-only while we onboard users</div>
+            </div>
+          </div>
+        </figcaption>
+      </div>
+    </div>
+  </figure>
+</div>

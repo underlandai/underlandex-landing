@@ -1,5 +1,6 @@
 ---
 import '~/assets/styles/tailwind.css';
+import ralewayUrl from '~/assets/fonts/raleway-latin-wght-normal.woff2?url';
 
 import { I18N } from 'astrowind:config';
 
@@ -27,9 +28,10 @@ const { language, textDirection } = I18N;
 ---
 
 <!doctype html>
-<html lang={language} dir={textDirection} class="2xl:text-[20px]">
+<html lang={language} dir={textDirection}>
   <head>
     <CommonMeta />
+    <link rel="preload" href={ralewayUrl} as="font" type="font/woff2" crossorigin />
     <Favicons />
     <CustomStyles />
     <ApplyColorMode />
@@ -38,18 +40,11 @@ const { language, textDirection } = I18N;
     <Analytics />
     <PostHog />
 
-    <!-- Google Fonts for Lichen brand title -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
     <!-- Comment the line below to disable View Transitions -->
     <ClientRouter fallback="swap" />
   </head>
 
-  <body class="antialiased text-default bg-white dark:bg-gray-900 tracking-tight">
-    <div id="background-wrapper" class="fixed inset-0 -z-10 overflow-hidden bg-white dark:bg-gray-900">
-    </div>
+  <body>
     <slot />
 
     <BasicScripts />

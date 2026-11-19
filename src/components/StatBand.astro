@@ -1,0 +1,41 @@
+---
+// Headline figures. Each number counts up once when it scrolls into view (src/scripts/site.ts);
+// the final value is in the HTML, so it reads correctly without JavaScript.
+export interface Stat {
+  value: number;
+  label: string;
+  suffix?: string;
+}
+
+export interface Props {
+  stats: Stat[];
+  class?: string;
+}
+
+const { stats, class: className = '' } = Astro.props;
+const fmt = (n: number) => n.toLocaleString('en-AU');
+---
+
+<dl class:list={['grid grid-cols-2 border-t-2 border-on-light lg:grid-cols-4', className]}>
+  {
+    stats.map((s, i) => (
+      <div
+        class:list={[
+          'flex flex-col-reverse justify-end gap-2 border-b border-line-light py-6 sm:py-8 lg:border-b-0 lg:py-10',
+          i % 2 === 1 ? 'pl-5 sm:pl-8' : 'pr-4',
+          i % 2 === 1 && 'border-l border-line-light',
+          i > 0 && 'lg:border-l lg:border-line-light lg:pl-8',
+        ]}
+      >
+        <dt class="font-heading text-[0.6875rem] font-bold uppercase tracking-label text-on-light-2 sm:text-xs">
+          {s.label}
+        </dt>
+        <dd
+          class="stat-num text-on-light"
+        >
+          <span data-count={s.value}>{fmt(s.value)}</span><span class="text-gold-deep">{s.suffix ?? '+'}</span>
+        </dd>
+      </div>
+    ))
+  }
+</dl>

@@ -1,22 +1,27 @@
 ---
+// UnderlandEX logo. `variant="full"` is the lock-up (mark, wordmark, tagline);
+// `variant="mark"` is the symbol alone. Clear space is part of the component:
+// padding equal to the height of the wordmark's "u" keeps neighbours off the logo.
+import { MARK_VIEWBOX, LOGO_VIEWBOX } from '~/utils/brand';
+
 export interface Props {
+  variant?: 'full' | 'mark';
   class?: string;
-  withTagline?: boolean;
+  decorative?: boolean;
 }
 
-const { class: className = '', withTagline = false } = Astro.props;
+const { variant = 'full', class: className = 'h-11', decorative = false } = Astro.props;
+const isFull = variant === 'full';
 ---
 
-<div class:list={['flex flex-col leading-tight select-none', className]}>
-  <span class="font-heading font-bold text-xl md:text-2xl tracking-tight text-default">
-    Underland<span style="color: #b09763">EX</span>
-  </span>
-  {
-    withTagline && (
-      <span class="text-[11px] md:text-xs text-muted font-medium tracking-wide">
-        Making Mining <span style="color: #89b09f">Visible</span> &amp;{' '}
-        <span style="color: #b09763">Investable</span>
-      </span>
-    )
-  }
-</div>
+<svg
+  viewBox={isFull ? LOGO_VIEWBOX : MARK_VIEWBOX}
+  class:list={['block w-auto flex-none', className]}
+  style={`aspect-ratio:${isFull ? '250.135 / 48.36' : '94.394 / 94.875'}`}
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : 'UnderlandEX'}
+  aria-hidden={decorative ? 'true' : undefined}
+  focusable="false"
+>
+  <use href={isFull ? '#uex-logo' : '#uex-mark'}></use>
+</svg>

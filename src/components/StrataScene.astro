@@ -1,0 +1,50 @@
+---
+// Hero 3D piece: a cut-away block of ground (relief, tenement outlines, strata, ore body, drill traces).
+// The poster renders first at a fixed aspect ratio; src/scripts/site.ts lazy-loads the WebGL scene
+// (src/scripts/strata-scene.js) over it. The poster stays for reduced motion, data saver and no WebGL.
+import poster from '~/assets/images/underlandex/strata-poster.webp';
+
+export interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class={className}>
+  <div class="strata mx-auto max-w-[40rem] lg:max-w-none" data-strata data-state="poster">
+    <img
+      class="strata-poster"
+      src={poster.src}
+      width={poster.width}
+      height={poster.height}
+      alt="Cut-away block of ground: tenement boundaries drawn over the relief, sedimentary strata on the cut faces, drill traces descending to a gold ore body block model."
+      decoding="async"
+      fetchpriority="high"
+    />
+    <canvas class="strata-canvas" aria-hidden="true"></canvas>
+  </div>
+  <ul
+    class="-mt-2 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 px-6 font-heading text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-on-dark-2 lg:-mt-6 lg:pr-12"
+    aria-label="What the model shows"
+  >
+    <li class="flex items-center gap-2">
+      <span class="h-2.5 w-3.5 border-[1.5px] border-gold-bright" aria-hidden="true"></span>Tenements
+    </li>
+    <li class="flex items-center gap-2">
+      <span class="w-3.5 -rotate-[35deg] border-t-[1.5px] border-sand" aria-hidden="true"></span>Drill traces
+    </li>
+    <li class="flex items-center gap-2">
+      <span
+        class="h-2.5 w-2.5 bg-gradient-to-br from-[#f7d98f] to-gold shadow-[0_0_8px_rgba(214,189,131,0.8)]"
+        aria-hidden="true"></span>Ore body
+    </li>
+    <li class="flex items-center gap-2">
+      <span
+        class="h-2.5 w-3.5"
+        style="background:linear-gradient(180deg,#89b09f 0 33%,#dfd7c6 33% 60%,#4a6963 60%)"
+        aria-hidden="true"></span>Strata
+    </li>
+    <li class="font-medium normal-case tracking-[0.04em] opacity-80">Conceptual 3D rendering</li>
+  </ul>
+</div>

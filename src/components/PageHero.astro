@@ -1,0 +1,77 @@
+---
+// Hero for inner pages: dark ground, contour lines, strata divider into the next surface.
+import TopoLines from '~/components/TopoLines.astro';
+import StrataDivider from '~/components/StrataDivider.astro';
+
+interface Action {
+  variant?: 'primary' | 'secondary';
+  text: string;
+  href: string;
+}
+
+export interface Props {
+  tagline?: string;
+  subtitle?: string;
+  actions?: Action[];
+  dividerTo?: string;
+  compact?: boolean;
+  seed?: number;
+}
+
+const { tagline, subtitle, actions = [], dividerTo = '#ece6d8', compact = false, seed = 2 } = Astro.props;
+---
+
+<section
+  class="relative overflow-hidden bg-[linear-gradient(180deg,#07110f_0%,#0b1917_55%,#0d1e1b_100%)] text-on-dark"
+  aria-labelledby="page-title"
+>
+  <TopoLines
+    class="-right-[10%] top-1/2 h-[150%] w-[75%] -translate-y-1/2 text-sage opacity-25 max-lg:w-[130%] max-lg:opacity-[0.13]"
+    seed={seed}
+    marker
+  />
+  <div
+    class="absolute inset-0 bg-[radial-gradient(50rem_30rem_at_78%_45%,rgba(74,105,99,0.28),transparent_70%),linear-gradient(90deg,#0b1917_20%,rgba(11,25,23,0)_75%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div
+    class:list={[
+      'wrap relative',
+      compact ? 'pb-28 pt-14 sm:pb-36 sm:pt-20 lg:pb-40' : 'pb-32 pt-16 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-28',
+    ]}
+  >
+    <div class="max-w-3xl">
+      {tagline && <p class="eyebrow eyebrow-gold">{tagline}</p>}
+      <h1 id="page-title" class:list={[compact ? 'display-sm' : 'display', 'text-on-dark']}>
+        <slot name="title" />
+      </h1>
+      {
+        (subtitle || Astro.slots.has('subtitle')) && (
+          <p class="mt-6 max-w-2xl text-on-dark-2 [font-size:clamp(1.0625rem,1.5vw,1.25rem)] [line-height:1.6]">
+            <slot name="subtitle">{subtitle}</slot>
+          </p>
+        )
+      }
+      {
+        actions.length > 0 && (
+          <div class="mt-8 flex flex-wrap gap-3">
+            {actions.map((a) =>
+              a.href === '#request-access' ? (
+                <a href={a.href} data-open-request-access class={a.variant === 'secondary' ? 'btn-ghost' : 'btn-gold'}>
+                  {a.text}
+                </a>
+              ) : (
+                <a href={a.href} class={a.variant === 'secondary' ? 'btn-ghost' : 'btn-gold'}>
+                  {a.text}
+                </a>
+              )
+            )}
+          </div>
+        )
+      }
+      <slot />
+    </div>
+  </div>
+  <StrataDivider to={dividerTo} />
+</section>

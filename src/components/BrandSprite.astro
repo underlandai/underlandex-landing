@@ -1,0 +1,32 @@
+---
+// The UnderlandEX mark and full lock-up, defined once per page and reused with <use>.
+// Source artwork: src/assets/images/underlandex/mark.svg and logo.svg.
+import { markPaths, MARK_VIEWBOX, LOGO_VIEWBOX, LOGO_MARK_TRANSFORM } from '~/utils/brand';
+---
+
+<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="uex-mark" viewBox={MARK_VIEWBOX}>
+      {markPaths.map((p) => <path fill={p.fill} d={p.d} />)}
+    </symbol>
+    <symbol id="uex-logo" viewBox={LOGO_VIEWBOX}>
+      <g transform={LOGO_MARK_TRANSFORM}>
+        {markPaths.map((p) => <path fill={p.fill} d={p.d} />)}
+      </g>
+      <text
+        x="47.095478"
+        y="24.381544"
+        style="font-weight:500;font-size:30px;font-family:Raleway,sans-serif;letter-spacing:-0.025em;fill:#668a84"
+        >Underland<tspan style="fill:#b09763">EX</tspan></text
+      >
+      <text
+        x="47.095478"
+        y="43.381546"
+        style="font-weight:400;font-size:12px;font-family:'Underland Body',Helvetica,Arial,sans-serif;letter-spacing:0.025em;fill:#999999"
+        >Making Mining&#160;<tspan style="fill:#89b09f">Visible</tspan>&#160;&amp;&#160;<tspan style="fill:#b09763"
+          >Investable</tspan
+        ></text
+      >
+    </symbol>
+  </defs>
+</svg>

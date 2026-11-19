@@ -1,0 +1,47 @@
+---
+// Closing call to action on the dark ground, with contour lines behind it.
+import TopoLines from '~/components/TopoLines.astro';
+
+interface Action {
+  variant?: 'primary' | 'secondary';
+  text: string;
+  href: string;
+}
+
+export interface Props {
+  id?: string;
+  title: string;
+  subtitle?: string;
+  actions?: Action[];
+}
+
+const { id, title, subtitle, actions = [] } = Astro.props;
+---
+
+<section id={id} class="surface-dark relative overflow-hidden py-20 sm:py-24 lg:py-32">
+  <TopoLines class="inset-0 h-full w-full text-sage opacity-25" seed={4} rings={15} />
+  <div
+    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(11,25,23,0.9)_0%,rgba(11,25,23,0.5)_50%,rgba(11,25,23,0)_100%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="wrap relative text-center">
+    <h2 class="display-sm mx-auto max-w-4xl text-on-dark">{title}</h2>
+    {subtitle && <p class="lead mx-auto mt-6 max-w-2xl text-on-dark-2">{subtitle}</p>}
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      {
+        actions.map((a) =>
+          a.href === '#request-access' ? (
+            <a href={a.href} data-open-request-access class={a.variant === 'secondary' ? 'btn-ghost' : 'btn-gold'}>
+              {a.text}
+            </a>
+          ) : (
+            <a href={a.href} class={a.variant === 'secondary' ? 'btn-ghost' : 'btn-gold'}>
+              {a.text}
+            </a>
+          )
+        )
+      }
+    </div>
+  </div>
+</section>

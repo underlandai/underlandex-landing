@@ -1,7 +1,8 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
-import plugin from 'tailwindcss/plugin';
 import typographyPlugin from '@tailwindcss/typography';
 
+// "Strata" design tokens. Brand colours come from the Underland Brand Style Guide;
+// the ink / sand ramps extend them for dark and light surfaces.
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,json,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
@@ -12,53 +13,60 @@ export default {
         accent: 'var(--aw-color-accent)',
         default: 'var(--aw-color-text-default)',
         muted: 'var(--aw-color-text-muted)',
-        // Brand colors from style guide
+        // Brand palette
+        teal: { DEFAULT: '#668a84', dark: '#4a6963', deep: '#3d5852' },
+        sage: '#89b09f',
+        gold: { DEFAULT: '#b09763', bright: '#d6bd83', deep: '#7d6734' },
+        sand: { DEFAULT: '#dfd7c6', 100: '#ece6d8', 50: '#f5f1e8' },
+        // Dark surfaces (deepened teal)
+        ink: {
+          950: '#060f0d',
+          900: '#0b1917',
+          800: '#10231f',
+          700: '#15302b',
+          600: '#1d3a35',
+        },
+        paper: '#f7f8f6',
+        'on-dark': { DEFAULT: '#ece6d8', 2: '#a9b8b1' },
+        'on-light': { DEFAULT: '#17302b', 2: '#4b5754' },
+        // Style-guide names kept for existing content
         'deep-teal': '#668a84',
-        'sage-green': '#89b09f', 
+        'sage-green': '#89b09f',
         'muted-gold': '#b09763',
-        'sandstone': '#dfd7c6',
-        // Legacy lichen colors (keeping for compatibility)
-        'lichen-gold': 'var(--aw-color-gold)',
-        'lichen-beige': 'var(--aw-color-beige)',
-        'lichen-gray': 'var(--aw-color-gray)',
-        'lichen-teal': 'var(--aw-color-teal)',
-        'lichen-sage': 'var(--aw-color-sage)',
-        'lichen-light-green': '#8fbc8f',
+        sandstone: '#dfd7c6',
       },
       fontFamily: {
-        sans: ['Helvetica', ...defaultTheme.fontFamily.sans],
-        serif: ['var(--aw-font-serif, ui-serif)', ...defaultTheme.fontFamily.serif],
-        heading: ['Raleway', ...defaultTheme.fontFamily.sans],
-        raleway: ['Raleway', ...defaultTheme.fontFamily.sans],
+        sans: ['"Underland Body"', 'Helvetica', 'Arial', ...defaultTheme.fontFamily.sans],
+        heading: ['Raleway', '"Underland Body"', 'Helvetica', 'Arial', 'sans-serif'],
+        raleway: ['Raleway', '"Underland Body"', 'Helvetica', 'Arial', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
-
-      animation: {
-        fade: 'fadeInUp 1s both',
-        'spin-slow': 'spin 2.5s linear infinite',
-        'spin-once': 'spin-once 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+      maxWidth: {
+        wrap: '77rem',
       },
-
+      borderColor: {
+        'line-dark': 'rgba(137, 176, 159, 0.18)',
+        'line-light': 'rgba(74, 105, 99, 0.22)',
+      },
+      letterSpacing: {
+        label: '0.16em',
+      },
+      boxShadow: {
+        frame: '0 30px 60px -20px rgba(3, 10, 9, 0.55), 0 0 0 1px rgba(137, 176, 159, 0.16)',
+        card: '0 1px 2px rgba(23, 48, 43, 0.06), 0 12px 32px -16px rgba(23, 48, 43, 0.22)',
+      },
       keyframes: {
-        fadeInUp: {
-          '0%': { opacity: 0, transform: 'translateY(2rem)' },
-          '100%': { opacity: 1, transform: 'translateY(0)' },
+        'live-ping': {
+          '0%': { boxShadow: '0 0 0 0 rgba(137, 176, 159, 0.6)' },
+          '70%': { boxShadow: '0 0 0 8px rgba(137, 176, 159, 0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(137, 176, 159, 0)' },
         },
-        spin: {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' },
-        },
-        'spin-once': {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' },
-        },
+      },
+      animation: {
+        'live-ping': 'live-ping 2s infinite',
       },
     },
   },
-  plugins: [
-    typographyPlugin,
-    plugin(({ addVariant }) => {
-      addVariant('intersect', '&:not([no-intersect])');
-    }),
-  ],
+  plugins: [typographyPlugin],
   darkMode: 'class',
 };

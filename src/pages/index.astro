@@ -1,21 +1,17 @@
 ---
+import { Icon } from 'astro-icon/components';
 import Layout from '~/layouts/PageLayout.astro';
-import Header from '~/components/widgets/Header.astro';
-import Footer from '~/components/widgets/Footer.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import Features3 from '~/components/widgets/Features3.astro';
-import Content from '~/components/widgets/Content.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import Pricing from '~/components/widgets/Pricing.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+import HomeHero from '~/components/HomeHero.astro';
+import SectionHead from '~/components/SectionHead.astro';
+import StatBand from '~/components/StatBand.astro';
+import FeatureGrid from '~/components/FeatureGrid.astro';
 import ProductPreview from '~/components/ProductPreview.astro';
 import MnaTeaser from '~/components/MnaTeaser.astro';
-import RequestAccessModal from '~/components/RequestAccessModal.astro';
+import AccessTier from '~/components/AccessTier.astro';
+import InsightsTeaser from '~/components/InsightsTeaser.astro';
+import ClosingCta from '~/components/ClosingCta.astro';
+import TopoLines from '~/components/TopoLines.astro';
 
-import { headerData, footerData } from '~/navigation';
-
-import heroGeo from '~/assets/images/underlandex/hero-geo.avif';
 import previewExplorer from '~/assets/images/underlandex/preview-explorer.png';
 import previewMna from '~/assets/images/underlandex/preview-mna.png';
 
@@ -24,7 +20,7 @@ const metadata = {
   ignoreTitleTemplate: true,
 };
 
-// Build-time fetch from prod stats API (rebuilds on deploy)
+// Fetched from the production stats API when the page is rendered; falls back to the figures below.
 let liveStats = {
   totalSites: 255344,
   totalOwners: 3449,
@@ -38,262 +34,307 @@ try {
     const data = await res.json();
     liveStats = { ...liveStats, ...data };
   }
-} catch (e) {
-  // fall back to hardcoded defaults above
+} catch {
+  // fall back to the defaults above
 }
 
 const fmt = (n: number) => n.toLocaleString('en-AU');
+
+const activities = [
+  {
+    title: 'Origination & Network',
+    description:
+      'Active network across Australian and Hong Kong mining communities for inbound deal flow. Proprietary screening across 250,000+ assets, 9,000+ companies, 85,000+ tenements and 70,000+ JORC resource estimates, augmented by machine-learning signal generation. Greenfields and brownfields exploration target generation, acquisition target identification and offtake counterparty origination.',
+    icon: 'tabler:radar-2',
+  },
+  {
+    title: 'Project Due Diligence',
+    description:
+      'Geological model review, drill database auditing, subsurface geophysical imaging, mining tenement and rights review, fatal flaw analysis, on-site technical assessment across multi-commodity targets.',
+    icon: 'tabler:zoom-check',
+  },
+  {
+    title: 'Valuation & Capital Structuring',
+    description:
+      'Financial modelling for valuation and debt/equity capital structuring (DCF, NAV, financing scenarios). Investment memoranda and project finance term sheets. Sourcing project finance.',
+    icon: 'tabler:calculator',
+  },
+  {
+    title: 'Transaction Execution & Investor Relations',
+    description:
+      'Data room compilation and management. Coordination of independent technical reports (geological, metallurgical, environmental). Investor relations, lead nurture and stakeholder management. Commercial contract negotiation.',
+    icon: 'tabler:briefcase',
+  },
+];
+
+const audiences = [
+  {
+    title: 'Institutional investors',
+    description: 'Screen 255,000+ assets, model comparable transactions, monitor portfolio-wide exposure.',
+    icon: 'tabler:briefcase',
+  },
+  {
+    title: 'Exploration companies',
+    description: 'Benchmark projects against peers. Identify tenement adjacencies. Find partners.',
+    icon: 'tabler:drone',
+  },
+  {
+    title: 'Sector analysts',
+    description:
+      'Live price feeds, production tracking, and continuously updated reference data across listed materials names.',
+    icon: 'tabler:chart-candle',
+  },
+  {
+    title: 'Royalty holders',
+    description: 'Valuation comparables for every JORC-estimated deposit. NAV modelling and stream analysis.',
+    icon: 'tabler:coin',
+  },
+  {
+    title: 'Governments & regulators',
+    description: 'Jurisdiction-wide tenement maps, ownership chains and production histories, all in one place.',
+    icon: 'tabler:gavel',
+  },
+  {
+    title: 'Family offices',
+    description:
+      'Access to the resources sector once reserved for institutional desks. Simple, comprehensive, private.',
+    icon: 'tabler:building-bank',
+  },
+];
+
+const depth = [
+  {
+    title: 'Every listed mining asset',
+    description:
+      'Continuously ingested from stock exchange announcements, regulatory filings and jurisdictional registries across Australia, Canada, the UK and the USA.',
+    icon: 'tabler:database',
+    band: 'bg-sage',
+  },
+  {
+    title: 'Every corporate action, as it happens',
+    description:
+      'ASX, TSX, LSE and EDGAR announcement feeds. M&A, capital raises, JORC updates, exploration results — in one place.',
+    icon: 'tabler:rss',
+    band: 'bg-gold',
+  },
+  {
+    title: 'Every tenement boundary',
+    description:
+      'Spatial data across Australian jurisdictions, with expansion into Canada, the USA and Africa underway.',
+    icon: 'tabler:map',
+    band: 'bg-teal-dark',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="announcement">
-    <Header {...headerData} isSticky />
-  </Fragment>
-
-  <!-- HERO -->
-  <Hero
+  <!-- HERO: what it is -->
+  <HomeHero
     tagline="Private mining data & service engine"
     actions={[
       { variant: 'primary', text: 'Request Access', href: '#request-access' },
       { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
     ]}
-    image={{ src: heroGeo, alt: 'Subsurface geological model' }}
+    feedsLabel="Listed-company announcements from"
+    feeds={['ASX', 'TSX', 'LSE', 'HKEX', 'EDGAR']}
   >
     <Fragment slot="title">
-      The world beneath,<br />
-      <span class="text-primary">mapped.</span>
+      The world beneath,
+      <span class="block text-gold">mapped.</span>
     </Fragment>
     <Fragment slot="subtitle">
-      Private screening, due-diligence, valuation and transaction-execution engine across <strong>{fmt(liveStats.totalSites)}+</strong> mining assets, <strong>9,000+</strong> companies, <strong>85,000+</strong> tenements and <strong>70,000+</strong> JORC resource estimates. Not for redistribution.
+      Private screening, due-diligence, valuation and transaction-execution engine across <strong
+        >{fmt(liveStats.totalSites)}+</strong
+      > mining assets, <strong>9,000+</strong> companies, <strong>85,000+</strong> tenements and <strong>70,000+</strong> JORC
+      resource estimates. Not for redistribution.
     </Fragment>
-    <Fragment slot="content">
-      <div class="flex justify-center mt-8">
-        <a href="#data" class="text-muted hover:text-primary transition animate-bounce" aria-label="Scroll to data">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-          </svg>
-        </a>
+  </HomeHero>
+
+  <!-- THE DATABASE, IN NUMBERS -->
+  <section id="data" class="surface-sand relative pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24" aria-labelledby="data-title">
+    <div class="wrap">
+      <SectionHead
+        eyebrow="The database, in numbers"
+        title="Live from the world's most comprehensive mining dataset"
+        sub="Always live. Continuously updated from the world's major stock exchanges and regulatory registries."
+        id="data-title"
+        layout="split"
+      />
+      <StatBand
+        stats={[
+          { value: liveStats.totalSites, label: 'Mining assets tracked' },
+          { value: liveStats.totalOwners, label: 'Mining companies' },
+          { value: liveStats.totalTenements, label: 'Tenements mapped' },
+          { value: liveStats.totalResourceEstimates, label: 'JORC resource estimates' },
+        ]}
+      />
+    </div>
+  </section>
+
+  <!-- WHAT WE DO: four activities -->
+  <section id="activities" class="section surface-dark overflow-hidden" aria-labelledby="activities-title">
+    <TopoLines class="-left-[20%] top-0 h-full w-[70%] text-sage opacity-[0.07]" seed={7} />
+    <div class="wrap relative grid gap-x-14 gap-y-10 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-28">
+          <p class="eyebrow eyebrow-gold">What we do</p>
+          <h2 id="activities-title" class="h-section text-on-dark">
+            A private engine for four mining-services activities.
+          </h2>
+        </div>
       </div>
-    </Fragment>
-  </Hero>
-
-  <!-- LIVE STATS TICKER -->
-  <Stats
-    id="data"
-    tagline="The database, in numbers"
-    title="Live from the world's most comprehensive mining dataset"
-    subtitle="Always live. Continuously updated from the world's major stock exchanges and regulatory registries."
-    stats={[
-      { amount: `${fmt(liveStats.totalSites)}+`, title: 'Mining assets tracked', icon: 'tabler:map-pin' },
-      { amount: `${fmt(liveStats.totalOwners)}+`, title: 'Mining companies', icon: 'tabler:building-factory-2' },
-      { amount: `${fmt(liveStats.totalTenements)}+`, title: 'Tenements mapped', icon: 'tabler:file-certificate' },
-      { amount: `${fmt(liveStats.totalResourceEstimates)}+`, title: 'JORC resource estimates', icon: 'tabler:chart-bar' },
-    ]}
-  />
-
-  <!-- ACTIVITY PILLARS -->
-  <Features3
-    id="activities"
-    tagline="What we do"
-    title="A private engine for four mining-services activities."
-    columns={2}
-    defaultIcon="tabler:arrow-right"
-    items={[
-      {
-        title: 'Origination & Network',
-        description:
-          'Active network across Australian and Hong Kong mining communities for inbound deal flow. Proprietary screening across 250,000+ assets, 9,000+ companies, 85,000+ tenements and 70,000+ JORC resource estimates, augmented by machine-learning signal generation. Greenfields and brownfields exploration target generation, acquisition target identification and offtake counterparty origination.',
-        icon: 'tabler:radar-2',
-      },
-      {
-        title: 'Project Due Diligence',
-        description:
-          'Geological model review, drill database auditing, subsurface geophysical imaging, mining tenement and rights review, fatal flaw analysis, on-site technical assessment across multi-commodity targets.',
-        icon: 'tabler:zoom-check',
-      },
-      {
-        title: 'Valuation & Capital Structuring',
-        description:
-          'Financial modelling for valuation and debt/equity capital structuring (DCF, NAV, financing scenarios). Investment memoranda and project finance term sheets. Sourcing project finance.',
-        icon: 'tabler:calculator',
-      },
-      {
-        title: 'Transaction Execution & Investor Relations',
-        description:
-          'Data room compilation and management. Coordination of independent technical reports (geological, metallurgical, environmental). Investor relations, lead nurture and stakeholder management. Commercial contract negotiation.',
-        icon: 'tabler:briefcase',
-      },
-    ]}
-  />
-
-  <!-- CAPABILITY CARDS -->
-  <Features3
-    id="products"
-    tagline="Two products. One platform."
-    title="The internal tools powering the engine."
-    columns={2}
-    defaultIcon="tabler:arrow-right"
-    items={[
-      {
-        title: 'UnderlandEX Explorer',
-        description:
-          'Internal discovery layer. Search thousands of live projects across every commodity, jurisdiction, stage and ownership. Search patterns built for how property investors think.',
-        icon: 'tabler:search',
-      },
-      {
-        title: 'UnderlandEX M&A',
-        description:
-          'Every listed-company announcement from ASX, TSX, LSE, HKEX and EDGAR — cross-referenced against our internal project database. Morning brief, weekly report, quarterly league tables.',
-        icon: 'tabler:trending-up',
-      },
-    ]}
-  />
-
-  <!-- GATED PREVIEW: EXPLORER -->
-  <ProductPreview
-    badge="UnderlandEX Explorer"
-    title="Every deposit. Every tenement. Every owner."
-    caption="Search the database the way property investors search homes. Filter by commodity, jurisdiction, stage and ownership. Open any asset to see the full technical picture — resource estimates, production history, partnership structure."
-    image={previewExplorer}
-  />
-
-  <!-- GATED PREVIEW: M&A -->
-  <ProductPreview
-    badge="UnderlandEX M&A"
-    title="Track every corporate action."
-    caption="A live feed of every listed-company announcement. M&A, capital raises, resource upgrades, exploration results — pulled from stock exchange disclosures the moment they hit the wire, resolved against the UnderlandEX project database."
-    image={previewMna}
-    reverse={true}
-  />
-
-  <!-- LIVE WIRE: recent M&A deals from mna.underlandex.com -->
-  <MnaTeaser />
+      <ol class="grid gap-5 sm:grid-cols-2 lg:col-span-8">
+        {
+          activities.map((a, i) => (
+            <li class="relative flex flex-col overflow-hidden rounded-2xl border border-line-dark bg-ink-800/80 p-6 sm:p-7">
+              <div class="mb-6 flex items-center gap-4">
+                <span class="font-heading text-sm font-bold tracking-label text-gold-bright" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="h-px flex-1 bg-sage/20" aria-hidden="true" />
+                <span class="grid h-11 w-11 place-items-center rounded-lg bg-ink-700 text-sage ring-1 ring-inset ring-sage/20">
+                  <Icon name={a.icon} class="h-[1.375rem] w-[1.375rem]" aria-hidden="true" />
+                </span>
+              </div>
+              <h3 class="text-xl leading-tight text-on-dark">{a.title}</h3>
+              <p class="mt-3 text-[0.9375rem] leading-relaxed text-on-dark-2">{a.description}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
 
   <!-- WHO IT'S FOR -->
-  <Features3
-    tagline="Who it's for"
-    title="Tailored to the people who move the market."
-    columns={3}
-    defaultIcon="tabler:users"
-    items={[
-      { title: 'Institutional investors', description: 'Screen 255,000+ assets, model comparable transactions, monitor portfolio-wide exposure.', icon: 'tabler:briefcase' },
-      { title: 'Exploration companies', description: 'Benchmark projects against peers. Identify tenement adjacencies. Find partners.', icon: 'tabler:drone' },
-      { title: 'Sector analysts', description: 'Live price feeds, production tracking, and continuously updated reference data across listed materials names.', icon: 'tabler:chart-candle' },
-      { title: 'Royalty holders', description: 'Valuation comparables for every JORC-estimated deposit. NAV modelling and stream analysis.', icon: 'tabler:coin' },
-      { title: 'Governments & regulators', description: 'Jurisdiction-wide tenement maps, ownership chains and production histories, all in one place.', icon: 'tabler:gavel' },
-      { title: 'Family offices', description: 'Access to the resources sector once reserved for institutional desks. Simple, comprehensive, private.', icon: 'tabler:building-bank' },
-    ]}
-  />
+  <section id="audiences" class="section surface-paper" aria-labelledby="audiences-title">
+    <div class="wrap">
+      <SectionHead
+        eyebrow="Who it's for"
+        title="Tailored to the people who move the market."
+        id="audiences-title"
+      />
+      <FeatureGrid items={audiences} numbered />
+    </div>
+  </section>
 
-  <!-- DATA DEPTH -->
-  <Content
-    id="about"
-    tagline="Beyond the surface"
-    title="Most platforms show what's listed. We show what's there."
-    items={[
-      {
-        title: 'Every listed mining asset',
-        description:
-          'Continuously ingested from stock exchange announcements, regulatory filings and jurisdictional registries across Australia, Canada, the UK and the USA.',
-        icon: 'tabler:database',
-      },
-      {
-        title: 'Every corporate action, as it happens',
-        description:
-          'ASX, TSX, LSE and EDGAR announcement feeds. M&A, capital raises, JORC updates, exploration results — in one place.',
-        icon: 'tabler:rss',
-      },
-      {
-        title: 'Every tenement boundary',
-        description:
-          'Spatial data across Australian jurisdictions, with expansion into Canada, the USA and Africa underway.',
-        icon: 'tabler:map',
-      },
-    ]}
-    image={{ src: heroGeo, alt: 'Subsurface geological model' }}
-  >
-    <Fragment slot="content">
-      <p class="text-muted">
-        UnderlandEX is the internal reference database powering our mining-services work. We continuously ingest every
-        listed mining company announcement across the major exchanges and resolve each one against our project, company
-        and tenement records — so every deposit, ownership change, resource update and corporate action lands on the
-        right page, with sources attached. Not for redistribution.
-      </p>
-    </Fragment>
-  </Content>
+  <!-- WHAT IS INSIDE: two products -->
+  <section id="products" class="section surface-dark" aria-labelledby="products-title">
+    <div class="wrap">
+      <SectionHead
+        eyebrow="Two products. One platform."
+        title="The internal tools powering the engine."
+        id="products-title"
+        tone="dark"
+      />
+      <div class="space-y-20 lg:space-y-28">
+        <ProductPreview
+          badge="UnderlandEX Explorer"
+          title="Every deposit. Every tenement. Every owner."
+          caption="Search the database the way property investors search homes. Filter by commodity, jurisdiction, stage and ownership. Open any asset to see the full technical picture — resource estimates, production history, partnership structure."
+          note="Internal discovery layer. Search thousands of live projects across every commodity, jurisdiction, stage and ownership. Search patterns built for how property investors think."
+          image={previewExplorer}
+          address="app.underlandex.com"
+          moreHref="/explorer"
+          moreText="More on Explorer"
+        />
+        <ProductPreview
+          badge="UnderlandEX M&A"
+          title="Track every corporate action."
+          caption="A live feed of every listed-company announcement. M&A, capital raises, resource upgrades, exploration results — pulled from stock exchange disclosures the moment they hit the wire, resolved against the UnderlandEX project database."
+          note="Every listed-company announcement from ASX, TSX, LSE, HKEX and EDGAR — cross-referenced against our internal project database. Morning brief, weekly report, quarterly league tables."
+          image={previewMna}
+          address="mna.underlandex.com"
+          moreHref="/mna"
+          moreText="More on M&A"
+          reverse={true}
+        />
+      </div>
+    </div>
+  </section>
 
-  <!-- PRICING -->
-  <Pricing
+  <!-- PROOF: depth of the data, and the live wire -->
+  <section id="about" class="section surface-sand" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="grid gap-x-16 gap-y-10 lg:grid-cols-2">
+        <div>
+          <p class="eyebrow">Beyond the surface</p>
+          <h2 id="about-title" class="h-section text-on-light">
+            Most platforms show what's listed. We show what's there.
+          </h2>
+          <p class="lead mt-6 text-on-light-2">
+            UnderlandEX is the internal reference database powering our mining-services work. We continuously ingest
+            every listed mining company announcement across the major exchanges and resolve each one against our project,
+            company and tenement records — so every deposit, ownership change, resource update and corporate action
+            lands on the right page, with sources attached. Not for redistribution.
+          </p>
+        </div>
+        <ol class="overflow-hidden rounded-2xl bg-sand-50 shadow-card ring-1 ring-teal-dark/10">
+          {
+            depth.map((d, i) => (
+              <li class="relative flex gap-5 border-b border-teal-dark/15 p-6 pl-8 last:border-b-0 sm:p-7 sm:pl-10">
+                <span class:list={['absolute inset-y-0 left-0 w-2', d.band]} aria-hidden="true" />
+                <span class="grid h-11 w-11 flex-none place-items-center rounded-lg bg-teal-dark text-sand-100">
+                  <Icon name={d.icon} class="h-[1.375rem] w-[1.375rem]" aria-hidden="true" />
+                </span>
+                <div>
+                  <span class="mb-1 block font-heading text-[0.6875rem] font-bold tracking-label text-on-light-2" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <h3 class="text-lg leading-snug text-on-light">{d.title}</h3>
+                  <p class="mt-2 text-[0.9375rem] leading-relaxed text-on-light-2">{d.description}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="mt-16 lg:mt-24">
+        <MnaTeaser />
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCESS: one tier -->
+  <AccessTier
     id="pricing"
     tagline="Access"
-    title="Simple tiers. Scaled to the way you work."
-    prices={[
+    title="One tier. Everything included."
+    subtitle="Full platform: Explorer + M&A + API"
+    groups={[
       {
         title: 'Explorer',
-        subtitle: 'Discover and evaluate',
-        price: 'Free',
-        period: 'Invitation on approval',
         items: [
-          { description: 'Search listed projects' },
-          { description: 'Basic commodity & jurisdiction filters' },
-          { description: 'Public ownership data' },
+          'Search listed projects',
+          'Basic commodity & jurisdiction filters',
+          'Public ownership data',
+          'JORC resource estimates & production history',
+          'CSV export',
         ],
-        callToAction: { text: 'Request access', href: '#request-access' },
       },
       {
-        title: 'Professional',
-        subtitle: 'Full Explorer + M&A',
-        price: 'Contact',
-        period: 'per seat / month',
-        items: [
-          { description: 'Everything in Explorer' },
-          { description: 'Real-time M&A corporate-action feed' },
-          { description: 'Morning brief + weekly report' },
-          { description: 'JORC resource estimates & production history' },
-          { description: 'CSV export' },
-        ],
-        callToAction: { text: 'Request pricing', href: '#request-access' },
-        hasRibbon: true,
-        ribbonTitle: 'Most popular',
+        title: 'M&A',
+        items: ['Real-time M&A corporate-action feed', 'Morning brief + weekly report'],
       },
       {
-        title: 'Enterprise',
-        subtitle: 'Full platform + API',
-        price: 'Bespoke',
-        period: 'Annual contract',
-        items: [
-          { description: 'Everything in Professional' },
-          { description: 'API access & bulk data export' },
-          { description: 'Priority support' },
-          { description: 'Dedicated account manager' },
-        ],
-        callToAction: { text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
+        title: 'Platform & support',
+        items: ['API access & bulk data export', 'Priority support', 'Dedicated account manager'],
       },
     ]}
   />
 
-  <!-- INSIGHTS / BLOG -->
-  <BlogLatestPosts
+  <!-- INSIGHTS -->
+  <InsightsTeaser
     id="insights"
     title="Insights"
-    information={'Weekly intelligence briefings, data drops and market commentary.'}
+    information="Weekly intelligence briefings, data drops and market commentary."
   />
 
   <!-- FINAL CTA -->
-  <CallToAction
+  <ClosingCta
     id="request-access-cta"
-    actions={[
-      { variant: 'primary', text: 'Request Access', href: '#request-access' },
-    ]}
-  >
-    <Fragment slot="title">A complete, sourced record of mining assets and corporate actions.</Fragment>
-    <Fragment slot="subtitle">
-      Join the institutional investors, traders and exploration teams already using UnderlandEX.
-    </Fragment>
-  </CallToAction>
-
-  <Footer {...footerData} />
-
-  <!-- GLOBAL MODAL -->
-  <RequestAccessModal />
+    title="A complete, sourced record of mining assets and corporate actions."
+    subtitle="Join the institutional investors, traders and exploration teams already using UnderlandEX."
+    actions={[{ variant: 'primary', text: 'Request Access', href: '#request-access' }]}
+  />
 </Layout>

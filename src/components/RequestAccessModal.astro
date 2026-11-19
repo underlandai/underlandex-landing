@@ -1,75 +1,57 @@
 ---
-// Request-access modal — client-side controlled.
-// Any element with `data-open-request-access` triggers it; also listens for
-// hash `#request-access`. Form posts to /api/request-access (server route).
+// Request-access dialog. Opened by any element with `data-open-request-access`, any link to
+// `#request-access`, or that hash in the URL (see src/scripts/site.ts). The form posts JSON to
+// /api/request-access (server route).
+import Logo from '~/components/Logo.astro';
 ---
 
-<div
-  id="request-access-modal"
-  class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-sm"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="request-access-title"
->
-  <div class="relative w-full max-w-md mx-4 bg-white rounded-lg shadow-2xl p-6 md:p-8">
+<dialog id="request-access-modal" class="modal" aria-labelledby="request-access-title">
+  <div class="relative p-6 sm:p-8">
     <button
       type="button"
       data-close-request-access
-      class="absolute top-3 right-3 text-gray-400 hover:text-gray-700 transition"
+      class="absolute right-3 top-3 grid h-11 w-11 place-items-center rounded-lg text-on-light-2 transition-colors hover:bg-teal-dark/10 hover:text-on-light"
       aria-label="Close"
     >
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M6 18 18 6M6 6l12 12"></path>
       </svg>
     </button>
 
-    <h2 id="request-access-title" class="font-heading font-bold text-2xl text-default mb-2">
+    <Logo variant="mark" class="mb-4 h-9" decorative />
+    <h2 id="request-access-title" class="mb-2 font-heading text-2xl font-bold tracking-tight text-on-light">
       Request access
     </h2>
-    <p class="text-sm text-muted mb-6">
-      UnderlandEX is invitation-only while we onboard institutional users.
-      Tell us about you — we&rsquo;ll be in touch within one business day.
+    <p class="mb-6 text-sm leading-relaxed text-on-light-2">
+      UnderlandEX is invitation-only while we onboard institutional users. Tell us about you — we&rsquo;ll be in touch
+      within one business day.
     </p>
 
-    <form id="request-access-form" class="space-y-3" novalidate>
+    <form id="request-access-form" class="space-y-4" novalidate data-astro-reload>
       <div>
-        <label for="ra-name" class="block text-xs font-medium text-gray-700 mb-1">Full name</label>
-        <input
-          id="ra-name"
-          name="name"
-          type="text"
-          required
-          class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-        />
+        <label for="ra-name" class="field-label">Full name</label>
+        <input id="ra-name" name="name" type="text" autocomplete="name" required class="field" />
       </div>
       <div>
-        <label for="ra-email" class="block text-xs font-medium text-gray-700 mb-1">Work email</label>
-        <input
-          id="ra-email"
-          name="email"
-          type="email"
-          required
-          class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-        />
+        <label for="ra-email" class="field-label">Work email</label>
+        <input id="ra-email" name="email" type="email" autocomplete="email" required class="field" />
       </div>
       <div>
-        <label for="ra-company" class="block text-xs font-medium text-gray-700 mb-1">Company</label>
-        <input
-          id="ra-company"
-          name="company"
-          type="text"
-          required
-          class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-        />
+        <label for="ra-company" class="field-label">Company</label>
+        <input id="ra-company" name="company" type="text" autocomplete="organization" required class="field" />
       </div>
       <div>
-        <label for="ra-role" class="block text-xs font-medium text-gray-700 mb-1">Role</label>
-        <select
-          id="ra-role"
-          name="role"
-          required
-          class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
-        >
+        <label for="ra-role" class="field-label">Role</label>
+        <select id="ra-role" name="role" required class="field">
           <option value="">Select…</option>
           <option>Institutional investor</option>
           <option>Exploration company</option>
@@ -81,94 +63,22 @@
         </select>
       </div>
       <div>
-        <label for="ra-source" class="block text-xs font-medium text-gray-700 mb-1">Interested product</label>
-        <select
-          id="ra-source"
-          name="product"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
-        >
+        <label for="ra-source" class="field-label">Interested product</label>
+        <select id="ra-source" name="product" class="field">
           <option>UnderlandEX Explorer</option>
           <option>UnderlandEX M&amp;A</option>
           <option>All of the above</option>
         </select>
       </div>
 
-      <button
-        type="submit"
-        class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-2.5 rounded-md transition mt-2"
+      <button type="submit" class="btn-gold !mt-6 w-full">Request access</button>
+      <p
+        id="ra-status"
+        role="status"
+        aria-live="polite"
+        class="min-h-5 text-center text-sm text-on-light-2 data-[kind=error]:text-red-700 data-[kind=ok]:text-teal-deep"
       >
-        Request access
-      </button>
-      <p id="ra-status" class="text-xs text-center mt-2 min-h-[1rem]"></p>
+      </p>
     </form>
   </div>
-</div>
-
-<script is:inline>
-  (function () {
-    const modal = document.getElementById('request-access-modal');
-    const form = document.getElementById('request-access-form');
-    const status = document.getElementById('ra-status');
-    if (!modal || !form || !status) return;
-
-    function open() {
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    }
-    function close() {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-    }
-
-    document.addEventListener('click', function (e) {
-      const target = e.target;
-      if (!(target instanceof Element)) return;
-      if (target.closest('a[href="#request-access"]')) {
-        e.preventDefault();
-        open();
-        return;
-      }
-      if (target.closest('[data-open-request-access]')) {
-        e.preventDefault();
-        open();
-      }
-      if (target.closest('[data-close-request-access]')) {
-        close();
-      }
-      if (target === modal) close();
-    });
-
-    window.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') close();
-    });
-
-    if (window.location.hash === '#request-access') open();
-    window.addEventListener('hashchange', function () {
-      if (window.location.hash === '#request-access') open();
-    });
-
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      status.textContent = 'Submitting…';
-      status.className = 'text-xs text-center mt-2 min-h-[1rem] text-gray-500';
-      const data = Object.fromEntries(new FormData(form).entries());
-      try {
-        const res = await fetch('/api/request-access', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error('request failed');
-        status.textContent = 'Thanks — check your inbox.';
-        status.className = 'text-xs text-center mt-2 min-h-[1rem] text-green-700';
-        form.reset();
-        setTimeout(close, 1800);
-      } catch (err) {
-        status.textContent = 'Something went wrong. Email oliver@underlandex.com.';
-        status.className = 'text-xs text-center mt-2 min-h-[1rem] text-red-600';
-      }
-    });
-  })();
-</script>
+</dialog>

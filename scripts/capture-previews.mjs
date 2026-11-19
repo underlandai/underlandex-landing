@@ -6,7 +6,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(__dirname, '../src/assets/images/underlandex');
 
 const targets = [
-  { url: 'https://underlandex.com/', out: 'preview-explorer.png', waitFor: 3000, scrollTo: 300 },
+  // Explorer lives at app.underlandex.com (underlandex.com is this landing site)
+  { url: 'https://app.underlandex.com/', out: 'preview-explorer.png', waitFor: 3000, scrollTo: 300 },
   { url: 'https://mna.underlandex.com/', out: 'preview-mna.png', waitFor: 4000, scrollTo: 200 },
 ];
 

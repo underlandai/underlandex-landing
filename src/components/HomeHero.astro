@@ -1,0 +1,70 @@
+---
+// Home hero: what UnderlandEX is, the two actions, and the 3D cut-away of the ground.
+import StrataScene from '~/components/StrataScene.astro';
+import StrataDivider from '~/components/StrataDivider.astro';
+
+interface Action {
+  variant?: 'primary' | 'secondary';
+  text: string;
+  href: string;
+}
+
+export interface Props {
+  tagline: string;
+  actions: Action[];
+  feeds?: string[];
+  feedsLabel?: string;
+}
+
+const { tagline, actions, feeds = [], feedsLabel } = Astro.props;
+---
+
+<section
+  class="relative overflow-hidden text-on-dark"
+  style="background:radial-gradient(60rem 38rem at 76% 44%,rgba(74,105,99,0.34),transparent 68%),radial-gradient(40rem 26rem at 8% 0%,rgba(176,151,99,0.09),transparent 70%),linear-gradient(180deg,#07110f 0%,#0b1917 55%,#0d1e1b 100%)"
+  aria-labelledby="hero-title"
+>
+  <div
+    class="wrap relative z-[1] grid items-center gap-4 pb-28 pt-10 sm:pb-36 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:pb-40 lg:pt-16"
+  >
+    <div class="relative z-[2]">
+      <p class="eyebrow eyebrow-gold">{tagline}</p>
+      <h1 id="hero-title" class="display text-on-dark"><slot name="title" /></h1>
+      <p
+        class="mt-6 max-w-[34rem] text-on-dark-2 [font-size:clamp(1.0625rem,1.5vw,1.25rem)] [line-height:1.6] [&_strong]:font-heading [&_strong]:font-bold [&_strong]:text-on-dark [&_strong]:[font-feature-settings:'lnum']"
+      >
+        <slot name="subtitle" />
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        {
+          actions.map((a) =>
+            a.href === '#request-access' ? (
+              <a href={a.href} data-open-request-access class={a.variant === 'secondary' ? 'btn-ghost' : 'btn-gold'}>
+                {a.text}
+              </a>
+            ) : (
+              <a href={a.href} class={a.variant === 'secondary' ? 'btn-ghost' : 'btn-gold'}>
+                {a.text}
+              </a>
+            )
+          )
+        }
+      </div>
+      {
+        feeds.length > 0 && (
+          <p class="mt-9 flex flex-wrap items-center gap-2 text-[0.8125rem] text-on-dark-2">
+            <span class="mr-1">{feedsLabel}</span>
+            {feeds.map((f) => (
+              <span class="rounded border border-line-dark px-2 py-0.5 font-heading text-[0.6875rem] font-bold tracking-[0.12em] text-on-dark">
+                {f}
+              </span>
+            ))}
+          </p>
+        )
+      }
+    </div>
+
+    <StrataScene class="-mx-4 mt-2 sm:-mx-6 lg:-ml-8 lg:-mr-20 lg:mt-0" />
+  </div>
+  <StrataDivider to="#ece6d8" />
+</section>

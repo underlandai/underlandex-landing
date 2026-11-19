@@ -1,74 +1,95 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-import Header from '~/components/widgets/Header.astro';
-import Footer from '~/components/widgets/Footer.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Features3 from '~/components/widgets/Features3.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
+import PageHero from '~/components/PageHero.astro';
+import SectionHead from '~/components/SectionHead.astro';
+import FeatureGrid from '~/components/FeatureGrid.astro';
 import ProductPreview from '~/components/ProductPreview.astro';
-import RequestAccessModal from '~/components/RequestAccessModal.astro';
+import ClosingCta from '~/components/ClosingCta.astro';
 
-import { headerData, footerData } from '~/navigation';
 import previewMna from '~/assets/images/underlandex/preview-mna.png';
 
 const metadata = {
   title: 'UnderlandEX M&A — Mining corporate-action reference',
 };
+
+const actions = [
+  { variant: 'primary' as const, text: 'Request Access', href: '#request-access' },
+  { variant: 'secondary' as const, text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
+];
 ---
 
 <Layout metadata={metadata}>
-  <Fragment slot="announcement">
-    <Header {...headerData} isSticky />
-  </Fragment>
-
-  <Hero
-    tagline="UnderlandEX M&A"
-    actions={[
-      { variant: 'primary', text: 'Request Access', href: '#request-access' },
-      { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
-    ]}
-  >
+  <PageHero tagline="UnderlandEX M&A" actions={actions} dividerTo="#0b1917" seed={5}>
     <Fragment slot="title">
-      Mining corporate-action<br /><span class="text-primary">reference.</span>
+      Mining corporate-action
+      <span class="block text-gold">reference.</span>
     </Fragment>
     <Fragment slot="subtitle">
       A live feed of every listed-company mining announcement across the ASX, TSX, LSE and EDGAR — resolved against
       UnderlandEX project records, the moment it hits the wire.
     </Fragment>
-  </Hero>
+  </PageHero>
 
-  <ProductPreview
-    badge="What you see inside"
-    title="Announcement coverage, morning brief, league tables."
-    caption="Every M&A announcement, capital raise, JORC resource update and exploration result — pulled from exchange disclosures and resolved against our 255,000-asset database. Daily morning brief. Weekly written report. Quarterly league tables for advisors, brokers and lawyers."
-    image={previewMna}
+  <section class="surface-dark pb-16 pt-10 sm:pb-20 lg:pb-28 lg:pt-14" aria-label="What you see inside">
+    <div class="wrap">
+      <ProductPreview
+        badge="What you see inside"
+        title="Announcement coverage, morning brief, league tables."
+        caption="Every M&A announcement, capital raise, JORC resource update and exploration result — pulled from exchange disclosures and resolved against our 255,000-asset database. Daily morning brief. Weekly written report. Quarterly league tables for advisors, brokers and lawyers."
+        image={previewMna}
+        address="mna.underlandex.com"
+        headingLevel="h2"
+      />
+    </div>
+  </section>
+
+  <section class="section surface-sand" aria-labelledby="tracked-title">
+    <div class="wrap">
+      <SectionHead eyebrow="What's tracked" title="Complete corporate-action coverage — live." id="tracked-title" />
+      <FeatureGrid
+        items={[
+          {
+            title: 'M&A transactions',
+            description:
+              'Every mining acquisition, merger, divestment and joint venture, across the four major exchanges.',
+            icon: 'tabler:arrows-exchange',
+          },
+          {
+            title: 'Capital raises',
+            description:
+              'Placements, rights issues, SPPs and private raises — with size, pricing and use-of-funds context.',
+            icon: 'tabler:coin',
+          },
+          {
+            title: 'JORC resource updates',
+            description:
+              'Every resource estimate upgrade or downgrade, tonnage and grade, with historical comparison.',
+            icon: 'tabler:chart-bar',
+          },
+          {
+            title: 'Exploration results',
+            description:
+              'Drilling intercepts, significant assay results and geophysical surveys — flagged by materiality.',
+            icon: 'tabler:drone',
+          },
+          {
+            title: 'Live commodity prices',
+            description: 'Gold, silver, copper, nickel, platinum, palladium, uranium — all in one watchlist.',
+            icon: 'tabler:trending-up',
+          },
+          {
+            title: 'League tables',
+            description: 'Who is buying, who is selling, who is raising — ranked by volume, value and frequency.',
+            icon: 'tabler:list-numbers',
+          },
+        ]}
+      />
+    </div>
+  </section>
+
+  <ClosingCta
+    title="A complete, sourced record of mining corporate actions."
+    subtitle="Invitation-only while we onboard institutional users."
+    actions={actions}
   />
-
-  <Features3
-    tagline="What's tracked"
-    title="Complete corporate-action coverage — live."
-    columns={3}
-    defaultIcon="tabler:arrow-right"
-    items={[
-      { title: 'M&A transactions', description: 'Every mining acquisition, merger, divestment and joint venture, across the four major exchanges.', icon: 'tabler:arrows-exchange' },
-      { title: 'Capital raises', description: 'Placements, rights issues, SPPs and private raises — with size, pricing and use-of-funds context.', icon: 'tabler:coin' },
-      { title: 'JORC resource updates', description: 'Every resource estimate upgrade or downgrade, tonnage and grade, with historical comparison.', icon: 'tabler:chart-bar' },
-      { title: 'Exploration results', description: 'Drilling intercepts, significant assay results and geophysical surveys — flagged by materiality.', icon: 'tabler:drone' },
-      { title: 'Live commodity prices', description: 'Gold, silver, copper, nickel, platinum, palladium, uranium — all in one watchlist.', icon: 'tabler:trending-up' },
-      { title: 'League tables', description: 'Who is buying, who is selling, who is raising — ranked by volume, value and frequency.', icon: 'tabler:list-numbers' },
-    ]}
-  />
-
-  <CallToAction
-    actions={[
-      { variant: 'primary', text: 'Request Access', href: '#request-access' },
-      { variant: 'secondary', text: 'Enquire', href: 'mailto:oliver@underlandex.com' },
-    ]}
-  >
-    <Fragment slot="title">A complete, sourced record of mining corporate actions.</Fragment>
-    <Fragment slot="subtitle">Invitation-only while we onboard institutional users.</Fragment>
-  </CallToAction>
-
-  <Footer {...footerData} />
-  <RequestAccessModal />
 </Layout>

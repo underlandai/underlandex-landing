@@ -18,10 +18,12 @@ metadata:
   openGraph:
     site_name: UnderlandEX
     images:
-      - url: '~/assets/images/underlandex-og.png'
+      - url: '~/assets/images/underlandex/og.png'
         width: 1200
-        height: 628
+        height: 630
     type: website
+  twitter:
+    cardType: summary_large_image
 
 i18n:
   language: en-AU
