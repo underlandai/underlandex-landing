@@ -1,4 +1,5 @@
 ---
+import { resourceEstimates } from '~/data/resourceEstimates';
 import Layout from '~/layouts/PageLayout.astro';
 import PageHero from '~/components/PageHero.astro';
 import SectionHead from '~/components/SectionHead.astro';
@@ -13,7 +14,7 @@ const metadata = {
   title: 'UnderlandEX Explorer | Discover every mining asset',
 };
 
-let liveStats = { totalSites: 255344, totalOwners: 3449, totalTenements: 85537, totalResourceEstimates: 70515 };
+let liveStats = { totalSites: 255344, totalOwners: 3449, totalTenements: 85537 };
 try {
   const res = await fetch('https://app.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
   if (res.ok) liveStats = { ...liveStats, ...(await res.json()) };
@@ -47,7 +48,7 @@ const actions = [
           { value: liveStats.totalSites, label: 'Mining assets' },
           { value: liveStats.totalOwners, label: 'Mining companies' },
           { value: liveStats.totalTenements, label: 'Tenements' },
-          { value: liveStats.totalResourceEstimates, label: 'JORC estimates' },
+          { value: resourceEstimates.count, label: 'Mineral resource estimates (WA)' },
         ]}
       />
     </div>
@@ -58,7 +59,7 @@ const actions = [
       <ProductPreview
         badge="What you see inside"
         title="Search, filter and compare, instantly."
-        caption="Commodity, jurisdiction, stage, ownership. Open any project to see the full technical picture: JORC resource estimates, production history, ownership chain, tenement boundaries and the most recent market announcements."
+        caption="Commodity, jurisdiction, stage, ownership. Open any project to see the full technical picture: mineral resource estimates, production history, ownership chain, tenement boundaries and the most recent market announcements."
         image={previewExplorer}
         address="app.underlandex.com"
         headingLevel="h2"
@@ -86,8 +87,8 @@ const actions = [
             icon: 'tabler:network',
           },
           {
-            title: 'JORC\u00a0+\u00a0NI\u00a043-101 resource data',
-            description: '70,000+ resource estimates cross-referenced against their original technical reports.',
+            title: 'Mineral resource data',
+            description: `${resourceEstimates.count.toLocaleString('en-AU')} Western Australian mineral resource estimates from the state's MINEDEX register, with the reporting code where the register gives one.`,
             icon: 'tabler:chart-bar',
           },
           {

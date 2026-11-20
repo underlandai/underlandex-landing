@@ -1,4 +1,5 @@
 ---
+import { resourceEstimates } from '~/data/resourceEstimates';
 import { Icon } from 'astro-icon/components';
 import Layout from '~/layouts/PageLayout.astro';
 import HomeHero from '~/components/HomeHero.astro';
@@ -25,7 +26,6 @@ let liveStats = {
   totalOwners: 3449,
   totalTenements: 85537,
   totalProjects: 5968,
-  totalResourceEstimates: 70515,
 };
 try {
   const res = await fetch('https://app.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
@@ -43,7 +43,7 @@ const activities = [
   {
     title: 'Origination & Network',
     description:
-      'Active network across Australian and Hong Kong mining communities for inbound deal flow. Proprietary screening across 250,000+ assets, 9,000+ companies, 85,000+ tenements and 70,000+ JORC resource estimates, augmented by machine-learning signal generation. Greenfields and brownfields exploration target generation, acquisition target identification and offtake counterparty origination.',
+      'Active network across Australian and Hong Kong mining communities for inbound deal flow. Proprietary screening across 250,000+ assets, 9,000+ companies, 85,000+ tenements and 13,900+ Western Australian mineral resource estimates, augmented by machine-learning signal generation. Greenfields and brownfields exploration target generation, acquisition target identification and offtake counterparty origination.',
     icon: 'tabler:radar-2',
   },
   {
@@ -85,7 +85,7 @@ const audiences = [
   },
   {
     title: 'Royalty holders',
-    description: 'Valuation comparables for every JORC-estimated deposit. NAV modelling and stream analysis.',
+    description: 'Valuation comparables for every deposit with a mineral resource estimate. NAV modelling and stream analysis.',
     icon: 'tabler:coin',
   },
   {
@@ -112,7 +112,7 @@ const depth = [
   {
     title: 'Every corporate action, as it happens',
     description:
-      'ASX, TSX, LSE and EDGAR announcement feeds. M&A, capital raises, JORC updates and exploration results in one place.',
+      'ASX, TSX, LSE and EDGAR announcement feeds. M&A, capital raises, mineral resource updates and exploration results in one place.',
     icon: 'tabler:rss',
     band: 'bg-gold',
   },
@@ -142,8 +142,8 @@ const depth = [
     <Fragment slot="subtitle">
       A private engine for screening, due diligence, valuation and transaction execution across <strong
         >{fmt(liveStats.totalSites)}+</strong
-      > mining assets, <strong>9,000+</strong> companies, <strong>85,000+</strong> tenements and <strong>70,000+</strong
-      > JORC resource estimates.
+      > mining assets, <strong>9,000+</strong> companies, <strong>85,000+</strong> tenements and <strong>13,900+</strong
+      > Western Australian mineral resource estimates.
     </Fragment>
   </HomeHero>
 
@@ -162,7 +162,7 @@ const depth = [
           { value: liveStats.totalSites, label: 'Mining assets tracked' },
           { value: liveStats.totalOwners, label: 'Mining companies' },
           { value: liveStats.totalTenements, label: 'Tenements mapped' },
-          { value: liveStats.totalResourceEstimates, label: 'JORC resource estimates' },
+          { value: resourceEstimates.count, label: 'Mineral resource estimates (WA)' },
         ]}
       />
     </div>
@@ -305,7 +305,7 @@ const depth = [
           'Search listed projects',
           'Basic commodity & jurisdiction filters',
           'Public ownership data',
-          'JORC resource estimates & production history',
+          'Mineral resource estimates & production history',
           'CSV export',
         ],
       },
