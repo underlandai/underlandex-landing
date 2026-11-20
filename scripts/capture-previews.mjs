@@ -30,7 +30,13 @@ try {
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900, deviceScaleFactor: 2 });
     console.log(`→ ${url}`);
+    try {
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 45000 });
+    // The Explorer needs a login since 20/11/2026: a redirect to the login page must never be saved
+    // as the product picture. Skip the target and keep the previous image instead.
+    const landed = new URL(page.url());
+    if (landed.host !== new URL(url).host || landed.pathname.startsWith('/api/auth'))
+      throw new Error(`${url} redirected to ${landed.origin}${landed.pathname} (login required); not saving ${out}`);
     if (ready) {
       // wait for the data to render; a timeout here fails the capture
       await page.waitForFunction(
@@ -55,6 +61,10 @@ try {
     const outPath = path.join(outDir, out);
     await page.screenshot({ path: outPath, clip: { x: 0, y: 0, width: 1440, height: 900 } });
     console.log(`   ✓ saved ${outPath}`);
+    } catch (err) {
+      // One target failing must not stop the others; the previous image stays in place.
+      console.warn(`::warning::${err.message}`);
+    }
     await page.close();
   }
 } finally {
