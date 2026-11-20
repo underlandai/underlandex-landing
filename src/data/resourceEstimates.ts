@@ -3,7 +3,8 @@
 // extract of 15/09/2025). One estimate = one site and one estimate date with at least one
 // Measured, Indicated or Inferred line; ore reserve lines (Proven, Probable) are not counted.
 // The register's 70,515 rows are lines of these estimates (one per commodity, category and date),
-// so they are not used as a count of estimates. Re-measure when the database changes.
+// so they are not used as a count of estimates. The site does not name the jurisdiction (owner,
+// 20/11/2026: coverage is expanding to all of Australia and Canada). Re-measure when the database changes.
 export const resourceEstimates = {
   count: 13986,
   sites: 4715,
