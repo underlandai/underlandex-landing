@@ -28,7 +28,7 @@ let liveStats = {
   totalProjects: 5968,
 };
 try {
-  const res = await fetch('https://app.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
+  const res = await fetch('https://explore.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
   if (res.ok) {
     const data = await res.json();
     liveStats = { ...liveStats, ...data };

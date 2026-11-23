@@ -16,7 +16,7 @@ const metadata = {
 
 let liveStats = { totalSites: 255344, totalOwners: 3449, totalTenements: 85537 };
 try {
-  const res = await fetch('https://app.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
+  const res = await fetch('https://explore.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
   if (res.ok) liveStats = { ...liveStats, ...(await res.json()) };
 } catch {
   // fall back to the defaults above
