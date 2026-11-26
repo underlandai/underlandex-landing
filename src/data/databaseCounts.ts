@@ -21,13 +21,13 @@ export interface DatabaseCounts {
 
 const ROUTE = 'https://app.underlandex.com/api/ux/stats/database';
 
-/** The route's answer of 26/11/2026 14:27 UTC. */
+/** The route's answer of 26/11/2026 14:36 UTC. */
 const LAST: DatabaseCounts = {
   assets: 550446,
-  companies: 7707,
+  companies: 12128,
   tenements: 584457,
   estimates: 14688,
-  asAt: '2026-11-26T14:27:46Z',
+  asAt: '2026-11-26T14:36:00Z',
   live: false,
 };
 
