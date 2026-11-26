@@ -6,8 +6,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(__dirname, '../src/assets/images/underlandex');
 
 const targets = [
-  // Explorer lives at app.underlandex.com (underlandex.com is this landing site)
-  { url: 'https://app.underlandex.com/', out: 'preview-explorer.png', waitFor: 3000, scrollTo: 300 },
+  // preview-explorer.png is NOT captured here. app.underlandex.com needs a login, so this job could only
+  // ever photograph its sign-in page (it did, nightly, until 26/11/2026). The picture is the Projects page
+  // of the signed-in product with every listing row blurred, so that no listing can be read from it; it is
+  // taken on the product's own host and committed by hand when the Projects page changes.
   // M&A dashboard: KPIs, deal charts and the commodity x quarter heatmap, built from the curated
   // transactions table. The root URL redirects to /news, a live feed that can be empty.
   {
@@ -35,7 +37,7 @@ try {
     // The Explorer needs a login since 20/11/2026: a redirect to the login page must never be saved
     // as the product picture. Skip the target and keep the previous image instead.
     const landed = new URL(page.url());
-    if (landed.host !== new URL(url).host || landed.pathname.startsWith('/api/auth'))
+    if (landed.host !== new URL(url).host || landed.pathname.startsWith('/api/auth') || landed.pathname.startsWith('/login'))
       throw new Error(`${url} redirected to ${landed.origin}${landed.pathname} (login required); not saving ${out}`);
     if (ready) {
       // wait for the data to render; a timeout here fails the capture
