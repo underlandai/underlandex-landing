@@ -1,5 +1,5 @@
 ---
-import { resourceEstimates } from '~/data/resourceEstimates';
+import { getDatabaseCounts } from '~/data/databaseCounts';
 import Layout from '~/layouts/PageLayout.astro';
 import PageHero from '~/components/PageHero.astro';
 import SectionHead from '~/components/SectionHead.astro';
@@ -14,13 +14,9 @@ const metadata = {
   title: 'UnderlandEX Explorer | Discover every mining asset',
 };
 
-let liveStats = { totalSites: 255344, totalOwners: 3449, totalTenements: 85537 };
-try {
-  const res = await fetch('https://explore.underlandex.com/api/stats', { signal: AbortSignal.timeout(5000) });
-  if (res.ok) liveStats = { ...liveStats, ...(await res.json()) };
-} catch {
-  // fall back to the defaults above
-}
+// Every database count on this page is read from the product when the page is rendered
+// (src/data/databaseCounts.ts).
+const db = await getDatabaseCounts();
 
 const fmt = (n: number) => n.toLocaleString('en-AU');
 const actions = [
@@ -36,8 +32,8 @@ const actions = [
       <span class="block text-gold">One search.</span>
     </Fragment>
     <Fragment slot="subtitle">
-      {fmt(liveStats.totalSites)}+ mining assets across every commodity, jurisdiction and stage, searchable the way
-      property investors search homes.
+      {fmt(db.assets)}+ mining assets across every commodity, jurisdiction and stage, searchable the way property
+      investors search homes.
     </Fragment>
   </PageHero>
 
@@ -45,10 +41,10 @@ const actions = [
     <div class="wrap">
       <StatBand
         stats={[
-          { value: liveStats.totalSites, label: 'Mining assets' },
-          { value: liveStats.totalOwners, label: 'Mining companies' },
-          { value: liveStats.totalTenements, label: 'Tenements' },
-          { value: resourceEstimates.count, label: 'Mineral resource estimates' },
+          { value: db.assets, label: 'Mining assets' },
+          { value: db.companies, label: 'Mining companies' },
+          { value: db.tenements, label: 'Tenements' },
+          { value: db.estimates, label: 'Mineral resource estimates' },
         ]}
       />
     </div>
@@ -88,7 +84,7 @@ const actions = [
           },
           {
             title: 'Mineral resource data',
-            description: '13,900+ mineral resource estimates cross-referenced against their original technical reports.',
+            description: `${fmt(db.estimates)}+ mineral resource estimates cross-referenced against their original technical reports.`,
             icon: 'tabler:chart-bar',
           },
           {

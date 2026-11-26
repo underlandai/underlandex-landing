@@ -7,6 +7,10 @@ import ProductPreview from '~/components/ProductPreview.astro';
 import ClosingCta from '~/components/ClosingCta.astro';
 
 import previewMna from '~/assets/images/underlandex/preview-mna.png';
+import { getDatabaseCounts, fmtCount } from '~/data/databaseCounts';
+
+// The database count on this page is read from the product when the page is rendered.
+const db = await getDatabaseCounts();
 
 const metadata = {
   title: 'UnderlandEX M&A | Mining corporate-action reference',
@@ -35,7 +39,7 @@ const actions = [
       <ProductPreview
         badge="What you see inside"
         title="Announcement coverage, morning brief, league tables."
-        caption="Every M&A announcement, capital raise, mineral resource update and exploration result, pulled from exchange disclosures and resolved against our 255,000-asset database. Daily morning brief. Weekly written report. Quarterly league tables for advisors, brokers and lawyers."
+        caption={`Every M&A announcement, capital raise, mineral resource update and exploration result, pulled from exchange disclosures and resolved against our ${fmtCount(db.assets)}-asset database. Daily morning brief. Weekly written report. Quarterly league tables for advisors, brokers and lawyers.`}
         image={previewMna}
         address="mna.underlandex.com"
         headingLevel="h2"
@@ -62,8 +66,7 @@ const actions = [
           },
           {
             title: 'Mineral resource updates',
-            description:
-              'Every resource estimate upgrade or downgrade, tonnage and grade, with historical comparison.',
+            description: 'Every resource estimate upgrade or downgrade, tonnage and grade, with historical comparison.',
             icon: 'tabler:chart-bar',
           },
           {
